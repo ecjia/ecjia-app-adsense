@@ -9,21 +9,19 @@ class adsense_module extends api_front implements api_interface {
 
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	$this->authSession();
+    	
 		$data = RC_Cache::app_cache_get('app_home_adsense', 'adsense');
-		
 		if (empty($data)) {
 			//流程逻辑开始
 			// runloop 流
 			$request = null;
 			$response = array();
-			
 			$response = RC_Hook::apply_filters('api_home_adsense_runloop', $response, $request);
 			RC_Cache::app_cache_set('app_home_adsense', $response, 'adsense');
 			//流程逻辑结束
 		} else {
 			$response = $data;
 		}
-		
 		return $response;
 	}
 }
@@ -34,10 +32,10 @@ function adsense_data($response, $request) {
 		return array();
 	}
 	$where = array(
-			'position_id'	=> ecjia::config('mobile_launch_adsense'),
-			'enabled'		=> 1,
-			'start_time'	=> array('elt' => RC_Time::gmtime()),
-			'end_time'		=> array('egt' => RC_Time::gmtime())
+		'position_id'	=> ecjia::config('mobile_launch_adsense'),
+		'enabled'		=> 1,
+		'start_time'	=> array('elt' => RC_Time::gmtime()),
+		'end_time'		=> array('egt' => RC_Time::gmtime())
 	);
 	
 	$result = $db->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
