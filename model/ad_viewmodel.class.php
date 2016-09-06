@@ -19,19 +19,6 @@ class ad_viewmodel extends Component_Model_View {
 		);
 		parent::__construct();
 	}
-
-	/**
-	 * 取得广告列表数组
-	 *
-	 * @return  array
-	 */
-	public function ad_list($option) {
-	    return $this->field($option['field'])->where($option['where'])->group($option['group'])->order($option['order'])->limit($option['limit'])->select();
-	}
-	
-	public function ad_count($where) {
-		return $this->where($where)->count();
-	}
 }
 
 // end

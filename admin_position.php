@@ -112,7 +112,7 @@ class admin_position extends ecjia_admin {
 		$position_style = !empty($_POST['position_style'])	? $_POST['position_style']			                : '';
 		/* 查看广告位是否有重复 */
 
-		if ($this->db_ad_position->ad_position_count(array('position_name' => $position_name)) == 0) {
+		if (RC_DB::table('ad_position')->where('position_name', $position_name)->count() == 0) {
 			$data = array (
 				'position_name' 	=> $position_name,
 				'ad_width' 			=> $ad_width,
@@ -120,7 +120,7 @@ class admin_position extends ecjia_admin {
 				'position_desc' 	=> $position_desc,
 				'position_style' 	=> $position_style
 			);
-			$position_id = $this->db_ad_position->ad_position_manage($data);
+			$position_id = RC_DB::table('ad_position')->insertGetId($data);
 			
 			ecjia_admin::admin_log($position_name, 'add', 'ads_position');
 			$links[] = array('text' => RC_Lang::get('adsense::adsense.back_position_list'), 'href'=> RC_Uri::url('adsense/admin_position/init'));
@@ -153,8 +153,8 @@ class admin_position extends ecjia_admin {
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => RC_Lang::get('adsense::adsense.position_list')));
 		
 		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
-		$posit_arr = $this->db_ad_position->ad_position_info($id);
-		
+		$posit_arr = RC_DB::table('ad_position')->where('position_id', $id)->first();
+			
 		$this->assign('posit_arr', $posit_arr);
 		$this->assign('action', 'update');
 		$this->assign('form_action', RC_Uri::url('adsense/admin_position/update'));
@@ -175,22 +175,19 @@ class admin_position extends ecjia_admin {
 		$position_style = !empty($_POST['position_style']) 	? $_POST['position_style'] 			                : '';
 		$position_id 	= !empty($_POST['id']) 				? intval($_POST['id']) 								: 0;
 
-		$count = $this->db_ad_position->ad_position_count(array('position_name' => $position_name, 'position_id' => array('neq' => $position_id)));
+		$count = RC_DB::table('ad_position')->where('position_name', $position_name)->where('position_id', '!=', $position_id)->count();
 		if ($count == 0) {
 			$data = array(
-			    'position_id'       => $position_id,
 				'position_name'     => $position_name,
 				'ad_width' 			=> $ad_width,
 				'ad_height' 		=> $ad_height,
 				'position_desc' 	=> $position_desc,
 				'position_style' 	=> $position_style
 			);
-			$update = $this->db_ad_position->ad_position_manage($data);
-			
-			if ($update) {
-				ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
-				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
-			}
+			RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
+
+			ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
+			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
 			$this->showmessage(RC_Lang::get('adsense::adsense.posit_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
@@ -206,19 +203,16 @@ class admin_position extends ecjia_admin {
 		$position_name 	= trim($_POST['value']);
 		
 		if (!empty($position_name)) {
-		    if ($this->db_ad_position->ad_position_count(array('position_name' => $position_name))) {
+		    if (RC_DB::table('ad_position')->where('position_name', $position_name)->count() != 0) {
 				$this->showmessage(sprintf(RC_Lang::get('adsense::adsense.posit_name_exist'), $position_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 			    $data = array(
-			        'position_id'    => $id,
-			        'position_name'  => $position_name
+			        'position_name' => $position_name
 			    );
-			    if ($this->db_ad_position->ad_position_manage($data)) {
-					ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
-					$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($position_name)));
-				} else {
-					$this->showmessage($position_name, ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => sprintf(RC_Lang::get('adsense::adsense.brandedit_fail'))));
-				}
+				RC_DB::table('ad_position')->where('position_id', $id)->update($data);
+							    	
+				ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
+				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($position_name)));
 			}
 		} else {
 			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -242,16 +236,12 @@ class admin_position extends ecjia_admin {
 				$this->showmessage(RC_Lang::get('adsense::adsense.width_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			$data = array(
-			    'position_id'    => $id,
-			    'ad_width'       => $ad_width
+			    'ad_width' => $ad_width
 			);
-			if ($this->db_ad_position->ad_position_manage($data)) {
+			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
 			    
-				ecjia_admin::admin_log($ad_width, 'edit', 'ads_position');
-				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_width)));
-			} else {
-				$this->showmessage($this->db_ad_position->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
+			ecjia_admin::admin_log($ad_width, 'edit', 'ads_position');
+			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_width)));
 		} else {
 			$this->showmessage(RC_Lang::get('adsense::adsense.ad_width_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
@@ -274,16 +264,12 @@ class admin_position extends ecjia_admin {
 				$this->showmessage(RC_Lang::get('adsense::adsense.height_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 			}
 			$data = array(
-			    'position_id'    => $id,
-			    'ad_height'      => $ad_height
+			    'ad_height' => $ad_height
 			);
-			if ($this->db_ad_position->ad_position_manage($data)) {  
+			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
 			    
-				ecjia_admin::admin_log($ad_height, 'edit', 'ads_position');
-				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_height)));
-			} else {
-				$this->showmessage($this->db_ad_position->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
+			ecjia_admin::admin_log($ad_height, 'edit', 'ads_position');
+			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_height)));
 		} else {
 			$this->showmessage(RC_Lang::get('adsense::adsense.ad_height_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
@@ -296,15 +282,14 @@ class admin_position extends ecjia_admin {
 		$this->admin_priv('ad_position_delete');
 		
 		$id = intval($_GET['id']);
-		$count = $this->db_ad_model->ad_count(array('position_id' => $id));
-       
-		if ($count != 0) {
+
+		if (RC_DB::table('ad')->where('position_id', $id)->count() != 0) {
 			$this->showmessage(RC_Lang::get('adsense::adsense.not_del_adposit'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
-		    $position_name = $this->db_ad_position->where(array('position_id' => $id))->get_field('position_name');
-
+		    $position_name = RC_DB::table('ad_position')->where('position_id', $id)->pluck('position_name');
+		    	
 		    ecjia_admin::admin_log($position_name, 'remove', 'ads_position');
-		    $this->db_ad_position->ad_position_delete($id);
+		    RC_DB::table('ad_position')->where('position_id', $id)->delete();
 		}
 		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
@@ -313,24 +298,20 @@ class admin_position extends ecjia_admin {
 	 * 获取广告位置列表
 	 */
 	private function get_ad_position_list() {
-		$db_ad_position = RC_Loader::load_app_model('ad_position_model');
-		
+		$db_ad_position = RC_DB::table('ad_position');
+
 		$filter = $where = array();
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		
 		if ($filter['keywords']) {
-			$where[]= "position_name LIKE '%" . mysql_like_quote($filter['keywords']) . "%'";
+			$db_ad_position->where('position_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
 		}
-		$count = $db_ad_position->ad_position_count($where);
+		$count = $db_ad_position->count();
 		$page = new ecjia_page($count, 10, 5);
 		
-		$option = array(
-			'where'	=>	$where,
-			'order'	=>	'position_id DESC',
-			'limit'	=>	$page->limit(),
-		);
+		$db_ad_position->orderby('position_id', 'desc')->take(10)->skip($page->start_id-1);
+		$data = $db_ad_position->get();
 		
-		$data = $db_ad_position->ad_position_list($option);
 		$arr = array();
 		if (!empty($data)) {
 			foreach ($data as $rows) {
@@ -341,5 +322,7 @@ class admin_position extends ecjia_admin {
 		}
 		return array('item' => $arr, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
 	}
+	
 }
+
 // end

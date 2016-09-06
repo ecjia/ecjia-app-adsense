@@ -134,7 +134,8 @@ class admin extends ecjia_admin {
 		$end_time   = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '';
 
 		/* 查看广告名称是否有重复 */
-		$query = $this->db_ad->ad_count(array('ad_name' => $ad_name));
+		$query = RC_DB::table('ad')->where('ad_name', $ad_name)->count();
+		
 		if (isset($_POST['ad_name'])) {
 			if ($query > 0) {
 				$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -218,12 +219,12 @@ class admin extends ecjia_admin {
 			'enabled'  		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '',
 		);
 		
-		$ad_id = $this->db_ad->ad_manage($data);
+		$ad_id = RC_DB::table('ad')->insertGetId($data);
 		
 		ecjia_admin::admin_log($_POST['ad_name'], 'add', 'ads');
 
-		$links[] = array('text' => RC_Lang::get('adsense::adsense.back_ads_list'), 'href'=> RC_Uri::url('adsense/admin/init'));
- 		$links[] = array('text' => RC_Lang::get('adsense::adsense.continue_add_ad'), 'href'=> RC_Uri::url('adsense/admin/add'));
+		$links[] = array('text' => RC_Lang::get('adsense::adsense.back_ads_list'), 'href' => RC_Uri::url('adsense/admin/init'));
+ 		$links[] = array('text' => RC_Lang::get('adsense::adsense.continue_add_ad'), 'href' => RC_Uri::url('adsense/admin/add'));
  		$this->showmessage(RC_Lang::get('adsense::adsense.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $ad_id))));
  		
 	}
@@ -249,7 +250,7 @@ class admin extends ecjia_admin {
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_edit'));
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init'), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
 		
-		$ads_arr = $this->db_ad->ad_info($_GET['id']);
+		$ads_arr = RC_DB::table('ad')->where('ad_id', $_GET['id'])->first();
 
 		$ads_arr['ad_name']       = htmlspecialchars($ads_arr['ad_name']);
 		$ads_arr['start_time']    = RC_Time::local_date('Y-m-d', $ads_arr['start_time']);
@@ -322,7 +323,9 @@ class admin extends ecjia_admin {
 		
 		$start_time = !empty($_POST['start_time'])    ? RC_Time::local_strtotime($_POST['start_time'])    : '';
 		$end_time   = !empty($_POST['end_time'])      ? RC_Time::local_strtotime($_POST['end_time'])      : '';
-		$query = $this->db_ad->ad_count(array('ad_name' => $ad_name, 'ad_id' => array('neq' => $id)));
+		
+		$query = RC_DB::table('ad')->where('ad_name', $ad_name)->where('ad_id', '!=', $id)->count();
+		
 		if (!empty($ad_name)) {
 			if ($query > 0) {
 				$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -332,7 +335,8 @@ class admin extends ecjia_admin {
 		}
 		
 		/* 获取旧的LOGO地址,并删除 */
-		$ad_logo = $this->db_ad->where(array('ad_id' => $id))->get_field('ad_code');
+		$ad_logo = RC_DB::table('ad')->where('ad_id', $id)->pluck('ad_code');
+
 		/* 编辑图片类型的广告 */
 		if ($type == 0) {
 			$upload = RC_Upload::uploader('image', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
@@ -408,7 +412,6 @@ class admin extends ecjia_admin {
 		$ad_code = isset($ad_code) ? $ad_code :'';
 		
 		$data = array(
-		    'ad_id'         => $id,
 			'position_id'   => $_POST['position_id'],
 			'ad_name'       => $ad_name,
 			'ad_link'  		=> $ad_link,
@@ -420,8 +423,7 @@ class admin extends ecjia_admin {
 			'link_phone'  	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
 			'enabled'  		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '',
 		);
-		
-		$this->db_ad->ad_manage($data);
+		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 		
 		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
 		$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
@@ -474,15 +476,13 @@ class admin extends ecjia_admin {
 		$ad_name = trim($_POST['value']);
 		
 		if (!empty($ad_name)) {
-		    if ($this->db_ad->ad_count(array('ad_name' => $ad_name)) != 0) {
+			if (RC_DB::table('ad')->where('ad_name', $ad_name)->count() != 0) {
 				$this->showmessage(sprintf(RC_Lang::get('adsense::adsense.ad_name_exist'), $ad_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 			    $data = array(
-			        'ad_id'  => $id,
-			        'ad_name'=> $ad_name    
+			        'ad_name' => $ad_name    
 			    );
-			    if ($this->db_ad->ad_manage($data)) {
-			        
+			    if (RC_DB::table('ad')->where('ad_id', $id)->update($data)) {
 					ecjia_admin::admin_log($ad_name, 'edit', 'ads');
 					$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_name)));
 				} else {
@@ -501,13 +501,13 @@ class admin extends ecjia_admin {
 		$this->admin_priv('adsense_delete');
 		
 		$id = intval($_GET['id']);
-		$info = $this->db_ad->ad_info($id);
+		$info = RC_DB::table('ad')->where('ad_id', $id)->first();
 
 		if ((strpos($info['ad_code'], 'http://') === false) && (strpos($info['ad_code'], 'https://') === false)) {
 			$disk = RC_Filesystem::disk();
 			$disk->delete(RC_Upload::upload_path() . $info['ad_code']);
 		}
-		$this->db_ad->ad_delete($id);
+		RC_DB::table('ad')->where('ad_id', $id)->delete();
 		
 		ecjia_admin::admin_log($info['ad_name'], 'remove', 'ads');
 		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
@@ -520,17 +520,15 @@ class admin extends ecjia_admin {
 		$this->admin_priv('adsense_delete');
 	
 		$id = intval($_GET['id']);
-		$old_url = $this->db_ad->where(array('ad_id' => $id))->get_field('ad_code');
+		$old_url = RC_DB::table('ad')->where('ad_id', $id)->pluck('ad_code');
 
 		$disk = RC_Filesystem::disk();
 		$disk->delete(RC_Upload::upload_path() . $old_url);
 		
 		$data = array(
-		    'ad_id'   => $id,
 		    'ad_code' => '',
 		);
-		
-		$this->db_ad->ad_manage($data);
+		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 	
 		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array( 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
 	}
@@ -539,39 +537,41 @@ class admin extends ecjia_admin {
 	 * 获取广告列表
 	 */
 	private function get_ad_list() {
-		$db_ad 		= RC_Loader::load_app_model('ad_model');
-		$db_ad_view = RC_Loader::load_app_model('ad_viewmodel');
-		
 		$filter = $where = array();
+		
 		$filter['sort_by']    	= empty($_GET['sort_by']) 		? 'ad.ad_id' 	: trim($_GET['sort_by']);
 		$filter['sort_order'] 	= empty($_GET['sort_order']) 	? 'DESC' 		: trim($_GET['sort_order']);
 		$filter['keywords'] 	= empty($_GET['keywords']) 		? '' 			: trim($_GET['keywords']);
 		$pid 					= empty($_GET['pid']) 			? 0				: intval($_GET['pid']);
 		
+		$ad_db = RC_DB::table('ad');
+		$ad_db->leftJoin('ad_position', 'ad_position.position_id',  '=', 'ad.position_id');
+		
 		if ($filter['keywords']) {
-			$where[] = "ad_name LIKE '%" . mysql_like_quote($filter['keywords']) . "%'";
+			$ad_db->where('ad_name', 'like', '%'.mysql_like_quote($filter['keywords']).'%');
 		}
 		
 		if (isset($_GET['media_type'])) {
-			$filter['media_type'] = $where['media_type'] = intval($_GET['media_type']);
+			$filter['media_type'] = intval($_GET['media_type']);
+			$ad_db->where('media_type', '=', intval($_GET['media_type']));
 		} else {
 			$filter['media_type'] = '';
 		}
 		
 		if ($pid > 0) {
-			$where = "ad.position_id = $pid ";
+			$ad_db->where('ad.position_id', '=', $pid);
 		}
-		$count = $db_ad_view->ad_count($where);
+		
+		$count = $ad_db->count();
 		$page = new ecjia_page($count, 10, 5);
 		
-		$option = array(
-			'field' => 'ad.*, p.position_name',
-			'where'	=> $where,
-			'group'	=> 'ad.ad_id',
-			'order'	=> array($filter['sort_by'] => $filter['sort_order']),
-			'limit'	=> $page->limit(),
-		);
-		$data = $db_ad_view->ad_list($option);
+		$ad_db->select('ad.*', 'ad_position.position_name')
+			->groupby('ad.ad_id')
+			->orderby($filter['sort_by'], $filter['sort_order'])
+			->take(10)
+			->skip($page->start_id-1);
+		
+		$data = $ad_db->get();
 		
 		$arr = array();
 		if (isset($data)) {
@@ -597,13 +597,10 @@ class admin extends ecjia_admin {
 	 * 获取广告位置下拉列表
 	 */
 	private function get_position_select_list() {
-		$db_ad_position = RC_Loader::load_app_model('ad_position_model');
-		
-		$option = array(
-			'field' => 'position_id, position_name, ad_width, ad_height',
-			'order' => 'position_id desc'
-		);
-		$data = $db_ad_position->ad_position_select($option);
+		$data = RC_DB::table('ad_position')
+			->select('position_id', 'position_name', 'ad_width', 'ad_height')
+			->orderBy('position_id', 'desc')
+			->get();
 		
 		$position_list = array();
 		if (!empty($data)) {
@@ -615,4 +612,5 @@ class admin extends ecjia_admin {
 	}
 
 }
+
 // end
