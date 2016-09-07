@@ -23,7 +23,7 @@ class adsense_adsense_position_list_api extends Component_Event_Api {
 	 */
 	
 	private function adsense_position_list($options) {
-		$db = RC_Loader::load_app_model('ad_position_model', 'adsense');
+		$db = RC_Model::model('adsense/ad_position_model');
 		
 		$filter = array();
 		$filter['keywords']	  = empty($options['keywords']) ? '' : trim($options['keywords']);
