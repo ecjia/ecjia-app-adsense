@@ -26,8 +26,7 @@ class adsense_module extends api_front implements api_interface {
 }
 
 function adsense_data($response, $request) {
-	$db = RC_Loader::load_app_model('ad_model', 'adsense');
-	if (ecjia::config('mobile_launch_adsense') == '' || ecjia::config('mobile_launch_adsense') == 0) {
+	if (empty(ecjia::config('mobile_launch_adsense'))) {
 		return array();
 	}
 	$where = array(
@@ -37,7 +36,7 @@ function adsense_data($response, $request) {
 		'end_time'		=> array('egt' => RC_Time::gmtime())
 	);
 	
-	$result = $db->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
+	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
 	
 	$adsense_list = array();
 	if(!empty($result)) {
