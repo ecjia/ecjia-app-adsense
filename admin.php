@@ -81,7 +81,7 @@ class admin extends ecjia_admin {
 	 * 添加新广告页面
 	 */
 	public function add() {
-		$this->admin_priv('adsense_add');
+		$this->admin_priv('adsense_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -116,7 +116,7 @@ class admin extends ecjia_admin {
 	 * 新广告的处理
 	 */
 	public function insert() {
-		$this->admin_priv('adsense_add');
+		$this->admin_priv('adsense_update');
 	
 		$id      	= !empty($_POST['id'])      	? intval($_POST['id'])    		: 0;
 		$type    	= !empty($_POST['type'])    	? intval($_POST['type'])  		: 0;
