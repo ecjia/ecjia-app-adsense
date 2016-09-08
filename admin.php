@@ -6,15 +6,8 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin extends ecjia_admin {
-	private $db_ad;
-	private $db_ad_position;
-	private $db_ad_view;
-	
 	public function __construct() {
 		parent::__construct();
-		$this->db_ad 			= RC_Loader::load_app_model('ad_model');
-		$this->db_ad_position 	= RC_Loader::load_app_model('ad_position_model');
-		$this->db_ad_view 		= RC_Loader::load_app_model('ad_viewmodel');
 
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
@@ -482,12 +475,10 @@ class admin extends ecjia_admin {
 			    $data = array(
 			        'ad_name' => $ad_name    
 			    );
-			    if (RC_DB::table('ad')->where('ad_id', $id)->update($data)) {
-					ecjia_admin::admin_log($ad_name, 'edit', 'ads');
-					$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_name)));
-				} else {
-					$this->showmessage($this->db_ad->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-				}
+			    RC_DB::table('ad')->where('ad_id', $id)->update($data);
+				ecjia_admin::admin_log($ad_name, 'edit', 'ads');
+				
+				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_name)));
 			}
 		} else {
 			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);

@@ -6,14 +6,9 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 class admin_position extends ecjia_admin {
-	private $db_ad_position;
-	private $db_ad_model;
-	
 	public function __construct() {
 		parent::__construct();
-		$this->db_ad_position 	= RC_Loader::load_app_model('ad_position_model');
-		$this->db_ad_model		= RC_Loader::load_app_model('ad_model');
-		
+
 		/* 加载全局 js/css */
 		RC_Script::enqueue_script('jquery-validate');
 		RC_Script::enqueue_script('jquery-form');
