@@ -26,7 +26,8 @@ class adsense_module extends api_front implements api_interface {
 }
 
 function adsense_data($response, $request) {
-	if (empty(ecjia::config('mobile_launch_adsense'))) {
+    $mobile_launch_adsense = ecjia::config('mobile_launch_adsense');
+	if (empty($mobile_launch_adsense)) {
 		return array();
 	}
 	$where = array(
