@@ -45,7 +45,7 @@ class adsense_adsense_position_list_api extends Component_Event_Api {
 			$filter['record_count'] = $count;
 		}
 		
-		$result = $db->take(15)->skip($page->start_id-1)->get();
+		$result = $db->take($filter['page_size'])->orderBy('position_id', 'desc')->skip($page->start_id-1)->get();
 		
 		if (isset($options['is_page']) && $options['is_page'] == 1) {
 			return array('arr' => $result, 'page' => $page->show(15), 'desc' => $page->page_desc());
