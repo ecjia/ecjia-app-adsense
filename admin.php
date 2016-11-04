@@ -581,7 +581,7 @@ class admin extends ecjia_admin {
 				$arr[] = $rows;
 			}
 		}
-		return array('item' => $arr, 'filter' => $filter, 'page' => $page->show(5), 'desc' => $page->page_desc());
+		return array('item' => $arr, 'filter' => $filter, 'page' => $page->show(2), 'desc' => $page->page_desc());
 	}
 	
 	/**
