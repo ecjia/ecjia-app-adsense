@@ -41,7 +41,7 @@ class admin_position extends ecjia_admin {
 	 * 广告位置列表页面
 	 */
 	public function init() {
-		$this->admin_priv('ad_position_manage');
+		$this->admin_priv('ad_position_manage', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_position')));
@@ -70,7 +70,7 @@ class admin_position extends ecjia_admin {
 	 * 添加广告位页面
 	 */
 	public function add() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.position_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -98,7 +98,7 @@ class admin_position extends ecjia_admin {
 	 * 添加广告位页面
 	 */
 	public function insert() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		$position_name	= !empty($_POST['position_name'])	? trim($_POST['position_name']) 					: '';
 		$position_desc 	= !empty($_POST['position_desc'])	? nl2br(htmlspecialchars($_POST['position_desc'])) 	: '';
@@ -130,7 +130,7 @@ class admin_position extends ecjia_admin {
 	 * 广告位编辑页面
 	 */
 	public function edit() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.position_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -161,7 +161,7 @@ class admin_position extends ecjia_admin {
 	 * 广告位编辑处理
 	 */
 	public function update() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		$position_name 	= !empty($_POST['position_name']) 	? trim($_POST['position_name']) 					: '';
 		$position_desc 	= !empty($_POST['position_desc']) 	? nl2br(htmlspecialchars($_POST['position_desc'])) 	: '';
@@ -192,7 +192,7 @@ class admin_position extends ecjia_admin {
 	 * 编辑广告位置名称
 	 */
 	public function edit_position_name() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		$id 			= intval($_POST['pk']);
 		$position_name 	= trim($_POST['value']);
@@ -218,7 +218,7 @@ class admin_position extends ecjia_admin {
 	 * 编辑广告位宽
 	 */
 	public function edit_ad_width() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		$id       = intval($_POST['pk']);
 		$ad_width = trim($_POST['value']);
@@ -246,7 +246,7 @@ class admin_position extends ecjia_admin {
 	 * 编辑广告位宽
 	 */
 	public function edit_ad_height() {
-		$this->admin_priv('ad_position_update');
+		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
 		$id           = intval($_POST['pk']);
 		$ad_height    = trim($_POST['value']);
@@ -274,7 +274,7 @@ class admin_position extends ecjia_admin {
 	 * 删除广告位置
 	 */
 	public function remove() {
-		$this->admin_priv('ad_position_delete');
+		$this->admin_priv('ad_position_delete', ecjia::MSGTYPE_JSON);
 		
 		$id = intval($_GET['id']);
 
