@@ -213,6 +213,10 @@ class admin extends ecjia_admin {
 		);
 		
 		$ad_id = RC_DB::table('ad')->insertGetId($data);
+		/* 释放广告位缓存*/
+		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+		$cache_key = sprintf('%X', crc32('adsense_position-'. $_POST['position_id']));
+		$ad_postion_db->delete_cache_item($cache_key);
 		
 		ecjia_admin::admin_log($_POST['ad_name'], 'add', 'ads');
 
@@ -328,7 +332,9 @@ class admin extends ecjia_admin {
 		}
 		
 		/* 获取旧的LOGO地址,并删除 */
-		$ad_logo = RC_DB::table('ad')->where('ad_id', $id)->pluck('ad_code');
+		$ad_info = RC_DB::table('ad')->where('ad_id', $id)->first();
+		$ad_logo = $ad_info['ad_code'];
+		//RC_DB::table('ad')->where('ad_id', $id)->pluck('ad_code');
 
 		/* 编辑图片类型的广告 */
 		if ($type == 0) {
@@ -416,6 +422,16 @@ class admin extends ecjia_admin {
 			'link_phone'  	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
 			'enabled'  		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '',
 		);
+		
+		/* 释放广告位缓存*/
+		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+		$new_cache_key = sprintf('%X', crc32('adsense_position-'. $_POST['position_id']));
+		$ad_postion_db->delete_cache_item($new_cache_key);
+		$old_cache_key = sprintf('%X', crc32('adsense_position-'. $ad_info['position_id']));
+		$ad_postion_db->delete_cache_item($old_cache_key);
+		
+		
+		/* 更新数据*/
 		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 		
 		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
@@ -499,6 +515,10 @@ class admin extends ecjia_admin {
 			$disk->delete(RC_Upload::upload_path() . $info['ad_code']);
 		}
 		RC_DB::table('ad')->where('ad_id', $id)->delete();
+		
+		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+		$cache_key = sprintf('%X', crc32('adsense_position-'. $info['position_id']));
+		$ad_postion_db->delete_cache_item($cache_key);
 		
 		ecjia_admin::admin_log($info['ad_name'], 'remove', 'ads');
 		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
