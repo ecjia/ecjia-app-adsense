@@ -2,13 +2,13 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 use Royalcms\Component\Database\Eloquent\Model;
 
-class orm_ad_position_model extends Model {
-	protected $table = 'ad_position';
-	protected $primaryKey = 'position_id';
+class orm_ad_model extends Model {
+	protected $table = 'ad';
+	protected $primaryKey = 'ad_id';
 	
-	public function ad() 
+	public function ad_position() 
 	{
-		return $this->hasMany('orm_ad_model', 'position_id');
+		return $this->belongsTo('orm_ad_position_model', 'position_id', 'position_id');
 	}
 	
 	/* 获取缓存数据*/
