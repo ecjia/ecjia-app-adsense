@@ -120,9 +120,9 @@ class admin_position extends ecjia_admin {
 			ecjia_admin::admin_log($position_name, 'add', 'ads_position');
 			$links[] = array('text' => RC_Lang::get('adsense::adsense.back_position_list'), 'href'=> RC_Uri::url('adsense/admin_position/init'));
 			$links[] = array('text' => RC_Lang::get('adsense::adsense.continue_add_position'), 'href'=> RC_Uri::url('adsense/admin_position/add'));
-			$this->showmessage(RC_Lang::get('adsense::adsense.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('id' => $position_id))));
+			return $this->showmessage(RC_Lang::get('adsense::adsense.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('id' => $position_id))));
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.posit_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.posit_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -182,9 +182,9 @@ class admin_position extends ecjia_admin {
 			RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
 
 			ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
-			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.posit_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.posit_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -199,7 +199,7 @@ class admin_position extends ecjia_admin {
 		
 		if (!empty($position_name)) {
 		    if (RC_DB::table('ad_position')->where('position_name', $position_name)->count() != 0) {
-				$this->showmessage(sprintf(RC_Lang::get('adsense::adsense.posit_name_exist'), $position_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(sprintf(RC_Lang::get('adsense::adsense.posit_name_exist'), $position_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 			    $data = array(
 			        'position_name' => $position_name
@@ -207,10 +207,10 @@ class admin_position extends ecjia_admin {
 				RC_DB::table('ad_position')->where('position_id', $id)->update($data);
 							    	
 				ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
-				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($position_name)));
+				return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($position_name)));
 			}
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -225,10 +225,10 @@ class admin_position extends ecjia_admin {
 		
 		if (!empty($ad_width)) {
 			if (!preg_match('/^[\.0-9]+$/', $ad_width)) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.width_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.width_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			if ($ad_width > 1024 || $ad_width < 1) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.width_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.width_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			$data = array(
 			    'ad_width' => $ad_width
@@ -236,9 +236,9 @@ class admin_position extends ecjia_admin {
 			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
 			    
 			ecjia_admin::admin_log($ad_width, 'edit', 'ads_position');
-			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_width)));
+			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_width)));
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_width_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_width_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 	
@@ -253,10 +253,10 @@ class admin_position extends ecjia_admin {
 	
 		if (!empty($ad_height)) {
 			if (!preg_match ('/^[\.0-9]+$/', $ad_height)) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.height_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+				return $this->showmessage(RC_Lang::get('adsense::adsense.height_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 			}
 			if ($ad_height > 1024 || $ad_height < 1) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.height_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
+				return $this->showmessage(RC_Lang::get('adsense::adsense.height_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR );
 			}
 			$data = array(
 			    'ad_height' => $ad_height
@@ -264,9 +264,9 @@ class admin_position extends ecjia_admin {
 			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
 			    
 			ecjia_admin::admin_log($ad_height, 'edit', 'ads_position');
-			$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_height)));
+			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_height)));
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_height_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_height_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -279,14 +279,14 @@ class admin_position extends ecjia_admin {
 		$id = intval($_GET['id']);
 
 		if (RC_DB::table('ad')->where('position_id', $id)->count() != 0) {
-			$this->showmessage(RC_Lang::get('adsense::adsense.not_del_adposit'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.not_del_adposit'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
 		    $position_name = RC_DB::table('ad_position')->where('position_id', $id)->pluck('position_name');
 		    	
 		    ecjia_admin::admin_log($position_name, 'remove', 'ads_position');
 		    RC_DB::table('ad_position')->where('position_id', $id)->delete();
 		}
-		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**

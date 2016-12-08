@@ -131,10 +131,10 @@ class admin extends ecjia_admin {
 		
 		if (isset($_POST['ad_name'])) {
 			if ($query > 0) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}	
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		/* 添加图片类型的广告 */
@@ -147,7 +147,7 @@ class admin extends ecjia_admin {
 					if (!empty($image_info)) {
 						$ad_code = $upload->get_position($image_info);
 					} else {
-						$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+						return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 				}
 			//如果是远程连接
@@ -174,7 +174,7 @@ class admin extends ecjia_admin {
 				if (!empty($image_info)) {
 					$ad_code = $upload->get_position($image_info);
 				} else {
-					$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}
 			} 
 		} 
@@ -183,7 +183,7 @@ class admin extends ecjia_admin {
 			if (!empty($_POST['ad_code'])) {
 				$ad_code = $_POST['ad_code'];
         	} else {
-				$this->showmessage(RC_Lang::get('adsense::adsense.ad_code_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.ad_code_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} 
 			
@@ -192,7 +192,7 @@ class admin extends ecjia_admin {
 		    if (!empty($_POST['ad_text'])) {
 		    	$ad_code = $_POST['ad_text'];
 		    } else {
-				$this->showmessage(RC_Lang::get('adsense::adsense.ad_text_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.ad_text_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 		
@@ -222,7 +222,7 @@ class admin extends ecjia_admin {
 
 		$links[] = array('text' => RC_Lang::get('adsense::adsense.back_ads_list'), 'href' => RC_Uri::url('adsense/admin/init'));
  		$links[] = array('text' => RC_Lang::get('adsense::adsense.continue_add_ad'), 'href' => RC_Uri::url('adsense/admin/add'));
- 		$this->showmessage(RC_Lang::get('adsense::adsense.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $ad_id))));
+ 		return $this->showmessage(RC_Lang::get('adsense::adsense.add_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('links' => $links, 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $ad_id))));
  		
 	}
 	
@@ -325,10 +325,10 @@ class admin extends ecjia_admin {
 		
 		if (!empty($ad_name)) {
 			if ($query > 0) {
-				$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_exist'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		
 		/* 获取旧的LOGO地址,并删除 */
@@ -362,7 +362,7 @@ class admin extends ecjia_admin {
 						/* 获取新上传的LOGO的链接地址 */
 						$ad_code = $upload->get_position($image_info);
 					} else {
-						$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+						return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 					}
 				} else {
 					$ad_code = $ad_logo;
@@ -384,7 +384,7 @@ class admin extends ecjia_admin {
 					}
 					$ad_code = $upload->get_position($image_info);
 				} else {
-					$this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 				}	
 			} else {
 		        $ad_code = $ad_logo;
@@ -396,7 +396,7 @@ class admin extends ecjia_admin {
 		    if (!empty($_POST['ad_code'])) {
 		    	$ad_code = $_POST['ad_code'];
 		    } else {
-		    	$this->showmessage(RC_Lang::get('adsense::adsense.ad_code_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		    	return $this->showmessage(RC_Lang::get('adsense::adsense.ad_code_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		    }
 		}
 		
@@ -405,7 +405,7 @@ class admin extends ecjia_admin {
 			if (!empty($_POST['ad_text'])) {
 				$ad_code = $_POST['ad_text'];
 			} else {
-				$this->showmessage(RC_Lang::get('adsense::adsense.ad_text_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(RC_Lang::get('adsense::adsense.ad_text_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 		}
 		$ad_code = isset($ad_code) ? $ad_code :'';
@@ -435,7 +435,7 @@ class admin extends ecjia_admin {
 		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 		
 		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
-		$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
 	}
 	
 	/**
@@ -486,7 +486,7 @@ class admin extends ecjia_admin {
 		
 		if (!empty($ad_name)) {
 			if (RC_DB::table('ad')->where('ad_name', $ad_name)->count() != 0) {
-				$this->showmessage(sprintf(RC_Lang::get('adsense::adsense.ad_name_exist'), $ad_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				return $this->showmessage(sprintf(RC_Lang::get('adsense::adsense.ad_name_exist'), $ad_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
 			    $data = array(
 			        'ad_name' => $ad_name    
@@ -494,10 +494,10 @@ class admin extends ecjia_admin {
 			    RC_DB::table('ad')->where('ad_id', $id)->update($data);
 				ecjia_admin::admin_log($ad_name, 'edit', 'ads');
 				
-				$this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_name)));
+				return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => stripslashes($ad_name)));
 			}
 		} else {
-			$this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 	}
 
@@ -521,7 +521,7 @@ class admin extends ecjia_admin {
 		$ad_postion_db->delete_cache_item($cache_key);
 		
 		ecjia_admin::admin_log($info['ad_name'], 'remove', 'ads');
-		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
 	}
 	
 	/**
@@ -541,7 +541,7 @@ class admin extends ecjia_admin {
 		);
 		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 	
-		$this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array( 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array( 'pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
 	}
 	
 	/**
