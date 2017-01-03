@@ -26,7 +26,7 @@ class adsense_adsense_list_api extends Component_Event_Api {
 		$ad_position_db = RC_Model::model('adsense/orm_ad_position_model');
 		RC_Model::model('adsense/orm_ad_model');
 		
-		$filter['position_id']	= empty($options['position_id']) ? null : $options['position_id'];
+		$filter['position_id'] = empty($options['position_id']) ? null : $options['position_id'];
 
 		$cache_key = sprintf('%X', crc32('adsense_position-'. $filter['position_id']));
 		$adsense_group = $ad_position_db->get_cache_item($cache_key);
@@ -50,18 +50,16 @@ class adsense_adsense_list_api extends Component_Event_Api {
 						$v['ad_code'] = RC_Upload::upload_url($v['ad_code']);
 					}
 					$adsense_group['adsense'][] = array(
-							'image'	=> $v['ad_code'],
-							'text'	=> $v['ad_name'],
-							'url'	=> $v['ad_link'],
+						'image'	=> $v['ad_code'],
+						'text'	=> $v['ad_name'],
+						'url'	=> $v['ad_link'],
 					);
 				}
 			}
 			$ad_position_db->set_cache_item($cache_key, $adsense_group);
 		}
-		return $adsense_group; 
-		
+		return $adsense_group;
 	}
-	
 }
 
 // end
