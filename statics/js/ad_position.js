@@ -57,7 +57,7 @@
             var options = $.extend(ecjia.admin.defaultOptions.validate, option);
             $form.validate(options);
         }
-    };
+	};
     
 })(ecjia.admin, jQuery);
 
