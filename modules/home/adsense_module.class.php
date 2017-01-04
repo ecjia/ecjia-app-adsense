@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 手机启动页广告
  * @author will.chen
@@ -52,7 +53,6 @@ function adsense_data($response, $request) {
 		}
 	}
 	$response = $adsense_list;
-	
 	return $response;
 }
 

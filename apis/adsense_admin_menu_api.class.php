@@ -1,5 +1,6 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 后台广告菜单
  * @author songqian

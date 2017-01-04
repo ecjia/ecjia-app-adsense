@@ -1,10 +1,10 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * ECJIA 广告管理程序
  *  @author songqian
 */
-defined('IN_ECJIA') or exit('No permission resources.');
-
 class admin extends ecjia_admin {
 	public function __construct() {
 		parent::__construct();

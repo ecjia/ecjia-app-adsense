@@ -17,7 +17,6 @@
 		{if $back_position_list}
         <a class="btn plus_or_reply data-pjax" href="{$back_position_list.href}" id="sticky_a"><i class="fontello-icon-reply"></i>{$back_position_list.text}</a>
         {/if}
-		
 	</h3>
 </div>
 
