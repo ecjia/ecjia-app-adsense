@@ -3,9 +3,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 广告位置列表
- * 
  * @author will.chen
- *        
  */
 class adsense_adsense_position_list_api extends Component_Event_Api {
 	/**
@@ -56,4 +54,5 @@ class adsense_adsense_position_list_api extends Component_Event_Api {
 		}
 	}
 }
+
 // end

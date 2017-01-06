@@ -3,9 +3,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 获取广告位的广告列表
- * 
  * @author will.chen
- *        
  */
 class adsense_adsense_list_api extends Component_Event_Api {
 	/**
@@ -55,4 +53,5 @@ class adsense_adsense_list_api extends Component_Event_Api {
 		return $adsense_group;
 	}
 }
+
 // end

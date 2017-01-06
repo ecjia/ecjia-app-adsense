@@ -3,9 +3,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 后台广告菜单
- * 
  * @author songqian
- *        
  */
 class adsense_admin_menu_api extends Component_Event_Api {
 	public function call(&$options) {
@@ -18,4 +16,5 @@ class adsense_admin_menu_api extends Component_Event_Api {
 		return $menus;
 	}
 }
+
 // end

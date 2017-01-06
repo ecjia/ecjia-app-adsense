@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 广告管理程序
  * @author songqian
- *        
  */
 class admin extends ecjia_admin {
 	public function __construct() {
@@ -264,9 +263,11 @@ class admin extends ecjia_admin {
 	 */
 	public function update() {
 		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
-		$type = !empty($_POST['media_type']) ? intval($_POST['media_type']) : 0;
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		$ad_name = !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
+		
+		$type 		= !empty($_POST['media_type']) 	? intval($_POST['media_type']) 	: 0;
+		$id 		= !empty($_POST['id']) 			? intval($_POST['id']) 			: 0;
+		$ad_name	= !empty($_POST['ad_name']) 	? trim($_POST['ad_name']) 		: '';
+		
 		if ($type === 0) {
 			$ad_link = !empty($_POST['ad_link']) ? trim($_POST['ad_link']) : '';
 		} else {
@@ -349,16 +350,16 @@ class admin extends ecjia_admin {
 		}
 		$ad_code = isset($ad_code) ? $ad_code : '';
 		$data = array(
-			'position_id' => $_POST['position_id'],
-			'ad_name' => $ad_name,
-			'ad_link' => $ad_link,
-			'ad_code' => $ad_code,
-			'start_time' => $start_time,
-			'end_time' => $end_time,
-			'link_man' => !empty($_POST['link_man']) ? $_POST['link_man'] : '',
-			'link_email' => !empty($_POST['link_email']) ? $_POST['link_email'] : '',
-			'link_phone' => !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
-			'enabled' => !empty($_POST['enabled']) ? $_POST['enabled'] : '' 
+			'position_id' 	=> $_POST['position_id'],
+			'ad_name' 		=> $ad_name,
+			'ad_link' 		=> $ad_link,
+			'ad_code' 		=> $ad_code,
+			'start_time' 	=> $start_time,
+			'end_time' 		=> $end_time,
+			'link_man' 		=> !empty($_POST['link_man']) ? $_POST['link_man'] : '',
+			'link_email' 	=> !empty($_POST['link_email']) ? $_POST['link_email'] : '',
+			'link_phone' 	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
+			'enabled' 		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '' 
 		);
 		/* 释放广告位缓存 */
 		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
@@ -409,6 +410,7 @@ class admin extends ecjia_admin {
 	 */
 	public function edit_ad_name() {
 		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_POST['pk']);
 		$ad_name = trim($_POST['value']);
 		if (!empty($ad_name)) {
@@ -432,6 +434,7 @@ class admin extends ecjia_admin {
 	 */
 	public function remove() {
 		$this->admin_priv('adsense_delete', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_GET['id']);
 		$info = RC_DB::table('ad')->where('ad_id', $id)->first();
 		if (strpos($info['ad_code'], 'http://') === false && strpos($info['ad_code'], 'https://') === false) {
@@ -526,4 +529,5 @@ class admin extends ecjia_admin {
 		return $position_list;
 	}
 }
+
 // end

@@ -4,7 +4,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 广告位置管理程序
  * @author songqian
- *        
  */
 class admin_position extends ecjia_admin {
 	public function __construct() {
@@ -85,11 +84,11 @@ class admin_position extends ecjia_admin {
 	public function insert() {
 		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
 		
-		$position_name = ! empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-		$position_desc = ! empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$ad_width = ! empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-		$ad_height = ! empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-		$position_style = ! empty($_POST['position_style']) ? $_POST['position_style'] : '';
+		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
+		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
+		$ad_width = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
+		$ad_height = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
+		$position_style = !empty($_POST['position_style']) ? $_POST['position_style'] : '';
 		
 		/* 查看广告位是否有重复 */
 		if (RC_DB::table('ad_position')->where('position_name', $position_name)->count() == 0) {
@@ -127,7 +126,7 @@ class admin_position extends ecjia_admin {
 			'href' => RC_Uri::url('adsense/admin_position/init'),
 			'text' => RC_Lang::get('adsense::adsense.position_list') 
 		));
-		$id = ! empty($_GET['id']) ? intval($_GET['id']) : 0;
+		$id = !empty($_GET['id']) ? intval($_GET['id']) : 0;
 		$posit_arr = RC_DB::table('ad_position')->where('position_id', $id)->first();
 		$this->assign('posit_arr', $posit_arr);
 		$this->assign('action', 'update');
@@ -140,20 +139,22 @@ class admin_position extends ecjia_admin {
 	 */
 	public function update() {
 		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
-		$position_name = ! empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-		$position_desc = ! empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$ad_width = ! empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-		$ad_height = ! empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-		$position_style = ! empty($_POST['position_style']) ? $_POST['position_style'] : '';
-		$position_id = ! empty($_POST['id']) ? intval($_POST['id']) : 0;
+		
+		$position_name 	= !empty($_POST['position_name']) 	? trim($_POST['position_name']) 					: '';
+		$position_desc 	= !empty($_POST['position_desc']) 	? nl2br(htmlspecialchars($_POST['position_desc'])) 	: '';
+		$ad_width 		= !empty($_POST['ad_width']) 		? intval($_POST['ad_width']) 						: 0;
+		$ad_height 		= !empty($_POST['ad_height']) 		? intval($_POST['ad_height']) 						: 0;
+		$position_style = !empty($_POST['position_style']) 	? $_POST['position_style'] 							: '';
+		$position_id 	= !empty($_POST['id']) 				? intval($_POST['id']) 								: 0;
+		
 		$count = RC_DB::table('ad_position')->where('position_name', $position_name)->where('position_id', '!=', $position_id)->count();
 		if ($count == 0) {
 			$data = array(
-				'position_name' => $position_name,
-				'ad_width' => $ad_width,
-				'ad_height' => $ad_height,
-				'position_desc' => $position_desc,
-				'position_style' => $position_style 
+				'position_name' 	=> $position_name,
+				'ad_width' 			=> $ad_width,
+				'ad_height' 		=> $ad_height,
+				'position_desc' 	=> $position_desc,
+				'position_style' 	=> $position_style 
 			);
 			RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
 			ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
@@ -168,9 +169,10 @@ class admin_position extends ecjia_admin {
 	 */
 	public function edit_position_name() {
 		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_POST['pk']);
 		$position_name = trim($_POST['value']);
-		if (! empty($position_name)) {
+		if (!empty($position_name)) {
 			if (RC_DB::table('ad_position')->where('position_name', $position_name)->count() != 0) {
 				return $this->showmessage(sprintf(RC_Lang::get('adsense::adsense.posit_name_exist'), $position_name), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			} else {
@@ -191,6 +193,7 @@ class admin_position extends ecjia_admin {
 	 */
 	public function edit_ad_width() {
 		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_POST['pk']);
 		$ad_width = trim($_POST['value']);
 		if (!empty($ad_width)) {
@@ -216,10 +219,11 @@ class admin_position extends ecjia_admin {
 	 */
 	public function edit_ad_height() {
 		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_POST['pk']);
 		$ad_height = trim($_POST['value']);
-		if (! empty($ad_height)) {
-			if (! preg_match('/^[\\.0-9]+$/', $ad_height)) {
+		if (!empty($ad_height)) {
+			if (!preg_match('/^[\\.0-9]+$/', $ad_height)) {
 				return $this->showmessage(RC_Lang::get('adsense::adsense.height_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 			}
 			if ($ad_height > 1024 || $ad_height < 1) {
@@ -241,6 +245,7 @@ class admin_position extends ecjia_admin {
 	 */
 	public function remove() {
 		$this->admin_priv('ad_position_delete', ecjia::MSGTYPE_JSON);
+		
 		$id = intval($_GET['id']);
 		if (RC_DB::table('ad')->where('position_id', $id)->count() != 0) {
 			return $this->showmessage(RC_Lang::get('adsense::adsense.not_del_adposit'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -257,6 +262,7 @@ class admin_position extends ecjia_admin {
 	 */
 	private function get_ad_position_list() {
 		$db_ad_position = RC_DB::table('ad_position');
+		
 		$filter = $where = array();
 		$filter['keywords'] = empty($_GET['keywords']) ? '' : trim($_GET['keywords']);
 		if ($filter['keywords']) {
@@ -268,9 +274,9 @@ class admin_position extends ecjia_admin {
 		$data = $db_ad_position->get();
 		
 		$arr = array();
-		if (! empty($data)) {
+		if (!empty($data)) {
 			foreach ($data as $rows) {
-				$position_desc = ! empty($rows['position_desc']) ? RC_String::sub_str($rows['position_desc'], 50, true) : '';
+				$position_desc = !empty($rows['position_desc']) ? RC_String::sub_str($rows['position_desc'], 50, true) : '';
 				$rows['position_desc'] = nl2br(htmlspecialchars($position_desc));
 				$arr[] = $rows;
 			}
