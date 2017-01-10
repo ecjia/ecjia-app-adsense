@@ -6,7 +6,7 @@ class ad_model extends Component_Model_Model {
 	public function __construct() {
 		$this->table_name = 'ad';
 		parent::__construct();
-	}	
+	}
 }
 
 // end

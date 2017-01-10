@@ -7,13 +7,13 @@ class ad_viewmodel extends Component_Model_View {
 	public function __construct() {
 		$this->table_name = 'ad';
 		$this->table_alias_name = 'ad';
-
+		
 		$this->view = array(
 			'ad_position' => array(
-				'type'  => Component_Model_View::TYPE_LEFT_JOIN,
+				'type' => Component_Model_View::TYPE_LEFT_JOIN,
 				'alias' => 'p',
-				'on'    => 'p.position_id  = ad.position_id',
-			),
+				'on' => 'p.position_id  = ad.position_id' 
+			) 
 		);
 		parent::__construct();
 	}

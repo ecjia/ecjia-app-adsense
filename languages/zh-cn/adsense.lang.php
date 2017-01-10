@@ -1,10 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * ECJIA 应用语言包
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
 /* 广告位置字段信息 */
 $LANG['position_name'] = '广告位名称';
 $LANG['ad_width'] = '广告位宽度';

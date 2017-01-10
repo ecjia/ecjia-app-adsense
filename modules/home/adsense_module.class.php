@@ -1,9 +1,9 @@
 <?php
 defined('IN_ECJIA') or exit('No permission resources.');
+
 /**
  * 手机启动页广告
  * @author will.chen
- *
  */
 class adsense_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
@@ -40,19 +40,18 @@ function adsense_data($response, $request) {
 	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
 	
 	$adsense_list = array();
-	if(!empty($result)) {
+	if (!empty($result)) {
 		foreach ($result as $val) {
 			$adsense_list[] = array(
-					'id'		 => $val['ad_id'],
-					'ad_link'	 => $val['ad_link'],
-					'ad_img'	 => empty($val['ad_code']) ? '' : RC_Upload::upload_url().'/'.$val['ad_code'],
-					'start_time' => RC_Time::local_date(ecjia::config('date_format'), $val['start_time']),
-					'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $val['end_time']),
+				'id'		 => $val['ad_id'],
+				'ad_link'	 => $val['ad_link'],
+				'ad_img'	 => empty($val['ad_code']) ? '' : RC_Upload::upload_url().'/'.$val['ad_code'],
+				'start_time' => RC_Time::local_date(ecjia::config('date_format'), $val['start_time']),
+				'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $val['end_time']),
 			);
 		}
 	}
 	$response = $adsense_list;
-	
 	return $response;
 }
 

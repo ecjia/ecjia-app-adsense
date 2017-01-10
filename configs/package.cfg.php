@@ -1,11 +1,9 @@
 <?php
+defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
  * 广告应用
  */
-
-defined('IN_ECJIA') or exit('No permission resources.');
-
 return array(
 	'identifier' 	=> 'ecjia.adsense',
 	'directory' 	=> 'adsense',
