@@ -44,9 +44,9 @@
 //
 //  ---------------------------------------------------------------------------------
 //
+use Royalcms\Component\Database\Eloquent\Model;
 defined('IN_ECJIA') or exit('No permission resources.');
 
-use Royalcms\Component\Database\Eloquent\Model;
 class orm_ad_position_model extends Model {
 	protected $table = 'ad_position';
 	protected $primaryKey = 'position_id';

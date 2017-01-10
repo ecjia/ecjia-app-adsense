@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA 广告应用语言包
  */
-
 return array(
 	/* 广告位置字段信息 */
 	'position_name' 	=> '广告位名称',

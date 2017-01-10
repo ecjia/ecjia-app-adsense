@@ -49,7 +49,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 /**
  * ECJIA Application language adsense
  */
-
 return array(
 	/* Ad-position field information */
 	'position_name' 	=> 'Name',
