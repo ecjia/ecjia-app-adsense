@@ -38,7 +38,8 @@
         init: function (get_value) {
             /* 加载日期控件 */
             $(".date").datepicker({
-                format: "yyyy-mm-dd"
+                format: "yyyy-mm-dd",
+                container : '.main_content',
             });
  
             var type = $('#type').val();
