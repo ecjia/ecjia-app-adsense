@@ -85,7 +85,7 @@ class admin extends ecjia_admin {
 	 * 广告列表页面
 	 */
 	public function init() {
-		$this->admin_priv('adsense_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_list')));
@@ -114,7 +114,7 @@ class admin extends ecjia_admin {
 	 * 添加新广告页面
 	 */
 	public function add() {
-		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -245,7 +245,7 @@ class admin extends ecjia_admin {
 	 * 广告编辑页面
 	 */
 	public function edit() {
-		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -427,7 +427,7 @@ class admin extends ecjia_admin {
 	 * 生成广告的JS代码
 	 */
 	public function add_js() {
-		$this->admin_priv('adsense_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_manage');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.add_js_code')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(

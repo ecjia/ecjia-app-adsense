@@ -84,7 +84,7 @@ class admin_position extends ecjia_admin {
 	 * 广告位置列表页面
 	 */
 	public function init() {
-		$this->admin_priv('ad_position_manage', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('ad_position_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_position')));
@@ -108,7 +108,7 @@ class admin_position extends ecjia_admin {
 	 * 添加广告位页面
 	 */
 	public function add() {
-		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('ad_position_update');
 		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.position_add')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -161,7 +161,8 @@ class admin_position extends ecjia_admin {
 	 * 广告位编辑页面
 	 */
 	public function edit() {
-		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('ad_position_update');
+		
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.position_edit')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id' => 'overview',
