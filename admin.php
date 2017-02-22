@@ -154,8 +154,8 @@ class admin extends ecjia_admin {
 			$ad_link = !empty($_POST['ad_link2']) ? trim($_POST['ad_link2']) : '';
 		}
 		/* 获得广告的开始时期与结束日期 */
-		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '';
-		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '';
+		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '0';
+		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '0';
 		/* 查看广告名称是否有重复 */
 		$query = RC_DB::table('ad')->where('ad_name', $ad_name)->count();
 		if (isset($_POST['ad_name'])) {
@@ -323,8 +323,8 @@ class admin extends ecjia_admin {
 		} else {
 			$ad_link = !empty($_POST['ad_link2']) ? trim($_POST['ad_link2']) : '';
 		}
-		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '';
-		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '';
+		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '0';
+		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '0';
 		$query = RC_DB::table('ad')->where('ad_name', $ad_name)->where('ad_id', '!=', $id)->count();
 		if (!empty($ad_name)) {
 			if ($query > 0) {
