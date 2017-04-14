@@ -58,7 +58,7 @@ class AdPositionModel extends Model
 	
 	public function ad() 
 	{
-		return $this->hasMany('orm_ad_model', 'position_id');
+		return $this->hasMany('Ecjia\App\Adsense\Models\AdModel', 'position_id');
 	}
 	
 	/* 获取缓存数据 */
