@@ -47,26 +47,15 @@
 defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 后台权限API
+ * 后台工具菜单API
  * @author songqian
  */
-class adsense_admin_purview_api extends Component_Event_Api {
-	public function call(&$options) {
-		$purviews = array(
-			array('action_name' => RC_Lang::get('adsense::adsense.ads_manage'), 'action_code' => 'adsense_manage', 'relevance' => ''),
-			array('action_name' => RC_Lang::get('adsense::adsense.ads_edit'), 'action_code' => 'adsense_update', 'relevance' => ''),
-			array('action_name' => RC_Lang::get('adsense::adsense.drop_ads'), 'action_code' => 'adsense_delete', 'relevance' => ''),
-				
-			array('action_name' => RC_Lang::get('adsense::adsense.ads_position_manage'), 'action_code' => 'ad_position_manage', 'relevance' => ''),
-			array('action_name' => RC_Lang::get('adsense::adsense.edit_ads_position'), 'action_code' => 'ad_position_update', 'relevance' => ''),
-			array('action_name' => RC_Lang::get('adsense::adsense.drop_ads_position'), 'action_code' => 'ad_position_delete', 'relevance' => ''),
-
-			array('action_name' => '轮播图管理', 'action_code' => 'cycleimage_manage', 'relevance' => ''),
-			array('action_name' => '轮播图编辑', 'action_code' => 'cycleimage_update', 'relevance' => ''),
-			array('action_name' => '轮播图删除', 'action_code' => 'cycleimage_delete', 'relevance' => ''),
-				
-		);
-		return $purviews;
+class adsense_tool_menu_api extends Component_Event_Api {
+	
+	public function call(&$options) {	
+		
+		$menus = ecjia_admin::make_admin_menu('cycleimage_manage', '新轮播图', RC_Uri::url('adsense/admin_cycleimage/init'), 4)->add_purview('cycleimage_manage');
+		return $menus;
 	}
 }
 
