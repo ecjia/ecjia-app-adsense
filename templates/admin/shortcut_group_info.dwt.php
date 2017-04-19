@@ -3,7 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-ecjia.admin.cycleimage.cycleimage_group_info();
+ecjia.admin.shortcut.shortcut_group_info();
 </script>
 <!-- {/block} -->
 
@@ -23,7 +23,7 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			<div class="row-fluid edit-page editpage-rightbar">
 				<div class="left-bar move-mod">
 			        <div class="control-group formSep">
-			        	<label class="control-label">轮播组名称：</label>
+			        	<label class="control-label">菜单组名称：</label>
 			          	<div class="controls">
 			            	<input class="w350" type="text" name="position_name" value="{$data.position_name}" />
 			            	<span class="input-must">{lang key='system::system.require_field'}</span>
@@ -31,7 +31,7 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        </div>
 			        
 			        <div class="control-group formSep">
-			        	<label class="control-label">轮播组代号：</label>
+			        	<label class="control-label">菜单组代号：</label>
 			          	<div class="controls">
 			            	<input class="w350" type="text" name="position_code" value="{$data.position_code}" />
 			            	<span class="input-must">{lang key='system::system.require_field'}</span>
@@ -39,7 +39,7 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        </div>
 			      
 			        <div class="control-group formSep">
-			        	<label class="control-label">轮播组描述：</label>
+			        	<label class="control-label">菜单组描述：</label>
 			          	<div class="controls">
 			            	<textarea name="position_desc" class="w350"  cols="60" rows="5">{$data.position_desc}</textarea>
 			            </div>
