@@ -210,9 +210,7 @@ class admin_cycleimage extends ecjia_admin {
     }
     
     private function get_city_list() {
-        $city_list = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->select('city_name', 'city_id')->get();
-        $city_list = array_unique($city_list);
-        
+        $city_list = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->selectRaw('distinct city_id,city_name')->orderBy('city_id', 'asc')->get();
         foreach ($city_list as $key => $val) {
         	$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $val['city_id'])->count();
         	$city_list[$key]['count']=$count;
@@ -229,10 +227,6 @@ class admin_cycleimage extends ecjia_admin {
     	);
     	return $client_list;
     }
-    
-    
-    
-
     
     /**
      * 处理轮播图
