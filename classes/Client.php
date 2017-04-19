@@ -25,7 +25,7 @@ class Client
      * @param array $clients
      * @return integer
      */
-    public function clientSelected(array $clients) {
+    public static function clientSelected(array $clients) {
         
         return collect($clients)->sum();
     }
@@ -35,7 +35,7 @@ class Client
      * 返回选中的客户端
      * @param integer $selected
      */
-    public function clients($selected) {
+    public static function clients($selected) {
         
         $clients = [];
         
