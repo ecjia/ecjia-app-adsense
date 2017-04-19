@@ -11,7 +11,7 @@
 <div class="row-fluid batch">
 	<ul class="nav nav-pills">
 	 <!-- {foreach from=$city_list key=key item=val} -->
-		<li class="{if $smarty.get.city_id eq $key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$key}"}'>{$val} <span class="badge badge-info">{$city_name}</span></a></li>
+		<li class="{if $smarty.get.city_id eq $key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$key}"}'>{$val}<span class="badge badge-info"></span></a></li>
 	 <!-- {/foreach} -->
 	</ul>
 </div>

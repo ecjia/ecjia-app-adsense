@@ -53,8 +53,6 @@ class admin_cycleimage extends ecjia_admin {
 		}
 		$this->assign('cycleimage_list', $cycleimage_list);
 		
-
-
 		$this->display('cycleimage_list.dwt');
 	}
 
@@ -203,8 +201,11 @@ class admin_cycleimage extends ecjia_admin {
 	    return $city_list;
     }
     
-
-
+    
+    
+    
+    
+    
     /**
      * 处理轮播图
      */
@@ -226,10 +227,7 @@ class admin_cycleimage extends ecjia_admin {
     	$this->display('cycleimage_info.dwt');
         
     }
-    
-    /**
-     * 处理轮播图
-     */
+
     public function insert() {
     	$this->admin_priv('cycleimage_update');
     	
