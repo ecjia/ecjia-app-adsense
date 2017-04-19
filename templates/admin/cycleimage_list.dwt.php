@@ -22,7 +22,7 @@
 	        <span class="setting-group-title"><i class="fontello-icon-cog"></i>轮播组</span>
 	        <ul class="nav nav-list m_t10">
 		        <!-- {foreach from=$data item=val} -->
-		        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/admin_cycleimage/init" args="position_id={$val.position_id}"}'>{$val.position_name}</a></li>
+		        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/admin_cycleimage/init" args="position_id={$val.position_id}&city_id={$city_id}"}'>{$val.position_name}</a></li>
 		        <!-- {/foreach} -->
 	        </ul><br>
 	        <a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add_group")}'><button class="btn" type="button">添加轮播组</button></a>
@@ -32,8 +32,8 @@
 		<h3 class="heading">
 			<!-- {if $ur_here}{$ur_here}{/if} -->
 			{if $position_id}
-				<a href='{RC_Uri::url("adsense/admin_cycleimage/edit_group","id={$position_id}")}' class="btn plus_or_reply data-pjax" ><i class="fontello-icon-edit"></i>编辑轮播组</a>
-				<a data-toggle="ajaxremove" class="ajaxremove btn plus_or_reply"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/admin_cycleimage/delete_group","id={$position_id}")}' title="删除"><i class="fontello-icon-trash"></i>删除轮播组</a>
+				<a href='{RC_Uri::url("adsense/admin_cycleimage/edit_group","position_id={$position_id}&city_id={$city_id}")}' class="btn plus_or_reply data-pjax" ><i class="fontello-icon-edit"></i>编辑轮播组</a>
+				<a data-toggle="ajaxremove" class="ajaxremove btn plus_or_reply"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/admin_cycleimage/delete_group","position_id={$position_id}&city_id={$city_id}")}' title="删除"><i class="fontello-icon-trash"></i>删除轮播组</a>
 			{/if}
 		</h3>
 		
@@ -55,7 +55,7 @@
 				<td class="hide-edit-area">
 					<span><a href="{$item.ad_link}" target="_blank">{$item.ad_link}</a></span><br>
 					<div class="edit-list">
-						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
+						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}&city_id={$city_id}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
 						<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/admin_cycleimage/delete", "id={$item.ad_id}")}' title="删除">删除</a>
 				    </div>
 				</td>
@@ -65,7 +65,7 @@
 			   <tr><td class="no-records" colspan="3">{lang key='system::system.no_records'}</td></tr>
 			<!-- {/foreach} -->
 		</table>
-		<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add","position_id={$position_id}")}'><button class="btn" type="button">添加轮播图</button></a>
+		<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add","position_id={$position_id}&city_id={$city_id}")}'><button class="btn" type="button">添加轮播图</button></a>
 	</div>
 </div>    
 <!-- {/block} -->

@@ -81,6 +81,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 				
 				<div class="control-group">
 					<div class="controls">
+						<input type="hidden" name="city_id" value="{$city_id}" />
 						<input type="hidden" name="id" value="{$data.ad_id}" />
 						<input type="hidden" name="position_id" value="{$position_id}" />
 						{if $data.ad_id eq ''}
