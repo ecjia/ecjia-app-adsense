@@ -36,6 +36,10 @@ class admin_cycleimage extends ecjia_admin {
 		$city_list = $this->get_city_list();
 		$this->assign('city_list', $city_list);
 		
+		//获取投放平台
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
+		
 		//获取轮播组
 		$city_id = intval($_GET['city_id']);
 		$this->assign('city_id', $city_id);
@@ -214,10 +218,15 @@ class admin_cycleimage extends ecjia_admin {
         }
 	    return $city_list;
     }
+       
+    function get_show_client(){
+    	$client_list = array('1'=>'Android' , '2'=>'iPhone' , '3'=>'H5', '4'=>'PC');
+    	return $client_list;
+    }
     
     
     
- 
+
     
     /**
      * 处理轮播图
@@ -237,6 +246,9 @@ class admin_cycleimage extends ecjia_admin {
     	$data['enabled'] = 1;
 		$this->assign('data', $data);
 	
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
+		
     	$this->assign('form_action', RC_Uri::url('adsense/admin_cycleimage/insert'));
     	 
     	$this->display('cycleimage_info.dwt');
@@ -245,6 +257,10 @@ class admin_cycleimage extends ecjia_admin {
 
     public function insert() {
     	$this->admin_priv('cycleimage_update');
+    	
+    	$position_id   = !empty($_POST['position_id']) ? intval($_POST['position_id']) : 0;
+    	$ad_name       = !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
+    	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
     	
     	if (!empty($_FILES['ad_code']['name'])) {
     		if (isset($_FILES['ad_code']['error']) && $_FILES['ad_code']['error'] == 0 || ! isset($_FILES['ad_code']['error']) && isset($_FILES['ad_code']['tmp_name']) && $_FILES['ad_code']['tmp_name'] != 'none') {
@@ -260,19 +276,17 @@ class admin_cycleimage extends ecjia_admin {
     		return $this->showmessage('请上传轮播图片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
-    	$position_id   = !empty($_POST['position_id']) ? intval($_POST['position_id']) : 0;
-    	$ad_name       = !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
-    	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
     	$data = array(
 			'position_id' 	=> $position_id,
     		'ad_code' 		=> $ad_code,
     		'ad_link' 		=> $_POST['ad_link'],
 			'ad_name' 		=> $ad_name,
-    		'show_client'   => isset($_POST['show_client']) ? join(',', $_POST['show_client']) : '0',
+//     		'show_client'   => isset($_POST['show_client']) ? join(',', $_POST['show_client']) : '0',
 			'enabled' 		=> $_POST['enabled'],
     		'sort_order' 	=> $sort_order,
 		);
     	$id = RC_DB::table('ad')->insertGetId($data);
+    	
     	$city_id = intval($_POST['city_id']);
     	return $this->showmessage('添加轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit', array('id' => $id,'city_id'=>$city_id))));
     }

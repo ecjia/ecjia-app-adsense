@@ -37,6 +37,12 @@
 			{/if}
 		</h3>
 		
+		<ul class="nav nav-pills">
+	 		<!-- {foreach from=$client_list key=key item=val} -->
+				<li class=""><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$key}"}'>{$val}<span class="badge badge-info"></span></a></li>
+			<!-- {/foreach} -->
+		</ul>
+		
 		<table class="table table-striped table-hide-edit" data-rowlink="a">
 			<thead>
 				<tr>
