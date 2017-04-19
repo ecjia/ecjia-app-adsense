@@ -39,7 +39,7 @@
 		
 		<ul class="nav nav-pills">
 	 		<!-- {foreach from=$client_list key=key item=val} -->
-				<li class=""><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$key}"}'>{$val}<span class="badge badge-info"></span></a></li>
+				<li class="{if $smarty.get.show_client eq $val}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$val}&position_id={$position_id}&city_id={$city_id}"}'>{$key}<span class="badge badge-info"></span></a></li>
 			<!-- {/foreach} -->
 		</ul>
 		
