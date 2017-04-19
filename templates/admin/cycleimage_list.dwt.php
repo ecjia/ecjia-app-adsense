@@ -10,8 +10,8 @@
 
 <div class="row-fluid batch">
 	<ul class="nav nav-pills">
-	 <!-- {foreach from=$city_list key=key item=val} -->
-		<li class="{if $smarty.get.city_id eq $key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$key}"}'>{$val}<span class="badge badge-info"></span></a></li>
+	 <!-- {foreach from=$city_list item=val} -->
+		<li class="{if $smarty.get.city_id eq $val.city_id}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$val.city_id}"}'>{$val.city_name}<span class="badge badge-info">{$val.count}</span></a></li>
 	 <!-- {/foreach} -->
 	</ul>
 </div>

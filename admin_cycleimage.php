@@ -35,7 +35,7 @@ class admin_cycleimage extends ecjia_admin {
 		//获取城市 
 		$city_list = $this->get_city_list();
 		$this->assign('city_list', $city_list);
-
+		
 		//获取轮播组
 		$city_id = intval($_GET['city_id']);
 		$data = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->orderBy('position_id', 'desc')->select('position_id', 'position_name')->get();
@@ -193,13 +193,16 @@ class admin_cycleimage extends ecjia_admin {
     }
     
     private function get_city_list() {
-        $list = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->select('city_name', 'city_id')->get();
-        $city_list = array ();
-	    foreach ($list as $row) {
-	    	$city_list[$row['city_id']] = $row['city_name'];
-	    }
+        $city_list = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->select('city_name', 'city_id')->get();
+        $city_list = array_unique($city_list);
+        
+        foreach ($city_list as $key => $val) {
+        	$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $val['city_id'])->count();
+        	$city_list[$key]['count']=$count;
+        }
 	    return $city_list;
     }
+    
     
     
     
