@@ -17,6 +17,23 @@ class CycleImageRepository extends AbstractRepository
     protected $type = 'cycleimage';
     
     
+
+    
+    
+    public function getAllGroups()
+    {
+        
+    }
+    
+    
+    public function getAllCitys()
+    {
+        $city = $this->getModel()->where('type', $this->type)->selectRaw('distinct city_id, city_name')->orderBy('city_id', 'asc')->get();
+    
+        return $city->toArray();
+    }
+    
+    
     
     /**
      * 添加轮播图
@@ -30,7 +47,7 @@ class CycleImageRepository extends AbstractRepository
      * @param integer $width    建议广告大小宽度
      * @param integer $height   建议广告大小高度
      */
-    public function addCycleImage($code, $name, $desc, $cityId, $cityName, $maxNumber, $width, $height)
+    public function addGroup($code, $name, $desc, $cityId, $cityName, $maxNumber, $width, $height)
     {
         
     }
