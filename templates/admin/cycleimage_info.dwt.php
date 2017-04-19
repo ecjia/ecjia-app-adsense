@@ -57,7 +57,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 					<label class="control-label">投放平台：</label>
   					<div class="controls chk_radio">
   						 <!-- {foreach from=$client_list key=key item=val} -->
-							<input type="checkbox" name="show_client[]" value="{$val}" />{$key}
+							<input type="checkbox" name="show_client[]" value="{$val}" {if in_array($val, $data.show_client)}checked="true"{/if}/>{$key}
 						 <!-- {/foreach} -->
 					</div>
 				</div>
