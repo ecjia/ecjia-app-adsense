@@ -219,7 +219,7 @@ class admin_cycleimage extends ecjia_admin {
 	    return $city_list;
     }
        
-    function get_show_client(){
+    private function get_show_client(){
     	$client_list = array('1'=>'Android' , '2'=>'iPhone' , '3'=>'H5', '4'=>'PC');
     	return $client_list;
     }
