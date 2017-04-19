@@ -42,6 +42,9 @@ class admin_cycleimage extends ecjia_admin {
 		
 		//获取轮播组
 		$city_id = intval($_GET['city_id']);
+		if(empty($city_id)) {
+			$city_id = $city_list[0]['city_id'];
+		}
 		$this->assign('city_id', $city_id);
 		
 		$data = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->orderBy('position_id', 'desc')->select('position_id', 'position_name')->get();
@@ -51,6 +54,11 @@ class admin_cycleimage extends ecjia_admin {
 		$cycleimage_list = array();
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
+    	if(empty($show_client)) {
+			$show_client = $client_list['iPhone'];
+		}
+		$this->assign('show_client', $show_client);
+	
 		if(!empty($position_id)) {
 			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
 			$this->assign('position_id', $position_id);
