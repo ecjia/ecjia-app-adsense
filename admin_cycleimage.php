@@ -58,7 +58,6 @@ class admin_cycleimage extends ecjia_admin {
 			$show_client = $client_list['iPhone'];
 		}
 		$this->assign('show_client', $show_client);
-	
 		if(!empty($position_id)) {
 			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
 			$this->assign('position_id', $position_id);
