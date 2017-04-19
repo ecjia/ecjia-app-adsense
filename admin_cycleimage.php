@@ -222,10 +222,10 @@ class admin_cycleimage extends ecjia_admin {
        
     private function get_show_client(){
     	$client_list = array(
-    			'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-    			'iPhone' => Ecjia\App\Adsense\Client::IPHONE, 
-    			'H5' 	 => Ecjia\App\Adsense\Client::H5, 
-    			'PC'     => Ecjia\App\Adsense\Client::PC
+    		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
+    		'Android'=> Ecjia\App\Adsense\Client::ANDROID,
+    		'H5' 	 => Ecjia\App\Adsense\Client::H5, 
+    		'PC'     => Ecjia\App\Adsense\Client::PC
     	);
     	return $client_list;
     }
@@ -282,8 +282,7 @@ class admin_cycleimage extends ecjia_admin {
     		return $this->showmessage('请上传轮播图片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
-    	$client = new Ecjia\App\Adsense\Client();
-    	$show_client = $client->clientSelected($_POST['show_client']);
+    	$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
     	
     	$data = array(
 			'position_id' 	=> $position_id,
@@ -312,7 +311,12 @@ class admin_cycleimage extends ecjia_admin {
     	$this->assign('city_id', $city_id);
     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id)), 'text' => '轮播图列表'));
     	
+    	$client_list = $this->get_show_client();
+    	$this->assign('client_list', $client_list);
+    	
+    	$data['show_client'] = Ecjia\App\Adsense\Client::clients($data['show_client']);
     	$this->assign('data', $data);
+    	
     	$this->assign('form_action', RC_Uri::url('adsense/admin_cycleimage/update'));
     	
     	$this->display('cycleimage_info.dwt');
@@ -339,11 +343,13 @@ class admin_cycleimage extends ecjia_admin {
     		$ad_code = $old_pic;
     	}
     	 
+    	$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
+    	
     	$data = array(
     		'ad_code' 		=> $ad_code,
     		'ad_link' 		=> $_POST['ad_link'],
 			'ad_name' 		=> $ad_name,
-    		'show_client'   => isset($_POST['show_client']) ? join(',', $_POST['show_client']) : '0',
+    		'show_client'   => $show_client,
 			'enabled' 		=> $_POST['enabled'],
     		'sort_order' 	=> $sort_order,
 		);
