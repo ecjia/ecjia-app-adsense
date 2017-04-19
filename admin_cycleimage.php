@@ -220,7 +220,7 @@ class admin_cycleimage extends ecjia_admin {
     }
        
     function get_show_client(){
-    	$client_list = array('1'=>'Android' , '2'=>'iPhone' , '3'=>'H5', '4'=>'PC');
+    	$client_list = array('0'=>'Android' , '1'=>'iPhone' , '2'=>'H5', '3'=>'PC');
     	return $client_list;
     }
     
