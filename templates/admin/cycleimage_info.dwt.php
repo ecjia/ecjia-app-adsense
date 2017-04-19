@@ -53,15 +53,16 @@ ecjia.admin.cycleimage.cycleimage_info();
 					</div>
 				</div>
 				
-				<div class="control-group formSep">
-					<label class="control-label">投放平台：</label>
-  					<div class="controls chk_radio">
-						{foreach from=$user_rank_list item=user_rank}
-	   						<input type="checkbox" name="user_rank[]" value="{$user_rank.rank_id}" {if $user_rank.checked}checked="true"{/if} />
-	   						{$user_rank.rank_name}
-   						{/foreach}
-					</div>
-				</div>
+<!-- 				<div class="control-group formSep"> -->
+<!-- 					<label class="control-label">投放平台：</label> -->
+<!--   					<div class="controls chk_radio"> -->
+<!-- 						{foreach from=$user_rank_list item=user_rank} -->
+<!-- 	   						<input type="checkbox" name="user_rank[]" value="{$user_rank.rank_id}" {if $user_rank.checked}checked="true"{/if} /> -->
+<!-- 	   						{$user_rank.rank_name} -->
+<!--    					{/foreach} -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+	
 				
 				<div class="control-group formSep">
 					<label class="control-label">{lang key='adsense::adsense.enabled'}</label>
