@@ -7,7 +7,7 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
-
+{if $city_list}
 <div class="row-fluid batch">
 	<ul class="nav nav-pills">
 	 <!-- {foreach from=$city_list item=val} -->
@@ -15,6 +15,14 @@
 	 <!-- {/foreach} -->
 	</ul>
 </div>
+{else}
+<div class="alert alert-error">
+	<a class="close" data-dismiss="alert">×</a>
+	<strong>温馨提示：</strong>请您先添加轮播组。
+</div>
+{/if}
+
+
 
 <div class="row-fluid">
 	<div class="span3">
@@ -71,7 +79,9 @@
 			   <tr><td class="no-records" colspan="3">{lang key='system::system.no_records'}</td></tr>
 			<!-- {/foreach} -->
 		</table>
-		<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add","position_id={$position_id}&city_id={$city_id}")}'><button class="btn" type="button">添加轮播图</button></a>
+		{if $city_list}
+			<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add","position_id={$position_id}&city_id={$city_id}")}'><button class="btn" type="button">添加轮播图</button></a>
+		{/if}
 	</div>
 </div>    
 <!-- {/block} -->
