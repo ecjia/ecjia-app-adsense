@@ -222,10 +222,10 @@ class admin_cycleimage extends ecjia_admin {
        
     private function get_show_client(){
     	$client_list = array(
-    			'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-    			'iPhone' => Ecjia\App\Adsense\Client::IPHONE, 
-    			'H5' 	 => Ecjia\App\Adsense\Client::H5, 
-    			'PC'     => Ecjia\App\Adsense\Client::PC
+    		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
+    		'Android'=> Ecjia\App\Adsense\Client::ANDROID,
+    		'H5' 	 => Ecjia\App\Adsense\Client::H5, 
+    		'PC'     => Ecjia\App\Adsense\Client::PC
     	);
     	return $client_list;
     }
