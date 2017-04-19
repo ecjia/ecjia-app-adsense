@@ -31,5 +31,20 @@ class Client
     }
     
 
+    /**
+     * 返回选中的客户端
+     * @param integer $selected
+     */
+    public function clients($selected) {
+        
+        $clients = [];
+        
+        if (self::IPHONE & $selected) $clients[] = self::IPHONE;
+        if (self::ANDROID & $selected) $clients[] = self::ANDROID;
+        if (self::H5 & $selected) $clients[] = self::H5;
+        if (self::PC & $selected) $clients[] = self::PC;
+        
+        return $clients;
+    }
     
 }
