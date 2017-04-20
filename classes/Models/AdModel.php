@@ -58,7 +58,7 @@ class AdModel extends Model
 	
 	public function ad_position() 
 	{
-		return $this->belongsTo('orm_ad_position_model', 'position_id', 'position_id');
+		return $this->belongsTo('Ecjia\App\Adsense\Models\AdPositionModel', 'position_id', 'position_id');
 	}
 	
 	/* 获取缓存数据 */

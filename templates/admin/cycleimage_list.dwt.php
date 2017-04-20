@@ -11,7 +11,7 @@
 <div class="row-fluid batch">
 	<ul class="nav nav-pills">
 	 <!-- {foreach from=$city_list item=val} -->
-		<li class="{if $city_id eq $val.city_id}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$val.city_id}"}'>{$val.city_name}<span class="badge badge-info">{$val.count}</span></a></li>
+		<li class="{if $city_id eq $val.city_id}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="city_id={$val.city_id}"}'>{$val.city_name}<span class="badge badge-info"></span></a></li>
 	 <!-- {/foreach} -->
 	</ul>
 </div>
@@ -46,8 +46,8 @@
 		</h3>
 		
 		<ul class="nav nav-pills">
-	 		<!-- {foreach from=$client_list key=key item=val} -->
-				<li class="{if $show_client eq $val}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$val}&position_id={$position_id}&city_id={$city_id}"}'>{$key}<span class="badge badge-info"></span></a></li>
+	 		<!-- {foreach from=$available_clients key=key item=val} -->
+				<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$client_list.$key}&position_id={$position_id}&city_id={$city_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
 			<!-- {/foreach} -->
 		</ul>
 		

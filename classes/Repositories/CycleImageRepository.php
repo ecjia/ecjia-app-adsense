@@ -67,8 +67,8 @@ class CycleImageRepository extends AbstractRepository
     public function getAllGroups($city)
     {
         $where = [
-        	'type' => $this->type,
-            'city_id' => $city,
+        	'type'     => $this->type,
+            'city_id'  => $city,
         ];
         $group = $this->findWhere($where, ['position_id', 'position_name', 'position_code']);
 

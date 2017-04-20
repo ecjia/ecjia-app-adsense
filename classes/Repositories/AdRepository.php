@@ -11,12 +11,14 @@ class AdRepository extends AbstractRepository
     
     protected $orderBy = ['sort_order' => 'desc'];
     
-//     protected $type;
+    protected $type;
     
-//     public function __construct($type)
-//     {
-//         $this->type = $type;
-//     }
+    public function __construct($type)
+    {
+        parent::__construct();
+        
+        $this->type = $type;
+    }
     
     /**
      * 获取所有的客户端列表

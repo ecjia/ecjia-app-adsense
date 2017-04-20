@@ -66,8 +66,7 @@ class CityManage
             $repository = new CycleImageRepository();
             return $repository->getAllCitys();
         }
-        
-        
+ 
     }
     
     

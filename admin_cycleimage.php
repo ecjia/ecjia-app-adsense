@@ -76,38 +76,62 @@ class admin_cycleimage extends ecjia_admin {
 		$this->assign('ur_here', '轮播图列表');
 		
 		//获取城市 
-		$city_list = $this->get_city_list();
+		$citymanage = new Ecjia\App\Adsense\CityManage('cycleimage');
+		
+		$city_list = $citymanage->getAllCitys();
 		$this->assign('city_list', $city_list);
 		
-		//获取投放平台
-		$client_list = $this->get_show_client();
-		$this->assign('client_list', $client_list);
-		
-		//获取轮播组
+		//获取当前城市ID
 		$city_id = intval($_GET['city_id']);
-		if(empty($city_id)) {
-			$city_id = $city_list[0]['city_id'];
+		if (empty($city_id)) {
+		    $city_id = head($city_list)['city_id'];
 		}
 		$this->assign('city_id', $city_id);
 		
-		$data = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->orderBy('position_id', 'desc')->select('position_id', 'position_name')->get();
+// 		_dump($city_id);
+		//获取轮播组
+		$position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city_id);
+		$data = $position->getAllPositions();
 		$this->assign('data', $data);
+// 		_dump($data,1);
 		
-		//对应的轮播图列表
-		$cycleimage_list = array();
+// 		$data = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->orderBy('position_id', 'desc')->select('position_id', 'position_name')->get();
+		
 		$position_id = intval($_GET['position_id']);
+		if (empty($position_id)) {
+		    $position_id = head($data)['position_id'];
+		}
+		$this->assign('position_id', $position_id);
+// 		_dump($position_id,1);
+		//获取投放平台
+		$ad = new Ecjia\App\Adsense\Repositories\AdRepository('cycleimage');
+		$client_list = $ad->getAllClients();
+		$available_clients = $ad->getAvailableClients($position_id);
+// 		_dump($available_clients,1);
+		$this->assign('client_list', $client_list);
+		$this->assign('available_clients', $available_clients);
+		
+// 		_dump($client_list,1);
+		
 		$show_client = intval($_GET['show_client']);
-    	if(empty($show_client)) {
-			$show_client = $client_list['iPhone'];
+		if (empty($show_client)) {
+		    $show_client = $client_list[head(array_keys($available_clients))];
 		}
 		$this->assign('show_client', $show_client);
-		if(!empty($position_id)) {
-			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
-			$this->assign('position_id', $position_id);
-		}else{
-			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $data[0]['position_id'])->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
-			$this->assign('position_id', $data[0]['position_id']);
-		}
+// 		_dump($show_client,1);
+		
+		//对应的轮播图列表
+		$cycleimage_list = $ad->getAds($position_id, $show_client);
+		
+
+// 		if(!empty($position_id)) {
+// 			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
+// 			
+// 		}else{
+// 			$cycleimage_list = RC_DB::TABLE('ad')->where('position_id', $data[0]['position_id'])->where('show_client', '&', $show_client)->select('ad_id', 'ad_code', 'ad_link', 'sort_order')->get();
+// 			$this->assign('position_id', $data[0]['position_id']);
+// 		}
+		
 		$this->assign('cycleimage_list', $cycleimage_list);
 		
 		$this->display('cycleimage_list.dwt');

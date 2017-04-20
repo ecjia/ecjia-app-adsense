@@ -65,13 +65,13 @@ class PositionManage
     }
     
     
-    public function getAllGroups()
+    public function getAllPositions()
     {
     
         if ($this->type == 'cycleimage') {
             
             $repository = new CycleImageRepository();
-            return $repository->getAllGroups();
+            return $repository->getAllGroups($this->city);
             
         }
         
