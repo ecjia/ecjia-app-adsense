@@ -102,7 +102,7 @@ class admin_cycleimage extends ecjia_admin {
 // 		$data = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->orderBy('position_id', 'desc')->select('position_id', 'position_name')->get();
 		
 		$position_id = intval($_GET['position_id']);
-		if (empty($position_id)) {
+		if (empty($position_id) && !empty($data)) {
 		    $position_id = head($data)['position_id'];
 		}
 		$this->assign('position_id', $position_id);
