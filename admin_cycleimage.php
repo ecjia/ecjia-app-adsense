@@ -84,13 +84,17 @@ class admin_cycleimage extends ecjia_admin {
 		//获取当前城市ID
 		$city_id = intval($_GET['city_id']);
 		if (empty($city_id)) {
-		    $city_id = head($city_list)['city_id'];
+		    if (!empty($city_list)) {
+                $city_id = head($city_list)['city_id'];
+		    } else {
+		        $city_id = 0;
+		    }
 		}
 		$this->assign('city_id', $city_id);
 		
 // 		_dump($city_id);
 		//获取轮播组
-		if ($city_id) {
+		if ($city_id >= 0) {
 		$position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city_id);
 		$data = $position->getAllPositions();
 		$this->assign('data', $data);
