@@ -90,6 +90,7 @@ class admin_cycleimage extends ecjia_admin {
 		
 // 		_dump($city_id);
 		//获取轮播组
+		if ($city_id) {
 		$position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city_id);
 		$data = $position->getAllPositions();
 		$this->assign('data', $data);
@@ -133,6 +134,8 @@ class admin_cycleimage extends ecjia_admin {
 // 		}
 		
 		$this->assign('cycleimage_list', $cycleimage_list);
+		
+		}
 		
 		$this->display('cycleimage_list.dwt');
 	}
