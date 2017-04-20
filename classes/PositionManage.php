@@ -88,8 +88,9 @@ class PositionManage
                 'city_id'   => $this->city,
                 'type'  => $this->type,
             ];
-            return $repository->findWhere($where, ['position_id', 'max_number']);
+            $result = $repository->findWhere($where, ['position_id', 'max_number']);
             
+            return $result->toArray();
         }
 
     }
