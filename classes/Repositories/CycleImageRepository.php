@@ -61,7 +61,7 @@ class CycleImageRepository extends AbstractRepository
     protected $type = 'cycleimage';
     
     
-    protected $orderBy = ['sort_order' => 'desc', 'position_id' => 'desc'];
+    protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
     
     
     public function getAllGroups($city)
