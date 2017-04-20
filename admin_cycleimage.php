@@ -153,7 +153,7 @@ class admin_cycleimage extends ecjia_admin {
     	if(!$city_name){
     		$city_name = '默认';
     	}
-    	$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('type', 'cycleimage')->count();
+    	$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'cycleimage')->count();
     	if ($query > 0) {
     		return $this->showmessage('该轮播组代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
