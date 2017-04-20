@@ -73,7 +73,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 				<div class="control-group formSep">
 					<label class="control-label">排序：</label>
 					<div class="controls">
-						<input class="span8" name="sort_order" type="text" value="{$data.sort_order}" />
+						<input class="span8" name="sort_order" type="text" value="{if $data.sort_order}{$data.sort_order}{else}50{/if}" />
 					</div>
 				</div>
 				
