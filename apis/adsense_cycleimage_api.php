@@ -44,63 +44,52 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-namespace Ecjia\App\Adsense\Repositories;
+defined('IN_ECJIA') or exit('No permission resources.');
 
-use Royalcms\Component\Repository\Repositories\AbstractRepository;
-
-class CycleImageRepository extends AbstractRepository
-{
-    
-    
-    protected $model = 'Ecjia\App\Adsense\Models\AdPositionModel';
+/**
+ * 获取广告位的广告列表
+ * 
+ * @author royalwang
+ */
+class adsense_cycleimage_api extends Component_Event_Api {
     
     /**
-     * 类型：轮播图(cycleimage)
-     * @var string
-     */
-    protected $type = 'cycleimage';
-    
-    
-    protected $orderBy = ['sort_order' => 'desc', 'position_id' => 'desc'];
-    
-    
-    public function getAllGroups($city)
-    {
-        $where = [
-        	'type'     => $this->type,
-            'city_id'  => $city,
-        ];
-        $group = $this->findWhere($where, ['position_id', 'position_name', 'position_code']);
-
-        return $group->toArray();
-    }
-    
-    
-    public function getAllCitys()
-    {
-        $city = $this->getModel()->where('type', $this->type)->selectRaw('distinct city_id, city_name')->orderBy('city_id', 'asc')->get();
-    
-        return $city->toArray();
-    }
-    
-    
-    
-    /**
-     * 添加轮播图
+     *
+     * @param city 当前城市ID
+     * @param code string 广告位置代号
      * 
-     * @param string $code  唯一标识符
-     * @param string $name  广告位名称
-     * @param string $desc  广告位描述
-     * @param integer $cityId   城市ID
-     * @param string $cityName  城市名称
-     * @param integer $maxNumber    最大可调用广告数量
-     * @param integer $width    建议广告大小宽度
-     * @param integer $height   建议广告大小高度
+     * @return array
      */
-    public function addGroup($code, $name, $desc, $cityId, $cityName, $maxNumber, $width, $height)
-    {
+    public function call(&$options) {
+        $city = array_get($options, 'city', 0);
+        $code = array_get($options, 'code');
+        $client = array_get($options, 'client');
         
+        if (!$code || !$client) {
+            return array();
+        }
+        
+        
+        $position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city);
+        $position_data = $position->findByCode($code);
+        
+        //如果指定的城市中找不到轮播图，就获取默认城市轮播图
+        if (empty($position_data) && $city > 0) 
+        {
+            $city = 0;
+            $position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city);
+            $position_data = $position->findByCode($code);
+        }
+        
+        if (empty($position_data)) {
+            return [];
+        }
+        
+        
+        $ad = new Ecjia\App\Adsense\Repositories\AdRepository('cycleimage');
+        $data = $ad->getAds($position_data['position_id'], $client, $position_data['max_number']);
+        
+        return $data;
     }
-    
     
 }

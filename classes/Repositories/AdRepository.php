@@ -58,7 +58,7 @@ class AdRepository extends AbstractRepository
     }
     
     
-    public function getAds($position, $client) {
+    public function getAds($position, $client, $maxNum = 5) {
         if (empty($client))
         {
             return [];
@@ -68,11 +68,30 @@ class AdRepository extends AbstractRepository
         	'position_id' => $position,
             'show_client' => ['show_client', '&', $client],
         ];
-        $result = $this->findWhere($where, ['ad_id', 'ad_code', 'ad_link', 'sort_order']);
+        $result = $this->findWhereLimit($where, ['ad_id', 'ad_code', 'ad_link', 'sort_order'], $maxNum);
 
         return $result->toArray();
     }
+   
+    public function findWhereLimit(array $where, $columns = ['*'], $limit= null)
+    {
+        $this->newQuery();
     
-    
+        foreach ($where as $field => $value) {
+            if (is_array($value)) {
+                list($field, $condition, $val) = $value;
+                $this->query->where($field, $condition, $val);
+            }
+            else {
+                $this->query->where($field, '=', $value);
+            }
+        }
+        
+        if ($limit) {
+            $this->query->take($limit);
+        }
+        
+        return $this->query->get($columns);
+    }
     
 }

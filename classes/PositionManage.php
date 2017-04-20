@@ -78,6 +78,21 @@ class PositionManage
     }
     
     
+    public function findByCode($code)
+    {
+        if ($this->type == 'cycleimage') {
+            
+            $repository = new CycleImageRepository();
+            $where = [
+                'position_code' => $code,
+                'city_id'   => $this->city,
+                'type'  => $this->type,
+            ];
+            return $repository->findWhere($where, ['position_id', 'max_number']);
+            
+        }
+
+    }
     
     
     
