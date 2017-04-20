@@ -45,11 +45,13 @@
 			{/if}
 		</h3>
 		
+		<!-- {if $available_clients} -->
 		<ul class="nav nav-pills">
 	 		<!-- {foreach from=$available_clients key=key item=val} -->
 				<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_cycleimage/init" args="show_client={$client_list.$key}&position_id={$position_id}&city_id={$city_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
 			<!-- {/foreach} -->
 		</ul>
+		<!-- {/if} -->
 		
 		<table class="table table-striped table-hide-edit" data-rowlink="a">
 			<thead>
