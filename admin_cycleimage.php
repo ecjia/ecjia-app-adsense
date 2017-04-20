@@ -62,7 +62,7 @@ class admin_cycleimage extends ecjia_admin {
 			
 		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/cycleimage.js', __FILE__));
 
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图设置', RC_Uri::url('adsense/admin_cycleimage/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图管理', RC_Uri::url('adsense/admin_cycleimage/init')));
 	}
     
     /**
@@ -72,7 +72,7 @@ class admin_cycleimage extends ecjia_admin {
 		$this->admin_priv('cycleimage_manage');
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图设置'));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图管理'));
 		$this->assign('ur_here', '轮播图列表');
 		
 		//获取城市 
