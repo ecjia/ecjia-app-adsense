@@ -72,7 +72,7 @@ class adsense_cycleimage_api extends Component_Event_Api {
         
         $position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city);
         $position_data = $position->findByCode($code);
-        
+
         //如果指定的城市中找不到轮播图，就获取默认城市轮播图
         if (empty($position_data) && $city > 0) 
         {
@@ -87,7 +87,7 @@ class adsense_cycleimage_api extends Component_Event_Api {
         
         
         $ad = new Ecjia\App\Adsense\Repositories\AdRepository('cycleimage');
-        $data = $ad->getAds($position_data['position_id'], $client, $position_data['max_number']);
+        $data = $ad->getAds($position_data[0]['position_id'], $client, $position_data[0]['max_number']);
         
         return $data;
     }
