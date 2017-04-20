@@ -106,7 +106,7 @@ class admin_cycleimage extends ecjia_admin {
 		    $position_id = head($data)['position_id'];
 		}
 		$this->assign('position_id', $position_id);
-		_dump($position_id,1);
+// 		_dump($position_id,1);
 
 		if ($position_id > 0) {
 		//获取投放平台
@@ -120,14 +120,18 @@ class admin_cycleimage extends ecjia_admin {
 // 		_dump($client_list,1);
 		
 		$show_client = intval($_GET['show_client']);
-		if (empty($show_client)) {
+		if (empty($show_client) && !empty($available_clients)) {
 		    $show_client = $client_list[head(array_keys($available_clients))];
 		}
 		$this->assign('show_client', $show_client);
 // 		_dump($show_client,1);
 		
-		//对应的轮播图列表
-		$cycleimage_list = $ad->getAds($position_id, $show_client);
+		$cycleimage_list = array();
+		if ($show_client) {
+		    //对应的轮播图列表
+		    $cycleimage_list = $ad->getAds($position_id, $show_client);
+		}
+		
 		
 
 // 		if(!empty($position_id)) {
