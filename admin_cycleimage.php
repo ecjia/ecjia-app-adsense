@@ -108,7 +108,7 @@ class admin_cycleimage extends ecjia_admin {
 		$this->assign('position_id', $position_id);
 // 		_dump($position_id,1);
 
-		if ($position_id >= 0) {
+		if ($position_id > 0) {
 		//获取投放平台
 		$ad = new Ecjia\App\Adsense\Repositories\AdRepository('cycleimage');
 		$client_list = $ad->getAllClients();
