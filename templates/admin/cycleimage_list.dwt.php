@@ -34,8 +34,8 @@
 		        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/admin_cycleimage/init" args="position_id={$val.position_id}&city_id={$city_id}"}'>{$val.position_name}</a></li>
 		        <!-- {/foreach} -->
 	        </ul>
-	        <br>
 	        <!-- {/if} -->
+	        <br>
 	        <a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add_group")}'><button class="btn" type="button">添加轮播组</button></a>
 		</div>
 	</div>
