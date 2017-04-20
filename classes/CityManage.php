@@ -69,6 +69,31 @@ class CityManage
  
     }
     
+    /**
+     * 获取当前城市ID
+     * @param integer $city_id
+     * @return integer
+     */
+    public function getCurrentCity($city_id)
+    {
+
+        if (empty($city_id)) 
+        {
+            
+            $city_list = $this->getAllCitys();
+            
+            if (!empty($city_list)) 
+            {
+                $city_id = head($city_list)['city_id'];
+            } 
+            else 
+            {
+                $city_id = 0;
+            }
+        }
+        
+        return $city_id;
+    }
     
     
     
