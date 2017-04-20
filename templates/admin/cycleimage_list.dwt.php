@@ -28,11 +28,14 @@
 	<div class="span3">
 		<div class="setting-group">
 	        <span class="setting-group-title"><i class="fontello-icon-cog"></i>轮播组</span>
+	        <!-- {if $data} -->
 	        <ul class="nav nav-list m_t10">
 		        <!-- {foreach from=$data item=val} -->
 		        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/admin_cycleimage/init" args="position_id={$val.position_id}&city_id={$city_id}"}'>{$val.position_name}</a></li>
 		        <!-- {/foreach} -->
-	        </ul><br>
+	        </ul>
+	        <br>
+	        <!-- {/if} -->
 	        <a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/add_group")}'><button class="btn" type="button">添加轮播组</button></a>
 		</div>
 	</div>
