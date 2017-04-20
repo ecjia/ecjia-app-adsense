@@ -106,7 +106,7 @@ class admin_cycleimage extends ecjia_admin {
 		    $position_id = head($data)['position_id'];
 		}
 		$this->assign('position_id', $position_id);
-// 		_dump($position_id,1);
+		_dump($position_id,1);
 
 		if ($position_id > 0) {
 		//获取投放平台
