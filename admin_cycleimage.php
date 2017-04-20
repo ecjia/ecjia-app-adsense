@@ -126,11 +126,8 @@ class admin_cycleimage extends ecjia_admin {
 		$this->assign('show_client', $show_client);
 // 		_dump($show_client,1);
 		
-		$cycleimage_list = array();
-		if ($show_client) {
-		    //对应的轮播图列表
-		    $cycleimage_list = $ad->getAds($position_id, $show_client);
-		}
+		//对应的轮播图列表
+	    $cycleimage_list = $ad->getAds($position_id, $show_client);
 		
 		
 

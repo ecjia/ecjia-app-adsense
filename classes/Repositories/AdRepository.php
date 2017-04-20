@@ -55,6 +55,11 @@ class AdRepository extends AbstractRepository
     
     
     public function getAds($position, $client) {
+        if (empty($client))
+        {
+            return [];
+        }
+        
         $where = [
         	'position_id' => $position,
             'show_client' => ['show_client', '&', $client],
