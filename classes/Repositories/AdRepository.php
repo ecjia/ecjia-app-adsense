@@ -37,6 +37,10 @@ class AdRepository extends AbstractRepository
     
     
     public function getAvailableClients($position) {
+        if (empty($position)) {
+            return [];
+        }
+        
         $clients = $this->getAllClients();
         
         $available = collect($clients)->mapWithKeys(function ($item, $key) use ($position) {
