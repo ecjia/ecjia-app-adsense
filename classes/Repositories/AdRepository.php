@@ -68,7 +68,7 @@ class AdRepository extends AbstractRepository
         	'position_id' => $position,
             'show_client' => ['show_client', '&', $client],
         ];
-        $result = $this->findWhereLimit($where, ['ad_id', 'ad_code', 'ad_link', 'sort_order'], $maxNum);
+        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'sort_order'], $maxNum);
 
         return $result->toArray();
     }
