@@ -56,7 +56,7 @@ class AdPositionModel extends Model
 	
 	protected $primaryKey = 'position_id';
 	
-	public function ad() 
+	public function ads() 
 	{
 		return $this->hasMany('Ecjia\App\Adsense\Models\AdModel', 'position_id');
 	}

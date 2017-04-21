@@ -84,6 +84,31 @@ class CycleImageRepository extends AbstractRepository
     }
     
     
+    /**
+     * Find data by multiple fields
+     *
+     * @param array $where
+     * @param array $columns
+     *
+     * @return mixed
+     */
+    public function findWhereByFirst(array $where, $columns = ['*'])
+    {
+        $this->newQuery();
+    
+        foreach ($where as $field => $value) {
+            if (is_array($value)) {
+                list($field, $condition, $val) = $value;
+                $this->query->where($field, $condition, $val);
+            }
+            else {
+                $this->query->where($field, '=', $value);
+            }
+        }
+    
+        return $this->query->first($columns);
+    }
+    
     
     /**
      * 添加轮播图

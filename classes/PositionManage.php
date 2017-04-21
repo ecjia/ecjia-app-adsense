@@ -77,8 +77,14 @@ class PositionManage
         
     }
     
-    
-    public function findByCode($code)
+    /**
+     * 通过广告位代号code和投放平台查找出所有的广告
+     * 
+     * @param string $code
+     * @param integer $client
+     * @return array
+     */
+    public function findAdByCode($code, $client)
     {
         if ($this->type == 'cycleimage') {
             
@@ -88,8 +94,21 @@ class PositionManage
                 'city_id'   => $this->city,
                 'type'  => $this->type,
             ];
-            $result = $repository->findWhere($where, ['position_id', 'max_number']);
             
+            $model = $repository->findWhereByFirst($where, ['position_id', 'max_number']);
+           
+            if (is_null($model)) {
+                return [];
+            }
+
+            $model->ads()->where('show_client', '&', $client);
+            
+            if ($model->max_number) {
+                $model->ads()->take($model->max_number);
+            }
+            
+            $result = $model->ads()->get(['ad_id', 'ad_name', 'ad_code', 'ad_link', 'sort_order']);
+
             return $result->toArray();
         }
 
