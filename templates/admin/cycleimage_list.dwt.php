@@ -79,14 +79,14 @@
 					<span><a href="{$item.ad_link}" target="_blank">{$item.ad_link}</a></span><br>
 					{$item.ad_name}
 					<div class="edit-list">
-						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}&city_id={$city_id}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
+						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}&city_id={$city_id}&show_client={$show_client}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
 						<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/admin_cycleimage/delete", "id={$item.ad_id}&position_id={$position_id}&city_id={$city_id}")}' title="删除">删除</a>
 				    </div>
 				</td>
 				<td>
 			    	<i class="{if $item.enabled eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url='{RC_Uri::url("adsense/admin_cycleimage/toggle_show","position_id={$position_id}&city_id={$city_id}&show_client={$show_client}")}' data-id="{$item.ad_id}" ></i>
 				</td>
-				<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin_cycleimage/edit_sort", "position_id={$position_id}&city_id={$city_id}&&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="排序">{$item.sort_order}</span></td>
+				<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin_cycleimage/edit_sort", "position_id={$position_id}&city_id={$city_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="排序">{$item.sort_order}</span></td>
 			</tr>
 			<!-- {foreachelse} -->
 			   <tr><td class="no-records" colspan="4">{lang key='system::system.no_records'}</td></tr>

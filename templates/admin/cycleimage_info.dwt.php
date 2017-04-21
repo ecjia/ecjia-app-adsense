@@ -93,12 +93,13 @@ ecjia.admin.cycleimage.cycleimage_info();
 						<input class="span8" name="sort_order" type="text" value="{if $data.sort_order}{$data.sort_order}{else}50{/if}" />
 					</div>
 				</div>
-				
+					
 				<div class="control-group">
 					<div class="controls">
 						<input type="hidden" name="city_id" value="{$city_id}" />
 						<input type="hidden" name="id" value="{$data.ad_id}" />
 						<input type="hidden" name="position_id" value="{$position_id}" />
+						<input type="hidden" name="show_client_value" value="{$show_client}" />
 						{if $data.ad_id eq ''}
 						<button class="btn btn-gebo" type="submit">确认</button>
 						{else}

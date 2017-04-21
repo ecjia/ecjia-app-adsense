@@ -464,9 +464,13 @@ class admin_cycleimage extends ecjia_admin {
     	
     	$id = intval($_GET['id']);
     	$data = RC_DB::table('ad')->where('ad_id', $id)->first();
+    	
     	$city_id = intval($_GET['city_id']);
+    	$show_client = intval($_GET['show_client']);
     	$this->assign('city_id', $city_id);
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id)), 'text' => '轮播图列表'));
+    	$this->assign('show_client', $show_client);
+    	
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => '轮播图列表'));
     	
     	$client_list = $this->get_show_client();
     	$this->assign('client_list', $client_list);
@@ -517,7 +521,8 @@ class admin_cycleimage extends ecjia_admin {
     	RC_DB::table('ad')->where('ad_id', $id)->update($data);
     	
     	$city_id = intval($_POST['city_id']);
-    	return $this->showmessage('编辑轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit', array('id' => $id, 'city_id' => $city_id))));
+    	$show_client = intval($_POST['show_client_value']);
+    	return $this->showmessage('编辑轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit', array('id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
     }
 
     
