@@ -390,7 +390,10 @@ class admin_cycleimage extends ecjia_admin {
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加轮播图'));
     	$this->assign('ur_here', '添加轮播图');
     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $position_id, 'city_id' => $city_id)), 'text' => '轮播图列表'));
-    	
+
+    	$info = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
+    	$data['ad_width'] = $info['ad_width'];
+    	$data['ad_height'] = $info['ad_height'];;
     	$data['enabled'] = 1;
 		$this->assign('data', $data);
 	
@@ -464,6 +467,10 @@ class admin_cycleimage extends ecjia_admin {
     	
     	$id = intval($_GET['id']);
     	$data = RC_DB::table('ad')->where('ad_id', $id)->first();
+    	
+    	$info = RC_DB::TABLE('ad_position')->where('position_id', $data['position_id'])->select('ad_width', 'ad_height')->first();
+    	$data['ad_width'] = $info['ad_width'];
+    	$data['ad_height'] = $info['ad_height'];
     	
     	$city_id = intval($_GET['city_id']);
     	$show_client = intval($_GET['show_client']);

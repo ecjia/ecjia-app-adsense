@@ -8,7 +8,7 @@
 
 <!-- {block name="main_content"} -->
 {if $city_list}
-<div class="alert alert-success">
+<div class="alert">
 	<a class="close" data-dismiss="alert">×</a>
 	<strong>温馨提示：</strong>建议您添加"默认"轮播组，当并未设置地区时就会显示默认的轮播组。
 </div>

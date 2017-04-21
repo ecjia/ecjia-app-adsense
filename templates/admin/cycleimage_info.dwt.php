@@ -33,7 +33,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 							</span>
 							<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
 							<span class="input-must"><span class="require-field" style="color:#FF0000;">*</span></span>
-							<span class="help-block">此模板的图片标准宽度为：484px 标准高度为：200px</span>
+							<span class="help-block">此模板的图片标准宽度为：{$data.ad_width}px 标准高度为：{$data.ad_height}px</span>
 						</div>
 					</div>
 					{else}
@@ -49,7 +49,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 								<input type='file' name='ad_code' size="35"/>
 							</span>
 							<span class="input-must"><span class="require-field" style="color:#FF0000;">*</span></span>
-							<span class="help-block">此模板的图片标准宽度为：484px 标准高度为：200px</span>
+							<span class="help-block">此模板的图片标准宽度为：{$data.ad_width}px 标准高度为：{$data.ad_height}px</span>
 						</div>
 					</div>
 					{/if}
