@@ -89,6 +89,14 @@ class adsense_cycleimage_api extends Component_Event_Api {
         $ad = new Ecjia\App\Adsense\Repositories\AdRepository('cycleimage');
         $data = $ad->getAds($position_data[0]['position_id'], $client, $position_data[0]['max_number']);
         
+        $data = collect($data)->map(function ($item, $key) {
+        	return [
+        		'image'   => RC_Upload::upload_url($item['ad_code']),
+        		'url'     => $item['ad_link'],
+        		'text'    => $item['ad_name'],
+        	];
+        })->toArray();
+        
         return $data;
     }
     
