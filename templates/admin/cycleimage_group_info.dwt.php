@@ -33,7 +33,7 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        	<label class="control-label">轮播组代号：</label>
 				        <div class="controls l_h30">
 							{if $data.position_id}
-								{$data.position_code}
+								<strong>{$data.position_code}</strong>
 								<input type="hidden" name="position_code" value="{$data.position_code}" />
 							{else}
 								<input class="w350" type="text" name="position_code" />
@@ -69,8 +69,8 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        	<div class="controls">
 			        		{if $data.position_id}
 			        			<input type="hidden" name="position_id" value="{$data.position_id}" />
-			        			<input type="submit" value="更新" class="btn btn-gebo" />
-			        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该轮播组信息吗？" data-href='{url path="adsense/admin_cycleimage/copy" args="position_id={$position_id}"}' title="复制"><button class="btn btn-gebo" type="button">复制</button></a>
+			        			<input type="submit" value="更新" class="btn btn-gebo" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该轮播组信息吗？" data-href='{url path="adsense/admin_cycleimage/copy" args="position_id={$position_id}"}' title="复制"><button class="btn" type="button">复制</button></a>
 			        		{else}
 			        			<input type="submit" value="确定" class="btn btn-gebo" />
 			        		{/if}

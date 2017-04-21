@@ -77,6 +77,7 @@
 				</td>
 				<td class="hide-edit-area">
 					<span><a href="{$item.ad_link}" target="_blank">{$item.ad_link}</a></span><br>
+					{$item.ad_name}
 					<div class="edit-list">
 						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}&city_id={$city_id}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
 						<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/admin_cycleimage/delete", "id={$item.ad_id}&position_id={$position_id}&city_id={$city_id}")}' title="删除">删除</a>
