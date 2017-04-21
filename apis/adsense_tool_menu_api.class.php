@@ -54,7 +54,7 @@ class adsense_tool_menu_api extends Component_Event_Api {
 	
 	public function call(&$options) {	
 		
-		$menus = ecjia_admin::make_admin_menu('cycleimage_manage', '新轮播图', RC_Uri::url('adsense/admin_cycleimage/init'), 4)->add_purview('cycleimage_manage');
+		$menus = ecjia_admin::make_admin_menu('cycleimage_manage', '轮播图', RC_Uri::url('adsense/admin_cycleimage/init'), 4)->add_purview('cycleimage_manage');
 		return $menus;
 	}
 }
