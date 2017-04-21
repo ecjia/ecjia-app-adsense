@@ -65,7 +65,7 @@ class adsense_cycleimage_api extends Component_Event_Api {
         $code = array_get($options, 'code');
         $client = array_get($options, 'client');
         
-        if (!$code || !$client) {
+        if (!$client) {
             return array();
         }
         
