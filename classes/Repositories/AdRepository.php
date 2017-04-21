@@ -9,7 +9,7 @@ class AdRepository extends AbstractRepository
 {
     protected $model = 'Ecjia\App\Adsense\Models\AdModel';
     
-    protected $orderBy = ['sort_order' => 'desc'];
+    protected $orderBy = ['sort_order' => 'asc'];
     
     protected $type;
     
