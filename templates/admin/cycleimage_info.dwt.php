@@ -30,10 +30,12 @@ ecjia.admin.cycleimage.cycleimage_info();
 								{/if}
 							</div>
 							<span class="btn btn-file">
-							<span  class="fileupload-new">浏览</span>
-							<span  class="fileupload-exists">修改</span>
-							<input type='file' name='ad_code' size="35"/>
+								<span  class="fileupload-new">浏览</span>
+								<span  class="fileupload-exists">修改</span>
+								<input type='file' name='ad_code' size="35"/>
 							</span>
+							<span class="input-must"><span class="require-field" style="color:#FF0000;">*</span></span>
+							<span class="help-block">此模板的图片标准宽度为：484px 标准高度为：200px</span>
 						</div>
 					</div>
 				</div>
