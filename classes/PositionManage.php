@@ -100,14 +100,14 @@ class PositionManage
             if (is_null($model)) {
                 return [];
             }
-
-            $model->ads()->where('show_client', '&', $client);
+            $adsModel = $model->ads();
+            $adsModel->where('show_client', '&', $client);
             
             if ($model->max_number) {
-                $model->ads()->take($model->max_number);
+                $adsModel->take($model->max_number);
             }
             
-            $result = $model->ads()->get(['ad_id', 'ad_name', 'ad_code', 'ad_link', 'sort_order']);
+            $result = $adsModel->get(['ad_id', 'ad_name', 'ad_code', 'ad_link', 'sort_order']);
 
             return $result->toArray();
         }
