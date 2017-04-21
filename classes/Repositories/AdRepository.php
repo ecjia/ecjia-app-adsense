@@ -9,7 +9,7 @@ class AdRepository extends AbstractRepository
 {
     protected $model = 'Ecjia\App\Adsense\Models\AdModel';
     
-    protected $orderBy = ['sort_order' => 'desc'];
+    protected $orderBy = ['sort_order' => 'asc'];
     
     protected $type;
     
@@ -68,7 +68,7 @@ class AdRepository extends AbstractRepository
         	'position_id' => $position,
             'show_client' => ['show_client', '&', $client],
         ];
-        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'sort_order'], $maxNum);
+        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'enabled', 'sort_order'], $maxNum);
 
         return $result->toArray();
     }

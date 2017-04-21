@@ -8,6 +8,11 @@
 
 <!-- {block name="main_content"} -->
 {if $city_list}
+<div class="alert alert-success">
+	<a class="close" data-dismiss="alert">×</a>
+	<strong>温馨提示：</strong>建议您添加"默认"轮播组，当并未设置地区时就会显示默认的轮播组。
+</div>
+
 <div class="row-fluid batch">
 	<ul class="nav nav-pills">
 	 <!-- {foreach from=$city_list item=val} -->
@@ -21,8 +26,6 @@
 	<strong>温馨提示：</strong>请您先添加轮播组。
 </div>
 {/if}
-
-
 
 <div class="row-fluid">
 	<div class="span3">
@@ -41,7 +44,7 @@
 	</div>
 	<div class="span9">
 		<h3 class="heading">
-			<!-- {if $ur_here}{$ur_here}{/if} -->
+			{if $ur_here}{$ur_here}{/if}（{$position_code}）
 			{if $position_id}
 				<a href='{RC_Uri::url("adsense/admin_cycleimage/edit_group","position_id={$position_id}&city_id={$city_id}")}' class="btn plus_or_reply data-pjax" ><i class="fontello-icon-edit"></i>编辑轮播组</a>
 				<a data-toggle="ajaxremove" class="ajaxremove btn plus_or_reply"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/admin_cycleimage/delete_group","position_id={$position_id}&city_id={$city_id}")}' title="删除"><i class="fontello-icon-trash"></i>删除轮播组</a>
@@ -61,10 +64,11 @@
 				<tr>
 					<th class="w150">缩略图</th>
 					<th>图片链接</th>
-					<th class="w50">排序</th>
+					<th class="w100">是否开启</th>
+					<th class="w80">排序</th>
 				</tr>
 			</thead>
-			<!-- {foreach from=$cycleimage_list item=item} -->
+			<!-- {foreach from=$cycleimage_list item=item key=key} -->
 			<tr>
 				<td>
 					{if $item.ad_code}
@@ -75,13 +79,16 @@
 					<span><a href="{$item.ad_link}" target="_blank">{$item.ad_link}</a></span><br>
 					<div class="edit-list">
 						<a class="data-pjax" href='{RC_Uri::url("adsense/admin_cycleimage/edit", "id={$item.ad_id}&city_id={$city_id}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
-						<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/admin_cycleimage/delete", "id={$item.ad_id}")}' title="删除">删除</a>
+						<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/admin_cycleimage/delete", "id={$item.ad_id}&position_id={$position_id}&city_id={$city_id}")}' title="删除">删除</a>
 				    </div>
 				</td>
-				<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("cycleimage/admin/edit_sort", "id={$key}")}' data-name="sort" data-pk="{$key}" data-title="{lang key='cycleimage::flashplay.edit_cycle_sort'}">{$item.sort_order}</span></td>
+				<td>
+			    	<i class="{if $item.enabled eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url='{RC_Uri::url("adsense/admin_cycleimage/toggle_show","position_id={$position_id}&city_id={$city_id}&show_client={$show_client}")}' data-id="{$item.ad_id}" ></i>
+				</td>
+				<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin_cycleimage/edit_sort", "position_id={$position_id}&city_id={$city_id}&&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="排序">{$item.sort_order}</span></td>
 			</tr>
 			<!-- {foreachelse} -->
-			   <tr><td class="no-records" colspan="3">{lang key='system::system.no_records'}</td></tr>
+			   <tr><td class="no-records" colspan="4">{lang key='system::system.no_records'}</td></tr>
 			<!-- {/foreach} -->
 		</table>
 		{if $city_list}
