@@ -34,10 +34,10 @@
 				},
 				messages: {
 					position_name: {
-						required: "轮播组名称"
+						required: "请输入轮播组名称"
 					},
 					position_code: {
-						required: "轮播组代号"
+						required: "请输入轮播组代号"
 					},
 				},
 				submitHandler: function() {

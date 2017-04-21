@@ -21,16 +21,30 @@ ecjia.admin.cycleimage.cycleimage_info();
 		<form class="form-horizontal"  name="theForm" action="{$form_action}" method="post" enctype="multipart/form-data" >
 			<fieldset>
 				<div class="control-group formSep">
+					{if !$data.ad_code}
 					<label class="control-label">上传图片：</label>
 					<div class="controls">
-						<div class="fileupload {if $data.ad_code}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">
-							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
-								{if $data.ad_code}
-								<img src="{RC_Upload::upload_url()}/{$data.ad_code}"/>
-								{/if}
-							</div>
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
 							<span class="btn btn-file">
 								<span  class="fileupload-new">浏览</span>
+								<span  class="fileupload-exists">修改</span>
+								<input type='file' name='ad_code' size="35"/>
+							</span>
+							<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">{lang key='system::system.drop'}</a>
+							<span class="input-must"><span class="require-field" style="color:#FF0000;">*</span></span>
+							<span class="help-block">此模板的图片标准宽度为：484px 标准高度为：200px</span>
+						</div>
+					</div>
+					{else}
+					<label class="control-label">图片预览：</label>
+					<div class="controls">
+						<div class="fileupload fileupload-new" data-provides="fileupload">
+							<img class="w600 h300"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$data.ad_code}"><br><br>
+							图片地址： {$data.ad_code}<br><br>
+							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
+							<span class="btn btn-file">
+								<span  class="fileupload-new">更换图片</span>
 								<span  class="fileupload-exists">修改</span>
 								<input type='file' name='ad_code' size="35"/>
 							</span>
@@ -38,8 +52,9 @@ ecjia.admin.cycleimage.cycleimage_info();
 							<span class="help-block">此模板的图片标准宽度为：484px 标准高度为：200px</span>
 						</div>
 					</div>
+					{/if}
 				</div>
-
+				
 				<div class="control-group formSep">
 					<label class="control-label">图片链接：</label>
 					<div class="controls">

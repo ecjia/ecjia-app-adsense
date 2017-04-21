@@ -27,23 +27,17 @@
                     position_name: {
                         required: true
                     },
-                    ad_width: {
+                    position_code: {
                         required: true
-                    },
-                    ad_height: {
-                        required: true
-                    },
+                    }
                 },
                 messages: {
                     position_name: {
-                        required: js_lang.position_name_required
+                        required: "请输入广告位名称"
                     },
-                    ad_width: {
-                        required: js_lang.ad_width_required
-                    },
-                    ad_height: {
-                        required: js_lang.ad_height_required
-                    },
+                    position_code: {
+                        required: "请输入广告位代号"
+                    }
                 },
                 submitHandler: function () {
                     $form.ajaxSubmit({
