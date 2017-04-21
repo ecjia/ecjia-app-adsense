@@ -100,6 +100,7 @@ class PositionManage
             if (is_null($model)) {
                 return [];
             }
+            
             $adsModel = $model->ads();
             $adsModel->where('show_client', '&', $client);
             
