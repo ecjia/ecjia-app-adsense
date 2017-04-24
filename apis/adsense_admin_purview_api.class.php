@@ -60,11 +60,15 @@ class adsense_admin_purview_api extends Component_Event_Api {
 			array('action_name' => RC_Lang::get('adsense::adsense.ads_position_manage'), 'action_code' => 'ad_position_manage', 'relevance' => ''),
 			array('action_name' => RC_Lang::get('adsense::adsense.edit_ads_position'), 'action_code' => 'ad_position_update', 'relevance' => ''),
 			array('action_name' => RC_Lang::get('adsense::adsense.drop_ads_position'), 'action_code' => 'ad_position_delete', 'relevance' => ''),
+				
+			array('action_name' => '广告组编排', 'action_code' => 'ad_group_manage', 'relevance' => ''),
 
 			array('action_name' => '轮播图管理', 'action_code' => 'cycleimage_manage', 'relevance' => ''),
 			array('action_name' => '轮播图编辑', 'action_code' => 'cycleimage_update', 'relevance' => ''),
 			array('action_name' => '轮播图删除', 'action_code' => 'cycleimage_delete', 'relevance' => ''),
 				
+		
+			
 		);
 		return $purviews;
 	}

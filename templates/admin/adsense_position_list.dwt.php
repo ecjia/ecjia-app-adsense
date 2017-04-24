@@ -30,16 +30,6 @@
 	</ul>
 </div>
 
-<!-- 搜索 -->
-<div class="row-fluid batch">
-	<form method="post" action="{$search_action}" name="searchForm">
-		<div class="choose_list f_r">
-			<input type="text" name="keywords" value="{$position_list.filter.keywords}" placeholder="{lang key='adsense::adsense.ad_position_name'}"/>
-			<button class="btn search_ad_position" type="button">{lang key='adsense::adsense.search'}</button>
-		</div>
-	</form>
-</div>
-
 <div class="row-fluid">
 	<div class="span12">
 		<table class="table table-striped smpl_tbl dataTable table-hide-edit">
@@ -60,7 +50,7 @@
 				    	<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url="{RC_Uri::url('adsense/admin_position/edit_position_name')}" data-name="position_name" data-pk="{$val.position_id}" data-title="{lang key='adsense::adsense.edit_ad_position_name'}">{$val.position_name}</span>
 				    	<br>
                     	<div class="edit-list">
-					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "pid={$val.position_id}{if $smarty.get.page}&from_page={$smarty.get.page}{/if}")}' title="{lang key='adsense::adsense.view_ad_content'}">{lang key='adsense::adsense.view_ad_content'}</a>&nbsp;|&nbsp;
+					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}")}' title="查看广告">查看广告</a>&nbsp;|&nbsp;
 					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin_position/edit", "position_id={$val.position_id}")}' title="{lang key='system::navigator.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 					    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin_position/remove", "id={$val.position_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
 						</div>

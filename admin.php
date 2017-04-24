@@ -103,6 +103,7 @@ class admin extends ecjia_admin {
 		
 		$position_id = intval($_GET['pid']);
 		$this->assign('position_id', $position_id);
+		
 		if ($position_id > 0) {
 			//获取投放平台
 			$ad = new Ecjia\App\Adsense\Repositories\AdRepository('adsense');

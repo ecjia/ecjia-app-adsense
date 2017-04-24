@@ -18,6 +18,24 @@
     /* **编辑** */
     app.ad_position_edit = {
         init: function () {
+        	
+			$('.copy').on('click', function() {
+				var $this = $(this),
+					message = $this.attr('data-msg'),
+					url = $this.attr('data-href');
+					var city_id = $("#city_id option:selected").val();
+	                url += '&city_id=' + city_id;
+				if (message != undefined) {
+					smoke.confirm(message, function(e) {
+						if (e) {
+							$.get(url, function(data){
+								ecjia.admin.showmessage(data);
+							})
+						}
+					}, {ok:"确定", cancel:"取消"});
+				} 
+			});
+			
             app.ad_position_edit.submit_form();
         },
         submit_form: function (formobj) {

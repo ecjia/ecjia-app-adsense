@@ -345,15 +345,6 @@ class admin_cycleimage extends ecjia_admin {
     	return $regions;
     }
     
-    private function get_city_list() {
-        $city_list = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->selectRaw('distinct city_id,city_name')->orderBy('city_id', 'asc')->get();
-        foreach ($city_list as $key => $val) {
-        	$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $val['city_id'])->count();
-        	$city_list[$key]['count']=$count;
-        }
-	    return $city_list;
-    }
-       
     private function get_show_client(){
     	$client_list = array(
     		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,

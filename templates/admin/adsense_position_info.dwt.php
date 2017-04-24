@@ -70,7 +70,7 @@ ecjia.admin.ad_position_edit.init();
 			        		{if $data.position_id}
 			        			<input type="hidden" name="position_id" value="{$data.position_id}" />
 			        			<input type="submit" value="更新" class="btn btn-gebo" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该轮播组信息吗？" data-href='{url path="adsense/admin_cycleimage/copy" args="position_id={$position_id}"}' title="复制"><button class="btn btn-gebo" type="button">复制</button></a>
+			        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该广告位信息吗？" data-href='{url path="adsense/admin_position/copy" args="position_id={$data.position_id}"}' title="复制"><button class="btn" type="button">复制</button></a>
 			        		{else}
 			        			<input type="submit" value="确定" class="btn btn-gebo" />
 			        		{/if}
