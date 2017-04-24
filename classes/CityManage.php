@@ -47,6 +47,7 @@
 namespace Ecjia\App\Adsense;
 
 use Ecjia\App\Adsense\Repositories\CycleImageRepository;
+use Ecjia\App\Adsense\Repositories\AdPositionRepository;
 
 class CityManage
 {
@@ -65,6 +66,9 @@ class CityManage
         if ($this->type == 'cycleimage') {
             $repository = new CycleImageRepository();
             return $repository->getAllCitys();
+        } elseif($this->type == 'adsense') {
+        	$repository = new AdPositionRepository();
+        	return $repository->getAllCitys();
         }
  
     }

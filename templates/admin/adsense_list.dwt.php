@@ -20,13 +20,20 @@
 	</h3>
 </div>
 
+<!-- {if $available_clients} -->
+	<ul class="nav nav-pills">
+ 		<!-- {foreach from=$available_clients key=key item=val} -->
+		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&pid={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
+	<!-- {/foreach} -->
+</ul>
+<!-- {/if} -->
+
 <!-- 搜索 -->
 <div class="row-fluid batch">
 	<form method="post" action="{$search_action}" name="searchForm">
 		<select name="media_type" id="media_type" class="no_search w150">
 		    <option value=''  {if $ads_list.filter.media_type eq '' } selected="true" {/if}>{lang key='adsense::adsense.choose_media_type'}</option>
 			<option value='0' {if $ads_list.filter.media_type eq '0'} selected="true" {/if}>{lang key='adsense::adsense.ad_img'}</option>
-			<option value='1' {if $ads_list.filter.media_type eq '1'} selected="true" {/if}>{lang key='adsense::adsense.ad_flash'}</option>
 			<option value='2' {if $ads_list.filter.media_type eq '2'} selected="true" {/if}>{lang key='adsense::adsense.ad_html'}</option>
 			<option value='3' {if $ads_list.filter.media_type eq '3'} selected="true" {/if}>{lang key='adsense::adsense.ad_text'}</option>
 		</select>
@@ -54,7 +61,7 @@
                 </tr>
 			</thead>
 			<tbody>
-                <!-- {foreach from=$ads_list.item item=list}-->
+                <!-- {foreach from=$ads_list item=list key=key} -->
                 <tr>
                    <td> 
                     	<span>{$list.ad_id}</span>

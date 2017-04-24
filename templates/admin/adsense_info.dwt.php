@@ -35,19 +35,18 @@
 							</div>
 					
 							{if $action eq "insert"}
-							<div class="control-group formSep">
-								<label class="control-label">{lang key='adsense::adsense.media_type_lable'}</label>
-								<div class="controls">
-									<select name="media_type" id="media_type">
-										<option value='0'>{lang key='adsense::adsense.ad_img'}</option>
-										<option value='1'>{lang key='adsense::adsense.ad_flash'}</option>
-										<option value='2'>{lang key='adsense::adsense.ad_html'}</option>
-										<option value='3'>{lang key='adsense::adsense.ad_text'}</option>
-									</select>
+								<div class="control-group formSep">
+									<label class="control-label">{lang key='adsense::adsense.media_type_lable'}</label>
+									<div class="controls">
+										<select name="media_type" id="media_type">
+											<option value='0'>{lang key='adsense::adsense.ad_img'}</option>
+											<option value='2'>{lang key='adsense::adsense.ad_html'}</option>
+											<option value='3'>{lang key='adsense::adsense.ad_text'}</option>
+										</select>
+									</div>
 								</div>
-							</div>
 							{else}
-							<input type="hidden" name="media_type" value="{$ads.media_type}" />
+								<input type="hidden" name="media_type" value="{$ads.media_type}" />
 							{/if}
 					
 							<div class="control-group formSep">
@@ -81,66 +80,33 @@
 									<div class="control-group formSep">
 										<label class="control-label">{lang key='adsense::adsense.ad_link'}</label>
 										<div class="controls">
-											<input type="text" name="ad_link" value="{$ads.ad_link}" size="35"/>
+											<input type="text" name="ad_link" class="span10" value="{$ads.ad_link}" size="35"/>
 										</div>
 									</div>
+									
 									<div class="control-group formSep">
-										<label class="control-label">{lang key='adsense::adsense.upfile_img'}</label>
-										<div class="controls chk_radio">
-											<input type="radio" name="brand_logo_type" value='0'{if !$ads.type} checked="checked"{/if} autocomplete="off" /><span>{lang key='adsense::adsense.remote_link'}</span>
-											<input type="radio" name="brand_logo_type" value='1'{if $ads.type} checked="checked"{/if} autocomplete="off" /><span>{lang key='adsense::adsense.local_upfile_img'}</span>
-										</div>
-										<div class="controls cl_both brand_logo_type" id="show_src">
-											<input class="w330" type='text' name='url_logo' size="42" value="{if !$ads.type}{$ads.ad_code}{/if}"/>
-											<span class="help-block">{lang key='adsense::adsense.specify_logo'}</span>
-										</div>
-										<div class="controls cl_both brand_logo_type" id="show_local" style="display:none;">
-											<div class="fileupload {if $ads.url && $ads.type}fileupload-exists{else}fileupload-new{/if}" data-provides="fileupload">	
+										<label class="control-label">上传图片：</label>
+										<div class="controls">
+											<div class="fileupload fileupload-new" data-provides="fileupload">
 												<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;">
-													{if $ads.url && $ads.type}
-													<img src="{$ads.url}"/>
-													{/if}
-												</div>
+					                              	{if $ads.url}
+					                                 <img src="{$ads.url}"/>
+					                                {/if}
+					                            </div>
 												<span class="btn btn-file">
-													<span  class="fileupload-new">{lang key='adsense::adsense.browse'}</span>
-													<span  class="fileupload-exists">{lang key='adsense::adsense.modify'}</span>
+													<span  class="fileupload-new">浏览</span>
+													<span  class="fileupload-exists">修改</span>
 													<input type='file' name='ad_img' size="35"/>
 												</span>
-												<a class="btn fileupload-exists" {if !$ads.url}data-dismiss="fileupload" href="javascript:;"{else}data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{url path="adsense/admin/delfile" args="id={$ads.ad_id}"}' title="{lang key='adsense::adsense.remove'}"{/if}>{lang key='adsense::adsense.remove'}</a>
+												<a class="btn fileupload-exists" data-dismiss="fileupload" href="#">删除</a>
+												<span class="input-must"><span class="require-field" style="color:#FF0000;">*</span></span>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 							{/if}
-					
-							<!-- flash 1 -->
-							{if $ads.media_type eq 1 OR $action eq "insert"}
-								<div id="media_type_1" style="{if $ads.media_type neq 1 OR $action eq 'insert'}display:none{/if}">
-									<div class="control-group formSep">
-										<label class="control-label">{lang key='adsense::adsense.upfile_flash'}</label>
-										{if $ads.ad_code neq ''}
-								      		<div class="t_c">
-												<img class="w100 f_l" src="{RC_Uri::admin_url('statics/images/flashimg.png')}" />
-											</div>
-									    	<div class="ecjiaf-wwb">{lang key='adsense::adsense.flash_url'}{$ads.ad_code}</div>
-											<a class="ajaxremove ecjiafc-red ecjiaf-db" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin/delfile","id={$ads.ad_id}")}' title="{lang key='adsense::adsense.remove'}">
-									       	{lang key='adsense::adsense.remove'}
-									        </a>
-									        <input name="file_name" value="{$article.file_url}" class="hide">
-										{else}
-										<div class="controls">
-											<div data-provides="fileupload" class="fileupload fileupload-new"><input type="hidden" value="" name="">
-												<span class="btn btn-file"><span class="fileupload-new">{lang key='adsense::adsense.upload_flash_file'}</span><span class="fileupload-exists">{lang key='adsense::adsense.modify_Flash_file'}</span><input type="file" name="upfile_flash"></span>
-												<span class="fileupload-preview"></span>
-												<a style="float: none" data-dismiss="fileupload" class="close fileupload-exists" href="index.php-uid=1&page=form_extended.html#">&times;</a>
-											</div>
-										</div>
-										{/if}
-									</div>
-								</div>
-							{/if}
-					
+
 							<!-- 代码2 -->
 							{if $ads.media_type eq 2 OR $action eq "insert"}
 							<div id="media_type_2" style="{if $ads.media_type neq 2 OR $action eq 'add'}display:none{/if}">
@@ -174,12 +140,28 @@
 							{/if}
 							
 							<div class="control-group formSep">
+								<label class="control-label">投放平台：</label>
+			  					<div class="controls chk_radio">
+			  						 <!-- {foreach from=$client_list key=key item=val} -->
+										<input type="checkbox" name="show_client[]" value="{$val}" {if in_array($val, $ads.show_client)}checked="true"{/if}/>{$key}
+									 <!-- {/foreach} -->
+								</div>
+							</div>
+							
+							<div class="control-group formSep">
 								<label class="control-label">{lang key='adsense::adsense.enabled'}</label>
 								<div class="controls">
 									 <input type="radio" name="enabled" value="1" {if $ads.enabled eq 1} checked="true" {/if} />{lang key='adsense::adsense.is_enabled'}
 						        	 <input type="radio" name="enabled" value="0" {if $ads.enabled eq 0} checked="true" {/if} />{lang key='adsense::adsense.no_enabled'}
 								</div>
 							</div>	
+							
+							<div class="control-group formSep">
+								<label class="control-label">排序：</label>
+								<div class="controls">
+									<input class="span8" name="sort_order" type="text" value="{if $ads.sort_order}{$ads.sort_order}{else}50{/if}" />
+								</div>
+							</div>
 							
 							<div class="control-group">
 					        	<div class="controls">
@@ -202,14 +184,14 @@
 									</div>
 									<div class="accordion-body in collapse" id="telescopic1">
 										<div class="accordion-inner">
-											<div class="control-group control-group-small">
+											<div class="control-group control-group-small formSep">
 												<label class="control-label">{lang key='adsense::adsense.name'}</label>
 												<div class="span8">
 													<input name="link_man" type="text" value="{$ads.link_man}"  />
 												</div>
 											</div>
 											
-											<div class="control-group control-group-small">
+											<div class="control-group control-group-small formSep">
 												<label class="control-label">{lang key='adsense::adsense.email'}</label>
 												<div class="span8">
 													<input name="link_email" type="text" value="{$ads.link_email}"  />

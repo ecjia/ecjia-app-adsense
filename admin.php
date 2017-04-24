@@ -100,13 +100,31 @@ class admin extends ecjia_admin {
 			'text' => RC_Lang::get('adsense::adsense.ads_add'),
 			'href' => RC_Uri::url('adsense/admin/add') 
 		));
-		if (isset($_GET['pid'])) {
-			$page = !empty($_GET['from_page']) ? intval($_GET['from_page']) : 1;
-			$this->assign('back_position_list', array('text' => RC_Lang::get('adsense::adsense.position_list'), 'href' => RC_Uri::url('adsense/admin_position/init', array('page' => $page))));
-		}
-		$ads_list = $this->get_ad_list();
-		$this->assign('ads_list', $ads_list);
+		
+		$position_id = intval($_GET['pid']);
+		$this->assign('position_id', $position_id);
+		if ($position_id > 0) {
+			//获取投放平台
+			$ad = new Ecjia\App\Adsense\Repositories\AdRepository('adsense');
+			$client_list = $ad->getAllClients();
+			$available_clients = $ad->getAvailableClients($position_id);
+			$this->assign('client_list', $client_list);
+			$this->assign('available_clients', $available_clients);
+		
+		
+			$show_client = intval($_GET['show_client']);
+			if (empty($show_client) && !empty($available_clients)) {
+				$show_client = $client_list[head(array_keys($available_clients))];
+			}
+			$this->assign('show_client', $show_client);
+			//对应的广告列表
+			$ads_list = $ad->getAds($position_id, $show_client);
+			$this->assign('ads_list', $ads_list);
+		
+			$position_code = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_code');
+		}		
 		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
+		
 		$this->display('adsense_list.dwt');
 	}
 	
@@ -126,15 +144,22 @@ class admin extends ecjia_admin {
 		
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_add'));
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init'), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
+		
 		$position_list = $this->get_position_select_list();
 		$this->assign('position_list', $position_list);
+		
 		$this->assign('action', 'insert');
+		
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
 		
 		$ads['start_time'] = date('Y-m-d');
 		$ads['end_time'] = date('Y-m-d', time() + 30 * 86400);
 		$ads['enabled'] = 1;
 		$this->assign('ads', $ads);
+		
 		$this->assign('form_action', RC_Uri::url('adsense/admin/insert'));
+		
 		$this->display('adsense_info.dwt');
 	}
 	
@@ -142,10 +167,10 @@ class admin extends ecjia_admin {
 	 * 新广告的处理
 	 */
 	public function insert() {
-		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_update');
 		
-		$id = !empty($_POST['id']) ? intval($_POST['id']) : 0;
-		$type = !empty($_POST['type']) ? intval($_POST['type']) : 0;
+		$id 	= !empty($_POST['id']) ? intval($_POST['id']) : 0;
+		$type 	= !empty($_POST['type']) ? intval($_POST['type']) : 0;
 		$ad_name = !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
 		$media_type = !empty($_POST['media_type']) ? intval($_POST['media_type']) : 0;
 		if ($media_type === 0) {
@@ -167,34 +192,9 @@ class admin extends ecjia_admin {
 		}
 		/* 添加图片类型的广告 */
 		if ($media_type === 0) {
-			// 如果是本地上传
-			if ($_POST['brand_logo_type'] == 1) {
-				if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
-					$upload = RC_Upload::uploader('image', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
-					$image_info = $upload->upload($_FILES['ad_img']);
-					if (!empty($image_info)) {
-						$ad_code = $upload->get_position($image_info);
-					} else {
-						return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-					}
-				}
-				// 如果是远程连接
-			} elseif ($_POST['brand_logo_type'] == 0) {
-				/* 使用远程的LOGO图片 */
-				if (!empty($_POST['url_logo'])) {
-					if (strpos($_POST['url_logo'], 'http://') === false && strpos($_POST['url_logo'], 'https://') === false) {
-						$ad_code = 'http://' . trim($_POST['url_logo']);
-					} else {
-						$ad_code = trim($_POST['url_logo']);
-					}
-				}
-			}
-		} elseif ($media_type === 1) {
-			if (isset($_FILES['upfile_flash']['error']) && $_FILES['upfile_flash']['error'] == 0 || ! isset($_FILES['upfile_flash']['error']) && isset($_FILES['upfile_flash']['tmp_name']) && $_FILES['upfile_flash']['tmp_name'] != 'none') {
-				$upload = RC_Upload::uploader('file', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
-				$upload->allowed_type(array('swf', 'fla'));
-				$upload->allowed_mime(array('application/x-shockwave-flash', 'application/octet-stream'));
-				$image_info = $upload->upload($_FILES['upfile_flash']);
+			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
+				$upload = RC_Upload::uploader('image', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
+				$image_info = $upload->upload($_FILES['ad_img']);
 				if (!empty($image_info)) {
 					$ad_code = $upload->get_position($image_info);
 				} else {
@@ -215,6 +215,12 @@ class admin extends ecjia_admin {
 			}
 		}
 		$ad_code = isset($ad_code) ? $ad_code : '';
+		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+		if(empty($_POST['show_client'])){
+			return $this->showmessage('请选择投放平台', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
+		}
 		$data = array(
 			'position_id' => $_POST['position_id'],
 			'media_type' => $media_type,
@@ -227,7 +233,9 @@ class admin extends ecjia_admin {
 			'link_email' => !empty($_POST['link_email']) ? $_POST['link_email'] : '',
 			'link_phone' => !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
 			'click_count' => 0,
-			'enabled' => !empty($_POST['enabled']) ? $_POST['enabled'] : '' 
+			'show_client'   => $show_client,
+			'enabled'     => !empty($_POST['enabled']) ? $_POST['enabled'] : '' ,
+			'sort_order' 	=> $sort_order,
 		);
 		$ad_id = RC_DB::table('ad')->insertGetId($data);
 		/* 释放广告位缓存 */
@@ -282,26 +290,20 @@ class admin extends ecjia_admin {
 				$src = $ads_arr['ad_code'];
 				$this->assign('url_src', $src);
 			}
-		} elseif ($ads_arr['media_type'] === 1) {
-			if (strpos($ads_arr['ad_code'], 'http://') === false) {
-				$src = $ads_arr['ad_code'];
-				$this->assign('flash_url', $src);
-			} else {
-				$src = $ads_arr['ad_code'];
-				$this->assign('flash_url', $src);
-			}
-			$this->assign('src', $src);
 		}
 		if ($ads_arr['media_type'] === 0) {
 			$this->assign('media_type', RC_Lang::get('adsense::adsense.ad_img'));
-		} elseif ($ads_arr['media_type'] === 1) {
-			$this->assign('media_type', RC_Lang::get('adsense::adsense.ad_flash'));
 		} elseif ($ads_arr['media_type'] === 2) {
 			$this->assign('media_type', RC_Lang::get('adsense::adsense.ad_html'));
 		} elseif ($ads_arr['media_type'] === 3) {
 			$this->assign('media_type', RC_Lang::get('adsense::adsense.ad_text'));
 		}
+		
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
+		$ads_arr['show_client'] = Ecjia\App\Adsense\Client::clients($ads_arr['show_client']);
 		$this->assign('ads', $ads_arr);
+		
 		$position_list = $this->get_position_select_list();
 		$this->assign('position_list', $position_list);
 		$this->assign('form_action', RC_Uri::url('adsense/admin/update'));
@@ -338,46 +340,15 @@ class admin extends ecjia_admin {
 		$ad_logo = $ad_info['ad_code'];
 		/* 编辑图片类型的广告 */
 		if ($type == 0) {
-			$upload = RC_Upload::uploader('image', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
-			// 如果是远程链接
-			if ($_POST['brand_logo_type'] == 0) {
-				if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
-					$upload->remove($ad_logo);
-				}
-				if (strpos($_POST['url_logo'], 'http://') === false && strpos($_POST['url_logo'], 'https://') === false) {
-					$ad_code = 'http://' . trim($_POST['url_logo']);
-				} else {
-					$ad_code = trim($_POST['url_logo']);
-				}
-				// 如果是本地上传
-			} elseif ($_POST['brand_logo_type'] == 1) {
-				if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
-					$upload = RC_Upload::uploader('image', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
-					$image_info = $upload->upload($_FILES['ad_img']);
-					/* 如果要修改链接图片, 删除原来的图片 */
-					if (!empty($image_info)) {
-						if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
-							$upload->remove($ad_logo);
-						}
-						/* 获取新上传的LOGO的链接地址 */
-						$ad_code = $upload->get_position($image_info);
-					} else {
-						return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-					}
-				} else {
-					$ad_code = $ad_logo;
-				}
-			}
-		} elseif ($type == 1) {
-			if (isset($_FILES['upfile_flash']['error']) && $_FILES['upfile_flash']['error'] == 0 || ! isset($_FILES['upfile_flash']['error']) && isset($_FILES['upfile_flash']['tmp_name']) && $_FILES['upfile_flash']['tmp_name'] != 'none') {
-				$upload = RC_Upload::uploader('file', array('save_path' => 'data/afficheimg', 'auto_sub_dirs' => false));
-				$upload->allowed_type(array('swf', 'fla'));
-				$upload->allowed_mime(array('application/x-shockwave-flash', 'application/octet-stream'));
-				$image_info = $upload->upload($_FILES['upfile_flash']);
+			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
+				$upload = RC_Upload::uploader('image', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
+				$image_info = $upload->upload($_FILES['ad_img']);
+				/* 如果要修改链接图片, 删除原来的图片 */
 				if (!empty($image_info)) {
 					if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
 						$upload->remove($ad_logo);
 					}
+					/* 获取新上传的LOGO的链接地址 */
 					$ad_code = $upload->get_position($image_info);
 				} else {
 					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
@@ -399,6 +370,12 @@ class admin extends ecjia_admin {
 			}
 		}
 		$ad_code = isset($ad_code) ? $ad_code : '';
+		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+		if(empty($_POST['show_client'])){
+			return $this->showmessage('请选择投放平台', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
+		}
 		$data = array(
 			'position_id' 	=> $_POST['position_id'],
 			'ad_name' 		=> $ad_name,
@@ -409,7 +386,9 @@ class admin extends ecjia_admin {
 			'link_man' 		=> !empty($_POST['link_man']) ? $_POST['link_man'] : '',
 			'link_email' 	=> !empty($_POST['link_email']) ? $_POST['link_email'] : '',
 			'link_phone' 	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
-			'enabled' 		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '' 
+			'enabled' 		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '',
+			'sort_order' 	=> $sort_order,
+			'show_client'   => $show_client,
 		);
 		/* 释放广告位缓存 */
 		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
@@ -569,7 +548,7 @@ class admin extends ecjia_admin {
 	 * 获取广告位置下拉列表
 	 */
 	private function get_position_select_list() {
-		$data = RC_DB::table('ad_position')->select('position_id', 'position_name', 'ad_width', 'ad_height')->orderBy('position_id', 'desc')->get();
+		$data = RC_DB::table('ad_position')->where('type','adsense')->select('position_id', 'position_name', 'ad_width', 'ad_height')->orderBy('position_id', 'desc')->get();
 		$position_list = array();
 		if (!empty($data)) {
 			foreach ($data as $row) {
@@ -577,6 +556,16 @@ class admin extends ecjia_admin {
 			}
 		}
 		return $position_list;
+	}
+	
+	private function get_show_client(){
+		$client_list = array(
+				'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
+				'Android'=> Ecjia\App\Adsense\Client::ANDROID,
+				'H5' 	 => Ecjia\App\Adsense\Client::H5,
+				'PC'     => Ecjia\App\Adsense\Client::PC
+		);
+		return $client_list;
 	}
 }
 

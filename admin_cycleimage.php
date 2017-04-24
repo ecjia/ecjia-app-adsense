@@ -322,7 +322,6 @@ class admin_cycleimage extends ecjia_admin {
     		'city_id' 		=> $city_id,
     		'city_name' 	=> $city_name,
     		'type' 			=> $data['type'],
-    		'is_group' 		=> $data['is_group'],
     		'group_id' 		=> $data['group_id'],
     		'sort_order' 	=> $data['sort_order']
     	);
