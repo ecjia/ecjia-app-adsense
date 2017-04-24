@@ -95,14 +95,13 @@ class admin extends ecjia_admin {
 			'content' => '<p>' . RC_Lang::get('adsense::adsense.adsense_list_help') . '</p>' 
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表" target="_blank">' . RC_Lang::get('adsense::adsense.about_adsense_list') . '</a>') . '</p>');
-		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_list'));
-		$this->assign('action_link', array(
-			'text' => RC_Lang::get('adsense::adsense.ads_add'),
-			'href' => RC_Uri::url('adsense/admin/add') 
-		));
-		
-		$position_id = intval($_GET['pid']);
+		$position_id = intval($_GET['position_id']);
+		$show_client = intval($_GET['show_client']);
 		$this->assign('position_id', $position_id);
+		$this->assign('show_client', $show_client);
+		
+		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_list'));
+		$this->assign('action_link', array('text' => RC_Lang::get('adsense::adsense.ads_add'),'href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id))));
 		
 		if ($position_id > 0) {
 			//获取投放平台
@@ -120,9 +119,11 @@ class admin extends ecjia_admin {
 			$this->assign('show_client', $show_client);
 			//对应的广告列表
 			$ads_list = $ad->getAds($position_id, $show_client);
+			foreach ($ads_list as $key => $val) {
+				$ads_list[$key]['start_time'] = RC_Time::local_date('Y-m-d', $val['start_time']);
+				$ads_list[$key]['end_time'] = RC_Time::local_date('Y-m-d', $val['end_time']);
+			}
 			$this->assign('ads_list', $ads_list);
-		
-			$position_code = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_code');
 		}		
 		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
 		
@@ -142,9 +143,9 @@ class admin extends ecjia_admin {
 			'content' => '<p>' . RC_Lang::get('adsense::adsense.adsense_add_help') . '</p>' 
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A" target="_blank">' . RC_Lang::get('adsense::adsense.about_add_adsense') . '</a>') . '</p>');
-		
+		$position_id = intval($_GET['position_id']);
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_add'));
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init'), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init',array('position_id' => $position_id)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
 		
 		$position_list = $this->get_position_select_list();
 		$this->assign('position_list', $position_list);
@@ -263,13 +264,17 @@ class admin extends ecjia_admin {
 			'content' => '<p>' . RC_Lang::get('adsense::adsense.adsense_edit_help') . '</p>' 
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E7.BC.96.E8.BE.91.E5.B9.BF.E5.91.8A" target="_blank">' . RC_Lang::get('adsense::adsense.about_edit_adsense') . '</a>') . '</p>');
-		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_edit'));
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init'), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
 		
-		$ads_arr = RC_DB::table('ad')->where('ad_id', $_GET['id'])->first();
-		$ads_arr['ad_name'] = htmlspecialchars($ads_arr['ad_name']);
+		$ad_id =intval($_GET['ad_id']);
+		$position_id =intval($_GET['position_id']);
+		$show_client =intval($_GET['show_client']);
+		
+		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_edit'));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id,'show_client' => $show_client)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
+		
+		$ads_arr = RC_DB::table('ad')->where('ad_id', $ad_id)->first();
 		$ads_arr['start_time'] = RC_Time::local_date('Y-m-d', $ads_arr['start_time']);
-		$ads_arr['end_time'] = RC_Time::local_date('Y-m-d', $ads_arr['end_time']);
+		$ads_arr['end_time']   = RC_Time::local_date('Y-m-d', $ads_arr['end_time']);
 		
 		/* 标记为图片链接还是文字链接 */
 		if (!empty($ads_arr['ad_code'])) {
@@ -400,7 +405,7 @@ class admin extends ecjia_admin {
 		/* 更新数据 */
 		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
-		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('id' => $id))));
+		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $id))));
 	}
 	
 	/**
@@ -559,6 +564,9 @@ class admin extends ecjia_admin {
 		return $position_list;
 	}
 	
+	/**
+	 * 获取投放平台
+	 */
 	private function get_show_client(){
 		$client_list = array(
 				'iPhone' => Ecjia\App\Adsense\Client::IPHONE,

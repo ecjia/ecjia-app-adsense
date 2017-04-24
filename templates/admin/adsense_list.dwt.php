@@ -23,7 +23,7 @@
 <!-- {if $available_clients} -->
 	<ul class="nav nav-pills">
  		<!-- {foreach from=$available_clients key=key item=val} -->
-		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&pid={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
+		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
 	<!-- {/foreach} -->
 </ul>
 <!-- {/if} -->
@@ -33,16 +33,16 @@
 		<table class="table table-striped smpl_tbl dataTable table-hide-edit" id="smpl_tbl">
 			<thead>
 				<tr>
-				    <th class="w35">{lang key='adsense::adsense.ad_id'}</th>
+				    <th class="w100">{lang key='adsense::adsense.ad_id'}</th>
                 	<th>{lang key='adsense::adsense.ad_name'}</th>
-			    	<th class="w70">{lang key='adsense::adsense.media_type'}</th>
-			    	<th class="w100">{lang key='adsense::adsense.start_date'}</th>
-			    	<th class="w100">{lang key='adsense::adsense.end_date'}</th>
-			    	<th class="w80">{lang key='adsense::adsense.click_count'}</th>
+			    	<th class="w100">{lang key='adsense::adsense.media_type'}</th>
+			    	<th class="w150">{lang key='adsense::adsense.start_date'}</th>
+			    	<th class="w150">{lang key='adsense::adsense.end_date'}</th>
+			    	<th class="w100">{lang key='adsense::adsense.click_count'}</th>
                 </tr>
 			</thead>
 			<tbody>
-                <!-- {foreach from=$ads_list item=list key=key} -->
+                <!-- {foreach from=$ads_list item=list} -->
                 <tr>
                    <td> 
                     	<span>{$list.ad_id}</span>
@@ -58,16 +58,17 @@
 					    <div class="hide" id="content_{$list.ad_id}"><img class="mh150" src="{$list.image}"></div> 
 					    {/if}
 					    </span>
-					    
 				    	<div class="edit-list">
-					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/edit", "id={$list.ad_id}")}' title="{lang key='system::navigator.edit'}">{lang key='adsense::adsense.edit'}</a>&nbsp;|&nbsp;
-				      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin/remove","id={$list.ad_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
+					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/edit", "ad_id={$list.ad_id}&position_id={$position_id}&show_client={$show_client}")}' title="{lang key='system::navigator.edit'}">{lang key='adsense::adsense.edit'}</a>&nbsp;|&nbsp;
+				      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin/remove","ad_id={$list.ad_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
 						</div>
 				    </td>
-				    <td><span>{$list.type}</span></td>
-				    <td><span>{$list.start_date}</span></td>
-				    <td><span>{$list.end_date}</span></td>
-				    <td><span>{$list.click_count}</span></td>
+				    <td>
+				    {if $list.media_type === 0}图片{elseif $list.media_type ===2}代码{elseif $list.media_type ===3}文字{/if}
+				    </td>
+				    <td>{$list.start_time}</td>
+				    <td>{$list.end_time}</td>
+				    <td>{$list.click_count}</td>
                 </tr>
                 <!-- {foreachelse} -->
                 <tr><td class="no-records" colspan="7">{lang key='system::system.no_records'}</td></tr>

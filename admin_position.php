@@ -73,7 +73,7 @@ class admin_position extends ecjia_admin {
 			'ad_height_required' => RC_Lang::get('adsense::adsense.ad_height_required') 
 		);
 		RC_Script::localize_script('ad_position', 'js_lang', $js_lang);
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_position'), RC_Uri::url('adsense/admin_position/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位管理', RC_Uri::url('adsense/admin_position/init')));
 	}
 	
 	/**
@@ -86,7 +86,7 @@ class admin_position extends ecjia_admin {
 		$a = $cycleImageRepository->find(14);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_position')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位管理'));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 			'id' => 'overview',
 			'title' => RC_Lang::get('adsense::adsense.overview'),
@@ -134,7 +134,7 @@ class admin_position extends ecjia_admin {
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告位置#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A.E4.BD.8D.E7.BD.AE" target="_blank">' . RC_Lang::get('adsense::adsense.about_add_position') . '</a>') . '</p>');
 		
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.position_add'));
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => RC_Lang::get('adsense::adsense.position_list')));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位列表'));
 		
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
@@ -204,7 +204,7 @@ class admin_position extends ecjia_admin {
 			'text' => RC_Lang::get('adsense::adsense.position_list') 
 		));
 		
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位设置'));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位列表'));
 		 
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
