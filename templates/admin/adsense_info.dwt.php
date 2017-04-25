@@ -182,22 +182,22 @@
 									</div>
 									<div class="accordion-body in collapse" id="position_data">
 										<div class="accordion-inner">
-											<div class="control-group control-group-small formSep">
+											<div class="control-group control-group-small">
 												<label class="control-label">名称：</label>
 												<div class="span6 l_h30">{$position_data.position_name}</div>
 											</div>
 											
-											<div class="control-group control-group-small formSep">
+											<div class="control-group control-group-small">
 												<label class="control-label">代号：</label>
 												<div class="span6 l_h30">{$position_data.position_code}</div>
 											</div>
 											
-											<div class="control-group control-group-small formSep">
+											<div class="control-group control-group-small">
 												<label class="control-label">选择城市：</label>
 												<div class="span6 l_h30">{$position_data.city_name}</div>
 											</div>
 											
-											<div class="control-group control-group-small formSep">
+											<div class="control-group control-group-small">
 												<label class="control-label">可展示数量最大值：</label>
 												<div class="span6 l_h30">{$position_data.max_number}</div>
 											</div>
