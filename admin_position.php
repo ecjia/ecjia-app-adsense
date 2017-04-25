@@ -103,12 +103,12 @@ class admin_position extends ecjia_admin {
 		//获取当前城市ID
 		$city_id = $citymanage->getCurrentCity(intval($_GET['city_id']));
 		$this->assign('city_id', $city_id);
-		_dump($city_id,1);
+		
 		//获取广告列表
 		$position = new Ecjia\App\Adsense\PositionManage('adsense', $city_id);
 		$data = $position->getAllPositions();
 		$this->assign('data', $data);
-		
+		_dump($data,1);
 		$this->assign('search_action', RC_Uri::url('adsense/admin_position/init'));
 		
 		

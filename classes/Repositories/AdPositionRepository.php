@@ -68,11 +68,19 @@ class AdPositionRepository extends AbstractRepository
 	public function getAllGroups($city)
 	{
 		$where = [
-		'type'     => $this->type,
-		'city_id'  => $city,
+    		'type'     => $this->type,
+    		'city_id'  => $city,
 		];
-		$group = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height']);
+		$group1 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height']);
 	
+		$where = [
+		    'type'     => $this->type,
+		    'city_id'  => null,
+		    ];
+		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height']);
+		
+		$group = $group1->merge($group2);
+		
 		return $group->toArray();
 	}
 	
