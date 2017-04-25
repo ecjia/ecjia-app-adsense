@@ -489,18 +489,21 @@ class admin extends ecjia_admin {
 	public function remove() {
 		$this->admin_priv('adsense_delete', ecjia::MSGTYPE_JSON);
 		
-		$id = intval($_GET['id']);
-		$info = RC_DB::table('ad')->where('ad_id', $id)->first();
+		$ad_id = intval($_GET['ad_id']);
+		$info = RC_DB::table('ad')->where('ad_id', $ad_id)->first();
+		
 		if (strpos($info['ad_code'], 'http://') === false && strpos($info['ad_code'], 'https://') === false) {
 			$disk = RC_Filesystem::disk();
 			$disk->delete(RC_Upload::upload_path() . $info['ad_code']);
 		}
-		RC_DB::table('ad')->where('ad_id', $id)->delete();
+		RC_DB::table('ad')->where('ad_id', $ad_id)->delete();
+		
 		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
 		$cache_key = sprintf('%X', crc32('adsense_position-' . $info['position_id']));
 		$ad_postion_db->delete_cache_item($cache_key);
 		ecjia_admin::admin_log($info['ad_name'], 'remove', 'ads');
-		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+		
+		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin/init', array('position_id' => $info['position_id']))));
 	}
 	
 	/**
