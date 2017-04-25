@@ -117,4 +117,31 @@ class AdPositionRepository extends AbstractRepository
 	
 		return $this->query->first($columns);
 	}	
+	
+	/**
+	 * Retrieve all data of repository, paginated
+	 *
+	 * @param array $where
+	 * @param null  $limit
+	 * @param array $columns
+	 *
+	 * @return \Royalcms\Component\Pagination\Paginator
+	 */
+	public function wherePaginate(array $where, $limit = null, $columns = ['*'])
+	{
+	    $this->newQuery();
+	
+	    foreach ($where as $field => $value) {
+	        if (is_array($value)) {
+	            list($field, $condition, $val) = $value;
+	            $this->query->where($field, $condition, $val);
+	        }
+	        else {
+	            $this->query->where($field, '=', $value);
+	        }
+	    }
+	
+	    return $this->query->paginate($limit, $columns);
+	}
+	
 }
