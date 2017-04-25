@@ -168,6 +168,8 @@
 					        		<!-- {if $ads.ad_id} -->
 					        		<input type="submit" value="{lang key='adsense::adsense.update'}" class="btn btn-gebo" />
 									<input type="hidden" name="id" value="{$ads.ad_id}" />
+									<input type="hidden" name="position_id" value="{$ads.position_id}" />
+									<input type="hidden" name="show_client_value" value="{$show_client}" />
 									<input type="hidden" id="type" value="{$ads.type}" />	
 									<!-- {else} -->
 									<input type="submit" value="{lang key='system::system.button_submit'}" class="btn btn-gebo" />
@@ -178,6 +180,50 @@
 						<!-- 右边 -->
 						<div class="right-bar move-mod">
 							<div class="foldable-list move-mod-group">
+								<div class="accordion-group">
+									<div class="accordion-heading">
+										<a class="accordion-toggle acc-in move-mod-head" data-toggle="collapse" data-target="#position_data"><strong>广告位信息</strong></a>
+									</div>
+									<div class="accordion-body in collapse" id="position_data">
+										<div class="accordion-inner">
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">名称：</label>
+												<div class="span6 l_h30">{$position_data.position_name}</div>
+											</div>
+											
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">代号：</label>
+												<div class="span6 l_h30">{$position_data.position_code}</div>
+											</div>
+											
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">选择城市：</label>
+												<div class="span6 l_h30">{$position_data.city_name}</div>
+											</div>
+											
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">建议宽度：</label>
+												<div class="span6 l_h30">{$position_data.ad_width}</div>
+											</div>
+											
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">建议高度：</label>
+												<div class="span6 l_h30">{$position_data.ad_height}</div>
+											</div>
+											
+											<div class="control-group control-group-small formSep">
+												<label class="control-label">可展示数量最大值：</label>
+												<div class="span6 l_h30">{$position_data.max_number}</div>
+											</div>
+											
+											<div class="control-group control-group-small">
+												<label class="control-label">描述：</label>
+												<div class="span6 l_h30">{$position_data.position_desc}</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								
 								<div class="accordion-group">
 									<div class="accordion-heading">
 										<a class="accordion-toggle acc-in move-mod-head" data-toggle="collapse" data-target="#telescopic1"><strong>{lang key='adsense::adsense.ad_contact_info'}</strong></a>

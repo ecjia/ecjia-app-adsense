@@ -20,6 +20,44 @@
 	</h3>
 </div>
 
+<div class="foldable-list move-mod-group" id="goods_info_sort_submit">
+	<div class="accordion-group">
+		<div class="accordion-heading">
+			<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#position_data">
+				<strong>广告位信息</strong>
+			</a>
+		</div>
+		<div class="accordion-body in collapse" id="position_data">
+			<table class="table table-oddtd m_b0">
+				<tbody class="first-td-no-leftbd">
+					<tr>
+						<td><div align="right"><strong>广告位名称：</strong></div></td>
+						<td>{$position_data.position_name}</td>
+						<td><div align="right"><strong>广告位代号：</strong></div></td>
+						<td>{$position_data.position_code}</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>选择城市：</strong></div></td>
+						<td>{$position_data.city_name}</td>
+						<td><div align="right"><strong>可展示数量最大值：</strong></div></td>
+						<td>{$position_data.max_number}</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>建议宽度：</strong></div></td>
+						<td>{$position_data.ad_width}</td>
+						<td><div align="right"><strong>建议高度：</strong></div></td>
+						<td>{$position_data.ad_height}</td>
+					</tr>
+					<tr>
+						<td><div align="right"><strong>广告位描述：</strong></div></td>
+						<td colspan="3">{$position_data.position_desc}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
 <!-- {if $available_clients} -->
 	<ul class="nav nav-pills">
  		<!-- {foreach from=$available_clients key=key item=val} -->

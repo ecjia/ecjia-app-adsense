@@ -95,6 +95,7 @@ class admin extends ecjia_admin {
 			'content' => '<p>' . RC_Lang::get('adsense::adsense.adsense_list_help') . '</p>' 
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表" target="_blank">' . RC_Lang::get('adsense::adsense.about_adsense_list') . '</a>') . '</p>');
+		
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
 		$this->assign('position_id', $position_id);
@@ -124,7 +125,11 @@ class admin extends ecjia_admin {
 				$ads_list[$key]['end_time'] = RC_Time::local_date('Y-m-d', $val['end_time']);
 			}
 			$this->assign('ads_list', $ads_list);
-		}		
+		}	
+
+		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
+		
 		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
 		
 		$this->display('adsense_list.dwt');
@@ -159,6 +164,9 @@ class admin extends ecjia_admin {
 		$ads['end_time'] = date('Y-m-d', time() + 30 * 86400);
 		$ads['enabled'] = 1;
 		$this->assign('ads', $ads);
+		
+		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
 		
 		$this->assign('form_action', RC_Uri::url('adsense/admin/insert'));
 		
@@ -268,6 +276,7 @@ class admin extends ecjia_admin {
 		$ad_id =intval($_GET['ad_id']);
 		$position_id =intval($_GET['position_id']);
 		$show_client =intval($_GET['show_client']);
+		$this->assign('show_client', $show_client);
 		
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_edit'));
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id,'show_client' => $show_client)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
@@ -275,7 +284,6 @@ class admin extends ecjia_admin {
 		$ads_arr = RC_DB::table('ad')->where('ad_id', $ad_id)->first();
 		$ads_arr['start_time'] = RC_Time::local_date('Y-m-d', $ads_arr['start_time']);
 		$ads_arr['end_time']   = RC_Time::local_date('Y-m-d', $ads_arr['end_time']);
-		
 		/* 标记为图片链接还是文字链接 */
 		if (!empty($ads_arr['ad_code'])) {
 			if (strpos($ads_arr['ad_code'], 'http://') === false) {
@@ -312,7 +320,12 @@ class admin extends ecjia_admin {
 		
 		$position_list = $this->get_position_select_list();
 		$this->assign('position_list', $position_list);
+		
 		$this->assign('form_action', RC_Uri::url('adsense/admin/update'));
+		
+		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
+		
 		$this->display('adsense_info.dwt');
 	}
 	
@@ -382,8 +395,10 @@ class admin extends ecjia_admin {
 		}else{
 			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
 		}
+		$position_id = intval($_POST['position_id']);
+		$show_client_value = intval($_POST['show_client_value']);
 		$data = array(
-			'position_id' 	=> $_POST['position_id'],
+			'position_id' 	=> $position_id,
 			'ad_name' 		=> $ad_name,
 			'ad_link' 		=> $ad_link,
 			'ad_code' 		=> $ad_code,
@@ -402,10 +417,11 @@ class admin extends ecjia_admin {
 		$ad_postion_db->delete_cache_item($new_cache_key);
 		$old_cache_key = sprintf('%X', crc32('adsense_position-' . $ad_info['position_id']));
 		$ad_postion_db->delete_cache_item($old_cache_key);
+		
 		/* 更新数据 */
 		RC_DB::table('ad')->where('ad_id', $id)->update($data);
 		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
-		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $id))));
+		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $id, 'position_id' => $position_id, 'show_client' => $show_client_value))));
 	}
 	
 	/**
