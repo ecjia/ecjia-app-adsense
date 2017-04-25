@@ -244,6 +244,7 @@ class admin_position extends ecjia_admin {
     	
     	$data = array(
     		'position_name' => $position_name,
+    		'position_code' => $position_code,
     		'ad_width'      => $ad_width,
     		'ad_height'     => $ad_height,
     		'max_number'    => $max_number,
