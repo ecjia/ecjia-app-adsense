@@ -51,7 +51,7 @@
 				    	<br>
                     	<div class="edit-list">
 					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}")}' title="查看广告">查看广告</a>&nbsp;|&nbsp;
-					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin_position/edit", "position_id={$val.position_id}")}' title="{lang key='system::navigator.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
+					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin_position/edit", "position_id={$val.position_id}&city_id={$city_id}")}' title="{lang key='system::navigator.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 					    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin_position/remove", "id={$val.position_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
 						</div>
 				    </td>

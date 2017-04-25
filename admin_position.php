@@ -106,12 +106,10 @@ class admin_position extends ecjia_admin {
 		//获取当前城市ID
 		$city_id = $citymanage->getCurrentCity(intval($_GET['city_id']));
 		$this->assign('city_id', $city_id);
-		
 		//获取轮播组
 		$position = new Ecjia\App\Adsense\PositionManage('adsense', $city_id);
 		$data = $position->getAllPositions();
 		$this->assign('data', $data);
-		
 		
 		$this->assign('search_action', RC_Uri::url('adsense/admin_position/init'));
 		
@@ -203,13 +201,13 @@ class admin_position extends ecjia_admin {
 			'href' => RC_Uri::url('adsense/admin_position/init'),
 			'text' => RC_Lang::get('adsense::adsense.position_list') 
 		));
-		
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位列表'));
+		$city_id = intval($_GET['city_id']);
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init', array('city_id' => $city_id)), 'text' => '广告位列表'));
 		 
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
 		
-		$position_id = $_GET['position_id'];
+		$position_id = intval($_GET['position_id']);
 		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
 		$this->assign('data', $data);
 		 
@@ -256,7 +254,7 @@ class admin_position extends ecjia_admin {
     	
     	RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
     	
-    	return $this->showmessage('编辑广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id))));
+    	return $this->showmessage('编辑广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id, 'city_id' => $city_id))));
     }
 
 	/**
@@ -309,7 +307,7 @@ class admin_position extends ecjia_admin {
 		);
 	
 		$position_id = RC_DB::table('ad_position')->insertGetId($data);
-		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id))));
+		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	
 	/**
