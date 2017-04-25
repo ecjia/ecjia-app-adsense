@@ -79,7 +79,7 @@ class AdPositionRepository extends AbstractRepository
 	
 	public function getAllCitys()
 	{
-		$city = $this->getModel()->where('type', $this->type)->selectRaw('distinct city_id, city_name')->orderBy('city_id', 'asc')->get();
+		$city = $this->getModel()->where('type', $this->type)->whereNotNull('city_id')->selectRaw('distinct city_id, city_name')->orderBy('city_id', 'asc')->get();
 	
 		return $city->toArray();
 	}
