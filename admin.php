@@ -325,6 +325,7 @@ class admin extends ecjia_admin {
 		$this->assign('position_list', $position_list);
 		
 		$this->assign('form_action', RC_Uri::url('adsense/admin/update'));
+		
 		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
 		$this->assign('position_data', $position_data);
 		

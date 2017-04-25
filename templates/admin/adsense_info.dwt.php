@@ -165,7 +165,6 @@
 					        		<!-- {if $ads.ad_id} -->
 					        		<input type="submit" value="{lang key='adsense::adsense.update'}" class="btn btn-gebo" />
 									<input type="hidden" name="id" value="{$ads.ad_id}" />
-									<input type="hidden" name="position_id" value="{$ads.position_id}" />
 									<input type="hidden" name="show_client_value" value="{$show_client}" />
 									<input type="hidden" id="type" value="{$ads.type}" />	
 									<!-- {else} -->
