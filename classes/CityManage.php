@@ -85,7 +85,7 @@ class CityManage
         {
             
             $city_list = $this->getAllCitys();
-            
+            _dump($city_list);
             if (!empty($city_list)) 
             {
                 $city_id = head($city_list)['city_id'];
