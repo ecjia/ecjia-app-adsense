@@ -201,15 +201,16 @@ class admin_position extends ecjia_admin {
 			'href' => RC_Uri::url('adsense/admin_position/init'),
 			'text' => RC_Lang::get('adsense::adsense.position_list') 
 		));
-		$city_id = intval($_GET['city_id']);
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init', array('city_id' => $city_id)), 'text' => '广告位列表'));
+		$position_id = intval($_GET['position_id']);
+		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('data', $data);
+		
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init', array('city_id' => $data['city_id'])), 'text' => '广告位列表'));
 		 
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
 		
-		$position_id = intval($_GET['position_id']);
-		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
-		$this->assign('data', $data);
+	
 		 
 		$this->assign('form_action', RC_Uri::url('adsense/admin_position/update'));
 		

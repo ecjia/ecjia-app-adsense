@@ -20,48 +20,34 @@
 	</h3>
 </div>
 
-<div class="foldable-list move-mod-group" id="goods_info_sort_submit">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle collapsed move-mod-head" data-toggle="collapse" data-target="#position_data">
-				<strong>广告位信息</strong>
-			</a>
-		</div>
-		<div class="accordion-body in collapse" id="position_data">
-			<table class="table table-oddtd m_b0">
-				<tbody class="first-td-no-leftbd">
+<div class="row-fluid">
+     <div class="span612">
+         <div class="alert alert-block alert-info fade in">
+                <h4 class="alert-heading">广告位信息</h4>
+                <table class="table m_t10">
 					<tr>
-						<td><div align="right"><strong>广告位名称：</strong></div></td>
-						<td>{$position_data.position_name}</td>
-						<td><div align="right"><strong>广告位代号：</strong></div></td>
-						<td>{$position_data.position_code}</td>
+						<td style="border-top: 0px"><div align="right">广告位名称：</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.position_name}</div></td>
+						
+						<td style="border-top: 0px"><div align="right">广告位代号：</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.position_code}</div></td>
+						
+						<td style="border-top: 0px"><div align="right">选择城市：</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.city_name}</div></td>
+						
+						<td style="border-top: 0px"><div align="right">可展示数量最大值：</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.max_number}</div></td>
 					</tr>
-					<tr>
-						<td><div align="right"><strong>选择城市：</strong></div></td>
-						<td>{$position_data.city_name}</td>
-						<td><div align="right"><strong>可展示数量最大值：</strong></div></td>
-						<td>{$position_data.max_number}</td>
-					</tr>
-					<tr>
-						<td><div align="right"><strong>建议宽度：</strong></div></td>
-						<td>{$position_data.ad_width}</td>
-						<td><div align="right"><strong>建议高度：</strong></div></td>
-						<td>{$position_data.ad_height}</td>
-					</tr>
-					<tr>
-						<td><div align="right"><strong>广告位描述：</strong></div></td>
-						<td colspan="3">{$position_data.position_desc}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+				</table>
+                <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}' class="btn">快速进入广告位 >></a></p>
+         </div>
+     </div>
 </div>
 
 <!-- {if $available_clients} -->
 	<ul class="nav nav-pills">
  		<!-- {foreach from=$available_clients key=key item=val} -->
-		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
+		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list}&position_id={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
 	<!-- {/foreach} -->
 </ul>
 <!-- {/if} -->

@@ -36,10 +36,12 @@
 			<thead>
 				<tr>
 				    <th class="w70">{lang key='adsense::adsense.ad_id'}</th>
-	                <th>{lang key='adsense::adsense.position_name'}</th>
-	                <th class="w300">{lang key='adsense::adsense.position_desc'}</th>
-				    <th class="w130">{lang key='adsense::adsense.posit_width'}</th>
-				    <th class="w130">{lang key='adsense::adsense.posit_height'}</th>
+	                <th class="w200">{lang key='adsense::adsense.position_name'}</th>
+	                <th class="w150">广告位代号</th>
+	                <th>{lang key='adsense::adsense.position_desc'}</th>
+				    <th class="w100">{lang key='adsense::adsense.posit_width'}</th>
+				    <th class="w100">{lang key='adsense::adsense.posit_height'}</th>
+				    <th class="w80"></th>
                 </tr>
 			</thead>
 			<tbody>
@@ -50,17 +52,20 @@
 				    	<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url="{RC_Uri::url('adsense/admin_position/edit_position_name')}" data-name="position_name" data-pk="{$val.position_id}" data-title="{lang key='adsense::adsense.edit_ad_position_name'}">{$val.position_name}</span>
 				    	<br>
                     	<div class="edit-list">
-					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}")}' title="查看广告">查看广告</a>&nbsp;|&nbsp;
 					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin_position/edit", "position_id={$val.position_id}&city_id={$city_id}")}' title="{lang key='system::navigator.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 					    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin_position/remove", "id={$val.position_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
 						</div>
 				    </td>
+				    <td><span>{$val.position_code}</span></td>
 				    <td><span>{$val.position_desc}</span></td>
 				    <td>
 				    	<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url="{RC_Uri::url('adsense/admin_position/edit_ad_width')}" data-name="ad_width" data-pk="{$val.position_id}" data-title="{lang key='adsense::adsense.edit_position_width'}">{$val.ad_width}</span>
 				    </td>
 				    <td>
 					    <span class="cursor_pointer" data-text="text" data-trigger="editable" data-url="{RC_Uri::url('adsense/admin_position/edit_ad_height')}" data-name="ad_height" data-pk="{$val.position_id}" data-title="{lang key='adsense::adsense.edit_position_height'}">{$val.ad_height}</span>
+				    </td>
+				    <td>
+					   	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}")}' title="查看广告"><button class="btn">查看广告</button></a>
 				    </td>
 				</tr>
 				<!-- {foreachelse} -->

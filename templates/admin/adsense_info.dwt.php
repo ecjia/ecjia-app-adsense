@@ -198,23 +198,8 @@
 											</div>
 											
 											<div class="control-group control-group-small formSep">
-												<label class="control-label">建议宽度：</label>
-												<div class="span6 l_h30">{$position_data.ad_width}</div>
-											</div>
-											
-											<div class="control-group control-group-small formSep">
-												<label class="control-label">建议高度：</label>
-												<div class="span6 l_h30">{$position_data.ad_height}</div>
-											</div>
-											
-											<div class="control-group control-group-small formSep">
 												<label class="control-label">可展示数量最大值：</label>
 												<div class="span6 l_h30">{$position_data.max_number}</div>
-											</div>
-											
-											<div class="control-group control-group-small">
-												<label class="control-label">描述：</label>
-												<div class="span6 l_h30">{$position_data.position_desc}</div>
 											</div>
 										</div>
 									</div>
