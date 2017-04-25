@@ -112,7 +112,6 @@ class admin extends ecjia_admin {
 			$this->assign('client_list', $client_list);
 			$this->assign('available_clients', $available_clients);
 		
-		
 			$show_client = intval($_GET['show_client']);
 			if (empty($show_client) && !empty($available_clients)) {
 				$show_client = $client_list[head(array_keys($available_clients))];
