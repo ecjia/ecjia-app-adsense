@@ -81,10 +81,7 @@ class admin_position extends ecjia_admin {
 	 */
 	public function init() {
 		$this->admin_priv('ad_position_manage');
-		
-		$cycleImageRepository = new Ecjia\App\Adsense\Repositories\CycleImageRepository;
-		$a = $cycleImageRepository->find(14);
-		
+			
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位管理'));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
