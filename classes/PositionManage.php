@@ -55,7 +55,7 @@ class PositionManage
     protected $type;
     
     protected $city;
-    
+        
     
     
     
@@ -66,7 +66,7 @@ class PositionManage
     }
     
     
-    public function getAllPositions()
+    public function getAllPositions(array $orderBy = [])
     {
     
         if ($this->type == 'cycleimage') {
@@ -75,9 +75,8 @@ class PositionManage
             return $repository->getAllGroups($this->city);
             
         } elseif($this->type == 'adsense'){
-        	
         	$repository = new AdPositionRepository();
-        	return $repository->getAllGroups($this->city);
+        	return $repository->getAllGroups($this->city, $orderBy);
         	
         }
         

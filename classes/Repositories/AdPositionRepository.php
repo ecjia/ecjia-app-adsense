@@ -61,12 +61,12 @@ class AdPositionRepository extends AbstractRepository
 	 */
 	protected $type = 'adsense';
 	
-	
 	protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
 	
-	
-	public function getAllGroups($city)
+	public function getAllGroups($city, array $orderBy)
 	{
+		$this->orderBy = $orderBy;
+		
 		$where = [
     		'type'     => $this->type,
     		'city_id'  => $city,
@@ -76,7 +76,7 @@ class AdPositionRepository extends AbstractRepository
 		$where = [
 		    'type'     => $this->type,
 		    'city_id'  => null,
-		    ];
+		];
 		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
 		
 		$group = $group1->merge($group2);
