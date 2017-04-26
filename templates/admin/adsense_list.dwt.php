@@ -61,10 +61,10 @@
 				    <th class="w100">{lang key='adsense::adsense.ad_id'}</th>
                 	<th>{lang key='adsense::adsense.ad_name'}</th>
 			    	<th class="w100">{lang key='adsense::adsense.media_type'}</th>
-			    	<th class="w150">{lang key='adsense::adsense.start_date'}</th>
-			    	<th class="w150">{lang key='adsense::adsense.end_date'}</th>
+			    	<th class="w100">{lang key='adsense::adsense.start_date'}</th>
+			    	<th class="w100">{lang key='adsense::adsense.end_date'}</th>
 			    	<th class="w100">是否开启</th>
-			    	<th class="w100">排序</th>
+			    	<th class="w50">排序</th>
                 </tr>
 			</thead>
 			<tbody>
@@ -78,12 +78,13 @@
 					    {$list.ad_name}
 					    </span>
 					    
-					    <span>
-					    {if $list.image}
-					    <a tabindex="0" role="button" href="javascript:;" class="no-underline cursor_pointor" data-id="{$list.ad_id}" data-trigger="focus" data-toggle="popover" data-placement="top" title="{$list.ad_name}">{lang key='adsense::adsense.preview_image'}</a>
-					    <div class="hide" id="content_{$list.ad_id}"><img class="mh150" src="{$list.image}"></div> 
+					     <span>
+					    {if $list.ad_code}
+						    <a tabindex="0" role="button" href="javascript:;" class="no-underline cursor_pointor" data-id="{$list.ad_id}" data-trigger="focus" data-toggle="popover" data-placement="top" title="{$list.ad_name}">（预览）</a>
+						    <div class="hide" id="content_{$list.ad_id}"><img class="mh150" src="{RC_Upload::upload_url()}/{$list.ad_code}"></div> 
 					    {/if}
 					    </span>
+					    
 				    	<div class="edit-list">
 					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/edit", "ad_id={$list.ad_id}&position_id={$position_id}&show_client={$show_client}")}' title="{lang key='system::navigator.edit'}">{lang key='adsense::adsense.edit'}</a>&nbsp;|&nbsp;
 				      		<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin/remove","ad_id={$list.ad_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>

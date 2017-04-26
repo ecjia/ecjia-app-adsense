@@ -136,7 +136,6 @@ class admin extends ecjia_admin {
 				$ads_list[$key]['start_time'] = RC_Time::local_date('Y-m-d', $val['start_time']);
 				$ads_list[$key]['end_time'] = RC_Time::local_date('Y-m-d', $val['end_time']);
 			}
-			
 			$this->assign('ads_list', $ads_list);
 		}	
 
