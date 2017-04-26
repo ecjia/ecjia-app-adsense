@@ -91,7 +91,7 @@
 						</div>
 				    </td>
 				    <td>
-				    {if $list.media_type === 0}图片{elseif $list.media_type ===2}代码{elseif $list.media_type ===3}文字{/if}
+				    {if $list.media_type eq 0}图片{elseif $list.media_type eq 2}代码{else}文字{/if}
 				    </td>
 				    <td>{$list.start_time}</td>
 				    <td>{$list.end_time}</td>
