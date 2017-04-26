@@ -98,10 +98,13 @@ class admin extends ecjia_admin {
 		
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
+		$city_id = intval($_GET['city_id']);
+		
 		$this->assign('position_id', $position_id);
 		$this->assign('show_client', $show_client);
-		
+
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_list'));
+		$this->assign('back_position_list', array('text' => '广告位列表','href' => RC_Uri::url('adsense/admin_position/init',array('city_id' => $city_id))));
 		$this->assign('action_link', array('text' => RC_Lang::get('adsense::adsense.ads_add'),'href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id))));
 		
 		if ($position_id > 0) {

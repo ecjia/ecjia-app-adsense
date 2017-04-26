@@ -60,7 +60,7 @@
 				    <td><span>{$val.ad_width}*{$val.ad_height}</span></td>
 				    <td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin_position/edit_sort", "city_id={$city_id}")}' data-name="sort_order" data-pk="{$val.position_id}" data-title="排序">{$val.sort_order}</span></td>
 				    <td>
-					   	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}")}' title="查看广告"><button class="btn">查看广告</button></a>
+					   	<a class="data-pjax" href='{RC_Uri::url("adsense/admin/init", "position_id={$val.position_id}&city_id={$city_id}")}' title="查看广告"><button class="btn">查看广告</button></a>
 				    </td>
 				</tr>
 				<!-- {foreachelse} -->

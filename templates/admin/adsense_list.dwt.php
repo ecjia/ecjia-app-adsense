@@ -8,18 +8,6 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
-<div>
-	<h3 class="heading">
-		<!-- {if $ur_here}{$ur_here}{/if} -->
-		{if $action_link}
-		<a class="btn plus_or_reply data-pjax" href="{$action_link.href}" id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a>
-		{/if}
-		{if $back_position_list}
-        <a class="btn plus_or_reply data-pjax" href="{$back_position_list.href}" id="sticky_a"><i class="fontello-icon-reply"></i>{$back_position_list.text}</a>
-        {/if}
-	</h3>
-</div>
-
 <div class="row-fluid">
      <div class="span612">
          <div class="alert alert-block alert-info fade in">
@@ -42,6 +30,19 @@
                 <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p>
          </div>
      </div>
+</div>
+
+<div>
+	<h3 class="heading">
+		<!-- {if $ur_here}{$ur_here}{/if} -->
+		{if $action_link}
+			<a class="btn plus_or_reply data-pjax" href="{$action_link.href}" id="sticky_a"><i class="fontello-icon-plus"></i>{$action_link.text}</a>
+		{/if}
+		
+		{if $back_position_list}
+        	<a class="btn plus_or_reply data-pjax" href="{$back_position_list.href}" id="sticky_a"><i class="fontello-icon-reply"></i>{$back_position_list.text}</a>
+        {/if}
+	</h3>
 </div>
 
 <!-- {if $available_clients} -->
