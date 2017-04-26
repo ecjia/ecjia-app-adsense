@@ -184,22 +184,22 @@
 										<div class="accordion-inner">
 											<div class="control-group control-group-small">
 												<label class="control-label">名称：</label>
-												<div class="span6 l_h30">{$position_data.position_name}</div>
+												<div class="span6 l_h30">{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</div>
 											</div>
 											
 											<div class="control-group control-group-small">
-												<label class="control-label">代号：</label>
-												<div class="span6 l_h30">{$position_data.position_code}</div>
-											</div>
-											
-											<div class="control-group control-group-small">
-												<label class="control-label">选择城市：</label>
+												<label class="control-label">所在城市：</label>
 												<div class="span6 l_h30">{$position_data.city_name}</div>
 											</div>
 											
 											<div class="control-group control-group-small">
-												<label class="control-label">可展示数量最大值：</label>
+												<label class="control-label">显示数量：</label>
 												<div class="span6 l_h30">{$position_data.max_number}</div>
+											</div>
+											
+											<div class="control-group control-group-small">
+												<label class="control-label">建议大小：</label>
+												<div class="span6 l_h30">{$position_data.ad_width}*{$position_data.ad_height}</div>
 											</div>
 										</div>
 									</div>

@@ -10,7 +10,7 @@
 <!-- {block name="main_content"} -->
 <div class="alert">
 	<a class="close" data-dismiss="alert">×</a>
-	<strong>温馨提示：</strong>建议您添加"默认"广告位，当并未设置地区时就会显示默认的广告位。
+	<strong>温馨提示：</strong>建议您添加为"默认"地区的广告位，当并未设置地区时就会显示默认的广告位。
 </div>
 
 <div>

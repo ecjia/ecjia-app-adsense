@@ -27,19 +27,19 @@
                 <table class="table m_t10">
 					<tr>
 						<td style="border-top: 0px"><div align="right">广告位名称：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.position_name}</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</div></td>
 						
-						<td style="border-top: 0px"><div align="right">广告位代号：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.position_code}</div></td>
-						
-						<td style="border-top: 0px"><div align="right">选择城市：</div></td>
+						<td style="border-top: 0px"><div align="right">所在城市：</div></td>
 						<td style="border-top: 0px"><div align="left">{$position_data.city_name}</div></td>
 						
-						<td style="border-top: 0px"><div align="right">可展示数量最大值：</div></td>
+						<td style="border-top: 0px"><div align="right">建议大小：</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.ad_width}*{$position_data.ad_height}</div></td>
+						
+						<td style="border-top: 0px"><div align="right">显示数量：</div></td>
 						<td style="border-top: 0px"><div align="left">{$position_data.max_number}</div></td>
 					</tr>
 				</table>
-                <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}' class="btn">快速进入广告位 >></a></p>
+                <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p>
          </div>
      </div>
 </div>

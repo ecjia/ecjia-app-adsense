@@ -10,7 +10,7 @@
 {if $city_list}
 <div class="alert">
 	<a class="close" data-dismiss="alert">×</a>
-	<strong>温馨提示：</strong>建议您添加"默认"轮播组，当并未设置地区时就会显示默认的轮播组。
+	<strong>温馨提示：</strong>建议您添加为"默认"地区的轮播组，当并未设置地区时就会显示默认的轮播组。
 </div>
 
 <div class="row-fluid batch">
