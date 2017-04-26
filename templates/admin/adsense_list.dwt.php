@@ -36,7 +36,7 @@
 						<td style="border-top: 0px"><div align="left">{$position_data.max_number}</div></td>
 						
 						<td style="border-top: 0px"><div align="right">建议大小：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.ad_width}*{$position_data.ad_height}Px</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.ad_width}*{$position_data.ad_height}px</div></td>
 					</tr>
 				</table>
                 <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p>

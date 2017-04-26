@@ -50,13 +50,12 @@
 					<td><span>{$val.position_id}</span></td>
 				    <td class="hide-edit-area hide_edit_area_bottom">
 				    	<span class="cursor_pointer" data-text="text" data-trigger="editable" data-url="{RC_Uri::url('adsense/admin_position/edit_position_name')}" data-name="position_name" data-pk="{$val.position_id}" data-title="{lang key='adsense::adsense.edit_ad_position_name'}">{$val.position_name}</span>
-				    	<br>
                     	<div class="edit-list">
 					      	<a class="data-pjax" href='{RC_Uri::url("adsense/admin_position/edit", "position_id={$val.position_id}&city_id={$city_id}")}' title="{lang key='system::navigator.edit'}">{lang key='system::system.edit'}</a>&nbsp;|&nbsp;
 					    	<a class="ajaxremove ecjiafc-red" data-toggle="ajaxremove" data-msg="{lang key='adsense::adsense.confirm_remove'}" href='{RC_Uri::url("adsense/admin_position/remove", "id={$val.position_id}")}' title="{lang key='adsense::adsense.remove'}">{lang key='adsense::adsense.remove'}</a>
 						</div>
 				    </td>
-				    <td><span>{$val.position_code}</span></td>
+				    <td><span>{if $val.position_code}{$val.position_code}{else}无{/if}</span></td>
 				    <td><span>{$val.position_desc}</span></td>
 				    <td><span>{$val.ad_width}*{$val.ad_height}</span></td>
 				    <td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin_position/edit_sort", "city_id={$city_id}")}' data-name="sort_order" data-pk="{$val.position_id}" data-title="排序">{$val.sort_order}</span></td>

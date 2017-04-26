@@ -195,7 +195,7 @@
 											
 											<div class="control-group control-group-small">
 												<label class="control-label">建议大小：</label>
-												<div class="span6 l_h30">{$position_data.ad_width}*{$position_data.ad_height}Px</div>
+												<div class="span6 l_h30">{$position_data.ad_width}*{$position_data.ad_height}px</div>
 											</div>
 										</div>
 									</div>
