@@ -41,7 +41,7 @@
 	                <th>{lang key='adsense::adsense.position_desc'}</th>
 				    <th class="w100">建议大小</th>
 				    <th class="w100">排序</th>
-				    <th class="w80"></th>
+				    <th class="w80">查看</th>
                 </tr>
 			</thead>
 			<tbody>
