@@ -94,7 +94,6 @@ class admin_position extends ecjia_admin {
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.position_list'));
 		$this->assign('action_link', array('text' => RC_Lang::get('adsense::adsense.position_add'), 'href' => RC_Uri::url('adsense/admin_position/add')));
 		
-		
 		//获取城市
 		$citymanage = new Ecjia\App\Adsense\CityManage('adsense');
 		$city_list = $citymanage->getAllCitys();
@@ -104,9 +103,17 @@ class admin_position extends ecjia_admin {
 		$city_id = $citymanage->getCurrentCity(intval($_GET['city_id']));
 		$this->assign('city_id', $city_id);
 		
-		//获取广告位列表
+		$sort_by   = trim($_GET['sort_by']);
+		$sort_order= trim($_GET['sort_order']);
+		if(!empty($sort_by)){
+			$orderBy = array($sort_by => $sort_order);
+		}else{
+			$orderBy = array('sort_order' => 'asc', 'position_id' => 'desc');
+		}
+		
+		//获取广告位列表s
 		$position = new Ecjia\App\Adsense\PositionManage('adsense', $city_id);
-		$data = $position->getAllPositions();
+		$data = $position->getAllPositions($orderBy);
 		$this->assign('data', $data);
 
 		$this->assign('search_action', RC_Uri::url('adsense/admin_position/init'));

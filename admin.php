@@ -105,14 +105,19 @@ class admin extends ecjia_admin {
 
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_list'));
 		$this->assign('back_position_list', array('text' => '广告位列表','href' => RC_Uri::url('adsense/admin_position/init',array('city_id' => $city_id))));
-		$this->assign('action_link', array('text' => RC_Lang::get('adsense::adsense.ads_add'),'href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id))));
+		$this->assign('action_link', array('text' => RC_Lang::get('adsense::adsense.ads_add'),'href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id, 'show_client' => $show_client))));
 		
 		if ($position_id > 0) {
 			//获取投放平台
 			$ad = new Ecjia\App\Adsense\Repositories\AdRepository('adsense');
 			$client_list = $ad->getAllClients();
-			$available_clients = $ad->getAvailableClients($position_id);
 			$this->assign('client_list', $client_list);
+			
+			$available_clients = $ad->getAvailableClients($position_id);
+			$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
+			if($show_client_number > 0) {
+				array_unshift($available_clients,$show_client_number);
+			}
 			$this->assign('available_clients', $available_clients);
 		
 			$show_client = intval($_GET['show_client']);
@@ -120,8 +125,13 @@ class admin extends ecjia_admin {
 				$show_client = $client_list[head(array_keys($available_clients))];
 			}
 			$this->assign('show_client', $show_client);
+			
 			//对应的广告列表
-			$ads_list = $ad->getAds($position_id, $show_client);
+			if(empty($show_client)){
+				$ads_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
+			}else{
+				$ads_list = $ad->getAds($position_id, $show_client);
+			}
 			foreach ($ads_list as $key => $val) {
 				$ads_list[$key]['start_time'] = RC_Time::local_date('Y-m-d', $val['start_time']);
 				$ads_list[$key]['end_time'] = RC_Time::local_date('Y-m-d', $val['end_time']);
@@ -131,7 +141,7 @@ class admin extends ecjia_admin {
 
 		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
 		$this->assign('position_data', $position_data);
-		
+	
 		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
 		
 		$this->display('adsense_list.dwt');
@@ -151,9 +161,12 @@ class admin extends ecjia_admin {
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A" target="_blank">' . RC_Lang::get('adsense::adsense.about_add_adsense') . '</a>') . '</p>');
 		
+		$show_client =intval($_GET['show_client']);
+		$this->assign('show_client', $show_client);
+		
 		$position_id = intval($_GET['position_id']);
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_add'));
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init',array('position_id' => $position_id)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin/init',array('position_id' => $position_id, 'show_client' => $show_client)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
 		
 		$position_list = $this->get_position_select_list();
 		$this->assign('position_list', $position_list);
@@ -162,7 +175,7 @@ class admin extends ecjia_admin {
 		
 		$client_list = $this->get_show_client();
 		$this->assign('client_list', $client_list);
-		
+
 		$ads['start_time'] = date('Y-m-d');
 		$ads['end_time'] = date('Y-m-d', time() + 30 * 86400);
 		$ads['enabled'] = 1;
@@ -343,6 +356,7 @@ class admin extends ecjia_admin {
 		$type 		= !empty($_POST['media_type']) 	? intval($_POST['media_type']) 	: 0;
 		$id 		= !empty($_POST['id']) 			? intval($_POST['id']) 			: 0;
 		$ad_name	= !empty($_POST['ad_name']) 	? trim($_POST['ad_name']) 		: '';
+		$enabled    = intval($_POST['enabled']);
 		
 		if ($type === 0) {
 			$ad_link = !empty($_POST['ad_link']) ? trim($_POST['ad_link']) : '';
@@ -402,31 +416,40 @@ class admin extends ecjia_admin {
 		}
 		$position_id = intval($_POST['position_id']);
 		$show_client_value = intval($_POST['show_client_value']);
-		$data = array(
-			'position_id' 	=> $position_id,
-			'ad_name' 		=> $ad_name,
-			'ad_link' 		=> $ad_link,
-			'ad_code' 		=> $ad_code,
-			'start_time' 	=> $start_time,
-			'end_time' 		=> $end_time,
-			'link_man' 		=> !empty($_POST['link_man']) ? $_POST['link_man'] : '',
-			'link_email' 	=> !empty($_POST['link_email']) ? $_POST['link_email'] : '',
-			'link_phone' 	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
-			'enabled' 		=> !empty($_POST['enabled']) ? $_POST['enabled'] : '',
-			'sort_order' 	=> $sort_order,
-			'show_client'   => $show_client,
-		);
-		/* 释放广告位缓存 */
-		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
-		$new_cache_key = sprintf('%X', crc32('adsense_position-' . $_POST['position_id']));
-		$ad_postion_db->delete_cache_item($new_cache_key);
-		$old_cache_key = sprintf('%X', crc32('adsense_position-' . $ad_info['position_id']));
-		$ad_postion_db->delete_cache_item($old_cache_key);
-		
-		/* 更新数据 */
-		RC_DB::table('ad')->where('ad_id', $id)->update($data);
-		ecjia_admin::admin_log($ad_name, 'edit', 'ads');
-		return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $id, 'position_id' => $position_id, 'show_client' => $show_client_value))));
+	
+		$old_enabled = RC_DB::TABLE('ad')->where('ad_id', $id)->pluck('enabled');
+		$now_end_time = $_POST['end_time'];
+		$now = RC_Time::local_date('Y-m-d', RC_Time::gmtime());
+	
+		if($now > $now_end_time && $old_enabled != $enabled){
+			return $this->showmessage('该广告已过期暂无法进行开启/关闭操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$data = array(
+				'position_id' 	=> $position_id,
+				'ad_name' 		=> $ad_name,
+				'ad_link' 		=> $ad_link,
+				'ad_code' 		=> $ad_code,
+				'start_time' 	=> $start_time,
+				'end_time' 		=> $end_time,
+				'link_man' 		=> !empty($_POST['link_man']) ? $_POST['link_man'] : '',
+				'link_email' 	=> !empty($_POST['link_email']) ? $_POST['link_email'] : '',
+				'link_phone' 	=> !empty($_POST['link_phone']) ? $_POST['link_phone'] : '',
+				'enabled' 		=> $enabled,
+				'sort_order' 	=> $sort_order,
+				'show_client'   => $show_client,
+			);
+			/* 释放广告位缓存 */
+			$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+			$new_cache_key = sprintf('%X', crc32('adsense_position-' . $_POST['position_id']));
+			$ad_postion_db->delete_cache_item($new_cache_key);
+			$old_cache_key = sprintf('%X', crc32('adsense_position-' . $ad_info['position_id']));
+			$ad_postion_db->delete_cache_item($old_cache_key);
+			
+			/* 更新数据 */
+			RC_DB::table('ad')->where('ad_id', $id)->update($data);
+			ecjia_admin::admin_log($ad_name, 'edit', 'ads');
+			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $id, 'position_id' => $position_id))));
+		}
 	}
 		
 	/**
@@ -508,10 +531,15 @@ class admin extends ecjia_admin {
 		$val      = intval($_POST['val']);
 		$position_id  = intval($_GET['position_id']);
 		$show_client  = intval($_GET['show_client']);
-			
-		RC_DB::table('ad')->where('ad_id', $id)->update(array('enabled'=> $val));
-			
-		return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+		
+		$end_time = RC_Time::local_date('Y-m-d', RC_DB::TABLE('ad')->where('ad_id', $id)->pluck('end_time'));
+		$now = RC_Time::local_date('Y-m-d', RC_Time::gmtime());
+		if($now > $end_time){
+			return $this->showmessage('该广告已过期暂无法进行开启/关闭操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			RC_DB::table('ad')->where('ad_id', $id)->update(array('enabled'=> $val));
+			return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+		}
 	}
 	
 	/**
