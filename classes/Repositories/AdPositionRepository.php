@@ -71,13 +71,13 @@ class AdPositionRepository extends AbstractRepository
     		'type'     => $this->type,
     		'city_id'  => $city,
 		];
-		$group1 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height']);
+		$group1 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
 	
 		$where = [
 		    'type'     => $this->type,
 		    'city_id'  => null,
 		    ];
-		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height']);
+		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
 		
 		$group = $group1->merge($group2);
 		

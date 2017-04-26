@@ -335,55 +335,18 @@ class admin_position extends ecjia_admin {
 	}
 	
 	/**
-	 * 编辑广告位宽
+	 * 编辑排序
 	 */
-	public function edit_ad_width() {
+	public function edit_sort() {
 		$this->admin_priv('ad_position_update');
-		
-		$id = intval($_POST['pk']);
-		$ad_width = trim($_POST['value']);
-		if (!empty($ad_width)) {
-			if (!preg_match('/^[\\.0-9]+$/', $ad_width)) {
-				return $this->showmessage(RC_Lang::get('adsense::adsense.width_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			if ($ad_width > 1024 || $ad_width < 1) {
-				return $this->showmessage(RC_Lang::get('adsense::adsense.width_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array(
-				'ad_width' => $ad_width 
-			);
-			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
-			ecjia_admin::admin_log($ad_width, 'edit', 'ads_position');
-			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/init')));
-		} else {
-			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_width_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-	}
 	
-	/**
-	 * 编辑广告位宽
-	 */
-	public function edit_ad_height() {
-		$this->admin_priv('ad_position_update', ecjia::MSGTYPE_JSON);
-		
-		$id = intval($_POST['pk']);
-		$ad_height = trim($_POST['value']);
-		if (!empty($ad_height)) {
-			if (!preg_match('/^[\\.0-9]+$/', $ad_height)) {
-				return $this->showmessage(RC_Lang::get('adsense::adsense.height_number'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			if ($ad_height > 1024 || $ad_height < 1) {
-				return $this->showmessage(RC_Lang::get('adsense::adsense.height_value'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-			}
-			$data = array(
-				'ad_height' => $ad_height 
-			);
-			RC_DB::table('ad_position')->where('position_id', $id)->update($data);
-			ecjia_admin::admin_log($ad_height, 'edit', 'ads_position');
-			return $this->showmessage(RC_Lang::get('adsense::adsense.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/init')));
-		} else {
-			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_height_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
+		$id    = intval($_POST['pk']);
+		$sort_order   = intval($_POST['value']);
+		$city_id      = intval($_GET['city_id']);
+		$show_client  = intval($_GET['show_client']);
+		 
+		RC_DB::table('ad_position')->where('position_id', $id)->update(array('sort_order'=> $sort_order));
+		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_position/init', array('position_id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
 	}
 	
 	/**
