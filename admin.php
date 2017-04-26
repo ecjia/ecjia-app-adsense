@@ -111,8 +111,13 @@ class admin extends ecjia_admin {
 			//获取投放平台
 			$ad = new Ecjia\App\Adsense\Repositories\AdRepository('adsense');
 			$client_list = $ad->getAllClients();
-			$available_clients = $ad->getAvailableClients($position_id);
 			$this->assign('client_list', $client_list);
+			
+			$available_clients = $ad->getAvailableClients($position_id);
+			$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
+			if($show_client_number > 0) {
+				array_unshift($available_clients,$show_client_number);
+			}
 			$this->assign('available_clients', $available_clients);
 		
 			$show_client = intval($_GET['show_client']);
