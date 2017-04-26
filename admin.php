@@ -475,7 +475,7 @@ class admin extends ecjia_admin {
 	 * 编辑广告名称
 	 */
 	public function edit_ad_name() {
-		$this->admin_priv('adsense_update', ecjia::MSGTYPE_JSON);
+		$this->admin_priv('adsense_update');
 	
 		$id = intval($_POST['pk']);
 		$ad_name = trim($_POST['value']);
@@ -493,6 +493,37 @@ class admin extends ecjia_admin {
 		} else {
 			return $this->showmessage(RC_Lang::get('adsense::adsense.ad_name_empty'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
+	}
+	
+	/**
+	 * 切换是否显示
+	 */
+	public function toggle_show() {
+		$this->admin_priv('adsense_update');
+			
+		$id       = intval($_POST['id']);
+		$val      = intval($_POST['val']);
+		$position_id  = intval($_GET['position_id']);
+		$show_client  = intval($_GET['show_client']);
+			
+		RC_DB::table('ad')->where('ad_id', $id)->update(array('enabled'=> $val));
+			
+		return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+	}
+	
+	/**
+	 * 编辑排序
+	 */
+	public function edit_sort() {
+		$this->admin_priv('adsense_update');
+	
+		$id    		  = intval($_POST['pk']);
+		$sort_order   = intval($_POST['value']);
+		$show_client  = intval($_GET['show_client']);
+		$position_id   = intval($_GET['position_id']);
+			
+		RC_DB::table('ad')->where('ad_id', $id)->update(array('sort_order'=> $sort_order));
+		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin/init', array('position_id' => $position_id, 'show_client' => $show_client))));
 	}
 	
 	/**

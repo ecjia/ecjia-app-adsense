@@ -36,7 +36,7 @@
 						<td style="border-top: 0px"><div align="left">{$position_data.max_number}</div></td>
 						
 						<td style="border-top: 0px"><div align="right">建议大小：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.ad_width}*{$position_data.ad_height}</div></td>
+						<td style="border-top: 0px"><div align="left">{$position_data.ad_width}*{$position_data.ad_height}Px</div></td>
 					</tr>
 				</table>
                 <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p>
@@ -62,7 +62,8 @@
 			    	<th class="w100">{lang key='adsense::adsense.media_type'}</th>
 			    	<th class="w150">{lang key='adsense::adsense.start_date'}</th>
 			    	<th class="w150">{lang key='adsense::adsense.end_date'}</th>
-			    	<th class="w100">{lang key='adsense::adsense.click_count'}</th>
+			    	<th class="w100">是否开启</th>
+			    	<th class="w100">排序</th>
                 </tr>
 			</thead>
 			<tbody>
@@ -92,7 +93,10 @@
 				    </td>
 				    <td>{$list.start_time}</td>
 				    <td>{$list.end_time}</td>
-				    <td>{$list.click_count}</td>
+				    <td>
+				    	<i class="{if $list.enabled eq '1'}fontello-icon-ok cursor_pointer{else}fontello-icon-cancel cursor_pointer{/if}" data-trigger="toggleState" data-url='{RC_Uri::url("adsense/admin/toggle_show","position_id={$position_id}&city_id={$city_id}&show_client={$show_client}")}' data-id="{$list.ad_id}" ></i>
+					</td>
+					<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/admin/edit_sort", "position_id={$position_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$list.ad_id}" data-title="排序">{$list.sort_order}</span></td>
                 </tr>
                 <!-- {foreachelse} -->
                 <tr><td class="no-records" colspan="7">{lang key='system::system.no_records'}</td></tr>

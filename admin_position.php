@@ -348,7 +348,7 @@ class admin_position extends ecjia_admin {
 		RC_DB::table('ad_position')->where('position_id', $id)->update(array('sort_order'=> $sort_order));
 		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_position/init', array('position_id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
 	}
-	
+
 	/**
 	 * 获取广告位置列表
 	 */
