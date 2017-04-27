@@ -82,7 +82,7 @@ function adsense_data($response, $request) {
         $client = Ecjia\App\Adsense\Client::IPHONE;
     }
     
-    $result = RC_Api::api('adsense',  'adsense', [
+    $adsense_list = RC_Api::api('adsense',  'adsense', [
         'code'     => 'app_start_adsense',
         'client'   => $client,
         'city'     => $city_id
@@ -101,18 +101,18 @@ function adsense_data($response, $request) {
 	
 // 	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
 	
-	$adsense_list = array();
-	if (!empty($result)) {
-		foreach ($result as $val) {
-			$adsense_list[] = array(
-				'id'		 => $val['ad_id'],
-				'ad_link'	 => $val['ad_link'],
-				'ad_img'	 => empty($val['ad_code']) ? '' : RC_Upload::upload_url().'/'.$val['ad_code'],
-				'start_time' => RC_Time::local_date(ecjia::config('date_format'), $val['start_time']),
-				'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $val['end_time']),
-			);
-		}
-	}
+// 	$adsense_list = array();
+// 	if (!empty($result)) {
+// 		foreach ($result as $val) {
+// 			$adsense_list[] = array(
+// 				'id'		 => $val['ad_id'],
+// 				'ad_link'	 => $val['ad_link'],
+// 				'ad_img'	 => empty($val['ad_code']) ? '' : RC_Upload::upload_url().'/'.$val['ad_code'],
+// 				'start_time' => RC_Time::local_date(ecjia::config('date_format'), $val['start_time']),
+// 				'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $val['end_time']),
+// 			);
+// 		}
+// 	}
 	
 	$response = $adsense_list;
 	
