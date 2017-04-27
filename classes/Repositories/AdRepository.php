@@ -57,6 +57,34 @@ class AdRepository extends AbstractRepository
         return $available->toArray();
     }
     
+    public function getAdClients($position, $filter) {
+    	if (empty($position)) {
+    		return [];
+    	}
+    
+    	$clients = $this->getAllClients();
+    
+    	$available = collect($clients)->mapWithKeys(function ($item, $key) use ($position, $filter) {
+    		$where = [
+	    		'position_id' => $position,
+	    		'show_client' => ['show_client', '&', $item],
+    		];
+    		if(isset($filter)){
+    			$where = [
+	    			'position_id' => $position,
+		    		'show_client' => ['show_client', '&', $item],
+	    			'media_type' => $filter,
+    			];
+    		}
+    		$count = $this->findWhere($where, ['ad_id'])->count();
+    		if ($count > 0)
+    			return [$key => $count];
+    		return [];
+    	});
+    
+    		return $available->toArray();
+    }
+    
     /**
      * 获取特殊广告列表
      * @param string $position

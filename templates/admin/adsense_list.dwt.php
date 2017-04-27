@@ -40,7 +40,7 @@
 	<!-- {if $available_clients} -->
 		<ul class="nav nav-pills">
 	 		<!-- {foreach from=$available_clients key=key item=val} -->
-			<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{if $key === 0}未选择{else}{$key}{/if}<span class="badge badge-info">{$val}</span></a></li>
+			<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}&media_type={$smarty.get.media_type}"}'>{if $key === 0}未选择{else}{$key}{/if}<span class="badge badge-info">{$val}</span></a></li>
 			<!-- {/foreach} -->
 			
 			<form class="f_r form-inline"  method="post" action="{$search_action}" name="searchForm">
