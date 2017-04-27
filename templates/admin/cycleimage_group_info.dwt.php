@@ -31,10 +31,9 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        </div>
 			        <div class="control-group formSep">
 			        	<label class="control-label">轮播组代号：</label>
-				        <div class="controls l_h30">
+				        <div class="controls">
 							{if $data.position_id}
-								<strong>{$data.position_code}</strong>
-								<input type="hidden" name="position_code" value="{$data.position_code}" />
+								<input type="text" disabled="disabled"  class="w350"  value="{$data.position_code}" />
 							{else}
 								<input class="w350" type="text" name="position_code" />
 				          		<span class="input-must">{lang key='system::system.require_field'}</span>
