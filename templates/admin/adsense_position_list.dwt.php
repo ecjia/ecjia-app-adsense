@@ -22,13 +22,11 @@
 	</h3>
 </div>
 
-<div class="row-fluid batch">
-	<ul class="nav nav-pills">
-	 <!-- {foreach from=$city_list item=val} -->
-		<li class="{if $city_id eq $val.city_id}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_position/init" args="city_id={$val.city_id}"}'>{$val.city_name}<span class="badge badge-info"></span></a></li>
-	 <!-- {/foreach} -->
-	</ul>
-</div>
+<ul class="nav nav-pills">
+ <!-- {foreach from=$city_list item=val} -->
+	<li class="{if $city_id eq $val.city_id}active{/if}"><a class="data-pjax" href='{url path="adsense/admin_position/init" args="city_id={$val.city_id}"}'>{$val.city_name}<span class="badge badge-info"></span></a></li>
+ <!-- {/foreach} -->
+</ul>
 
 <div class="row-fluid">
 	<div class="span12">
