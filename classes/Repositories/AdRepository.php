@@ -100,6 +100,38 @@ class AdRepository extends AbstractRepository
 
         return $result->toArray();
     }
+    
+    
+    /**
+     * 获取广告列表
+     * @param string $position
+     * @param integer $client
+     * @param integer $maxNum
+     * @param integer $filter
+     * @return integer 
+     */
+    public function getAdsFilter($position, $client, $maxNum = 5, $filter) {
+    	if (empty($client))
+    	{
+    		return [];
+    	}
+    	$where = [
+	    	'position_id' => $position,
+	    	'show_client' => ['show_client', '&', $client],
+    	];
+    	
+    	if(isset($filter)){
+    		$where = [
+	    		'position_id' => $position,
+	    		'show_client' => ['show_client', '&', $client],
+    			'media_type' => $filter,
+    		];
+    	}
+    	
+    	$result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'media_type', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count'], $maxNum);
+    
+    	return $result->toArray();
+    }
    
     public function findWhereLimit(array $where, $columns = ['*'], $limit= null)
     {

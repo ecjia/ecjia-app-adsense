@@ -95,9 +95,11 @@ class admin extends ecjia_admin {
 			'content' => '<p>' . RC_Lang::get('adsense::adsense.adsense_list_help') . '</p>' 
 		));
 		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . RC_Lang::get('adsense::adsense.more_info') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表" target="_blank">' . RC_Lang::get('adsense::adsense.about_adsense_list') . '</a>') . '</p>');
+		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
 		
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
+
 		$city_id = intval($_GET['city_id']);
 		
 		$this->assign('position_id', $position_id);
@@ -125,12 +127,18 @@ class admin extends ecjia_admin {
 				$show_client = $client_list[head(array_keys($available_clients))];
 			}
 			$this->assign('show_client', $show_client);
-			
+			$ad_db = RC_DB::table('ad');
+
+			if (isset($_GET['media_type'])) {
+				$ad_db->where('media_type', '=', intval($_GET['media_type']));
+				$filter = $_GET['media_type'];
+			} 
+
 			//对应的广告列表
 			if(empty($show_client)){
-				$ads_list = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
+				$ads_list = $ad_db->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
 			}else{
-				$ads_list = $ad->getAds($position_id, $show_client);
+				$ads_list = $ad->getAdsFilter($position_id, $show_client, '', $filter);
 			}
 			foreach ($ads_list as $key => $val) {
 				$ads_list[$key]['start_time'] = RC_Time::local_date('Y-m-d', $val['start_time']);
@@ -141,9 +149,7 @@ class admin extends ecjia_admin {
 
 		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
 		$this->assign('position_data', $position_data);
-	
-		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
-		
+
 		$this->display('adsense_list.dwt');
 	}
 	

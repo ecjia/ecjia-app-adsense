@@ -45,13 +45,27 @@
 	</h3>
 </div>
 
-<!-- {if $available_clients} -->
-	<ul class="nav nav-pills">
- 		<!-- {foreach from=$available_clients key=key item=val} -->
-		<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{if $key === 0}未选择{else}{$key}{/if}<span class="badge badge-info">{$val}</span></a></li>
-	<!-- {/foreach} -->
-</ul>
-<!-- {/if} -->
+<!-- <div class="choose_list span12">  -->
+	<!-- {if $available_clients} -->
+		<ul class="nav nav-pills">
+	 		<!-- {foreach from=$available_clients key=key item=val} -->
+			<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/admin/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{if $key === 0}未选择{else}{$key}{/if}<span class="badge badge-info">{$val}</span></a></li>
+			<!-- {/foreach} -->
+			
+			<form class="f_r form-inline"  method="post" action="{$search_action}" name="searchForm">
+				<select name="media_type" id="media_type" class="no_search w150">
+				    <option value='-1'  {if $smarty.get.media_type eq '-1' } selected="true" {/if}>{lang key='adsense::adsense.choose_media_type'}</option>
+					<option value='0' {if $smarty.get.media_type eq '0'} selected="true" {/if}>{lang key='adsense::adsense.ad_img'}</option>
+					<option value='2' {if $smarty.get.media_type eq '2'} selected="true" {/if}>{lang key='adsense::adsense.ad_html'}</option>
+					<option value='3' {if $smarty.get.media_type eq '3'} selected="true" {/if}>{lang key='adsense::adsense.ad_text'}</option>
+				</select>
+				<input type="hidden" value="{$position_id}" name="position_id" />
+				<input type="hidden" value="{$show_client}" name="show_client" />
+				<a class="btn m_l5 screen-btn">{lang key='adsense::adsense.filter'}</a>
+			</form>
+		</ul>
+	<!-- {/if} -->
+<!-- </div> -->
 
 <div class="row-fluid">
 	<div class="span12">
