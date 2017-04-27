@@ -57,7 +57,35 @@ class AdRepository extends AbstractRepository
         return $available->toArray();
     }
     
+    /**
+     * 获取特殊广告列表
+     * @param string $position
+     * @param integer $client
+     * @param integer $maxNum
+     * @return array
+     */
+    public function getSpecialAds($position, $client, $maxNum = 5) {
+        if (empty($client))
+        {
+            return [];
+        }
     
+        $where = [
+            'position_id' => $position,
+            'show_client' => ['show_client', '&', $client],
+            ];
+        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'enabled', 'sort_order'], $maxNum);
+    
+        return $result->toArray();
+    }
+    
+    /**
+     * 获取广告列表
+     * @param string $position
+     * @param integer $client
+     * @param integer $maxNum
+     * @return array
+     */
     public function getAds($position, $client, $maxNum = 5) {
         if (empty($client))
         {
@@ -68,7 +96,7 @@ class AdRepository extends AbstractRepository
         	'position_id' => $position,
             'show_client' => ['show_client', '&', $client],
         ];
-        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count'], $maxNum);
+        $result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'media_type', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count'], $maxNum);
 
         return $result->toArray();
     }

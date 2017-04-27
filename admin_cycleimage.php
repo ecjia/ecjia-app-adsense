@@ -128,7 +128,7 @@ class admin_cycleimage extends ecjia_admin {
     		$this->assign('show_client', $show_client);
 
     		//对应的轮播图列表
-    	    $cycleimage_list = $ad->getAds($position_id, $show_client);
+    	    $cycleimage_list = $ad->getSpecialAds($position_id, $show_client);
             $this->assign('cycleimage_list', $cycleimage_list);
             
             $position_code = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_code');
