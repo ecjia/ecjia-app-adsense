@@ -87,7 +87,7 @@ function adsense_data($response, $request) {
         'client'   => $client,
         'city'     => $city_id
     ]);
-    _dump($adsense_list,3);
+    
 //     $mobile_launch_adsense = ecjia::config('mobile_launch_adsense');
 // 	if (empty($mobile_launch_adsense)) {
 // 		return array();
