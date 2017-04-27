@@ -35,12 +35,12 @@
 		<table class="table table-striped smpl_tbl dataTable table-hide-edit">
 			<thead>
 				<tr data-sorthref='{url path="adsense/admin_position/init"}'>
-				    <th class="w50">{lang key='adsense::adsense.ad_id'}</th>
+				    <th class="w50" data-toggle="sortby" data-sortby="position_id">{lang key='adsense::adsense.ad_id'}</th>
 	                <th class="w200">{lang key='adsense::adsense.position_name'}</th>
 	                <th class="w130" data-toggle="sortby" data-sortby="position_code">广告位代号</th>
 	                <th>{lang key='adsense::adsense.position_desc'}</th>
 				    <th class="w100">建议大小</th>
-				    <th class="w100">排序</th>
+				    <th class="w100" data-toggle="sortby" data-sortby="sort_order">排序</th>
 				    <th class="w80">查看</th>
                 </tr>
 			</thead>

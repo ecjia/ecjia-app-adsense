@@ -108,7 +108,7 @@ class admin_position extends ecjia_admin {
 		if(!empty($sort_by)){
 			$orderBy = array($sort_by => $sort_order);
 		}else{
-			$orderBy = array('sort_order' => 'asc', 'position_id' => 'desc');
+			$orderBy = array();
 		}
 		
 		//获取广告位列表s

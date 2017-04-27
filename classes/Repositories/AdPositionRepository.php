@@ -65,7 +65,9 @@ class AdPositionRepository extends AbstractRepository
 	
 	public function getAllGroups($city, array $orderBy)
 	{
-		$this->orderBy = $orderBy;
+		if(!empty($orderBy)) {
+			$this->orderBy = $orderBy;
+		}
 		
 		$where = [
     		'type'     => $this->type,
