@@ -85,8 +85,9 @@ class adsense_adsense_position_list_api extends Component_Event_Api {
 			$count = $db->count();
 			$page = new ecjia_page($count, $filter['page_size'], 5, '', $filter['current_page']);
 			$filter['record_count'] = $count;
+			$db->take($filter['page_size'])->skip($page->start_id - 1);
 		}
-		$result = $db->take($filter['page_size'])->orderBy('position_id', 'desc')->skip($page->start_id - 1)->get();
+		$result = $db->orderBy('position_id', 'desc')->get();
 		if (isset($options['is_page']) && $options['is_page'] == 1) {
 			return array(
 				'arr' => $result,
