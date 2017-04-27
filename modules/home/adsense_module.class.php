@@ -58,7 +58,6 @@ class adsense_module extends api_front implements api_interface {
 		if (empty($data)) {
 			//流程逻辑开始
 			// runloop 流
-			$request = null;
 			$response = array();
 			$response = RC_Hook::apply_filters('api_home_adsense_runloop', $response, $request);
 			RC_Cache::app_cache_set('app_home_adsense', $response, 'adsense');
@@ -71,18 +70,36 @@ class adsense_module extends api_front implements api_interface {
 }
 
 function adsense_data($response, $request) {
-    $mobile_launch_adsense = ecjia::config('mobile_launch_adsense');
-	if (empty($mobile_launch_adsense)) {
-		return array();
-	}
-	$where = array(
-		'position_id'	=> ecjia::config('mobile_launch_adsense'),
-		'enabled'		=> 1,
-		'start_time'	=> array('elt' => RC_Time::gmtime()),
-		'end_time'		=> array('egt' => RC_Time::gmtime())
-	);
+    
+    $city_id	= $request->input('city_id', 0);
+    $device_client = $request->header('device-client', 'iphone');
+    
+    if ($device_client == 'android') {
+        $client = Ecjia\App\Adsense\Client::ANDROID;
+    } elseif ($device_client == 'h5') {
+        $client = Ecjia\App\Adsense\Client::H5;
+    } else {
+        $client = Ecjia\App\Adsense\Client::IPHONE;
+    }
+    
+    $result = RC_Api::api('adsense',  'adsense', [
+        'code'     => 'app_start_adsense',
+        'client'   => $client,
+        'city'     => $city_id
+    ]);
+    
+//     $mobile_launch_adsense = ecjia::config('mobile_launch_adsense');
+// 	if (empty($mobile_launch_adsense)) {
+// 		return array();
+// 	}
+// 	$where = array(
+// 		'position_id'	=> ecjia::config('mobile_launch_adsense'),
+// 		'enabled'		=> 1,
+// 		'start_time'	=> array('elt' => RC_Time::gmtime()),
+// 		'end_time'		=> array('egt' => RC_Time::gmtime())
+// 	);
 	
-	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
+// 	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
 	
 	$adsense_list = array();
 	if (!empty($result)) {
@@ -96,7 +113,9 @@ function adsense_data($response, $request) {
 			);
 		}
 	}
+	
 	$response = $adsense_list;
+	
 	return $response;
 }
 
