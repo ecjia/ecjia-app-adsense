@@ -11,15 +11,14 @@
 
 <div class="row-fluid">
      <div class="span12">
-         <div class="position_alert">
-                <h3>广告位信息</h3>
-                <ul>
-                    <li><strong>广告位名称：</strong><span>{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</span></li>
-                    <li><strong>所在城市：</strong><span>{$position_data.city_name}</span></li>
-                    <li><strong>显示数量：</strong><span>{$position_data.max_number}</span></li>
-                    <li><strong>建议大小：</strong><span>{$position_data.ad_width} x {$position_data.ad_height}</span> <p class="f_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p></li>
-                </ul>
-               
+         <div class="position_detail">
+            <h3>广告位信息</h3>
+            <ul>
+                <li><div class="detail"><strong>广告位名称：</strong><span>{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</span></div></li>
+                <li><div class="detail"><strong>所在城市：</strong><span>{$position_data.city_name}</span></div></li>
+                <li><div class="detail"><strong>显示数量：</strong><span>{$position_data.max_number}</span></div></li>
+                <li><div class="detail"><strong>建议大小：</strong><span>{$position_data.ad_width} x {$position_data.ad_height}</span></div><p class="f_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p></li>
+            </ul>
           </div>
      </div>		
 </div>
