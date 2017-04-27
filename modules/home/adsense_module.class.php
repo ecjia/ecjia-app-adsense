@@ -82,7 +82,7 @@ function adsense_data($response, $request) {
         $client = Ecjia\App\Adsense\Client::IPHONE;
     }
     
-    $adsense_list = RC_Api::api('adsense',  'adsense', [
+    $adsense_list = RC_Api::api('adsense', 'adsense', [
         'code'     => 'app_start_adsense',
         'client'   => $client,
         'city'     => $city_id
