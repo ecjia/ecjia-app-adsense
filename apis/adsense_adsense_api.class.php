@@ -85,7 +85,8 @@ class adsense_adsense_api extends Component_Event_Api {
         
         $data = collect($data)->map(function ($item, $key) {
         	return [
-        	    'id'		 => $item['ad_id'],
+        	    'ad_id'		 => $item['ad_id'],
+        	    'ad_name'    => $item['ad_name'],
         	    'ad_link'	 => $item['ad_link'],
         	    'ad_img'	 => empty($item['ad_code']) ? '' : RC_Upload::upload_url($item['ad_code']),
         	    'start_time' => RC_Time::local_date(ecjia::config('date_format'), $item['start_time']),
