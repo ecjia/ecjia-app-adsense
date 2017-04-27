@@ -53,7 +53,6 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class adsense_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
-//     	$this->authSession();
 		$data = RC_Cache::app_cache_get('app_home_adsense', 'adsense');
 		if (empty($data)) {
 			//流程逻辑开始
@@ -88,31 +87,6 @@ function adsense_data($response, $request) {
         'city'     => $city_id
     ]);
     
-//     $mobile_launch_adsense = ecjia::config('mobile_launch_adsense');
-// 	if (empty($mobile_launch_adsense)) {
-// 		return array();
-// 	}
-// 	$where = array(
-// 		'position_id'	=> ecjia::config('mobile_launch_adsense'),
-// 		'enabled'		=> 1,
-// 		'start_time'	=> array('elt' => RC_Time::gmtime()),
-// 		'end_time'		=> array('egt' => RC_Time::gmtime())
-// 	);
-	
-// 	$result = RC_Model::model('adsense/ad_model')->field('ad_id, ad_link, ad_code, start_time, end_time')->where($where)->limit(5)->select();
-	
-// 	$adsense_list = array();
-// 	if (!empty($result)) {
-// 		foreach ($result as $val) {
-// 			$adsense_list[] = array(
-// 				'id'		 => $val['ad_id'],
-// 				'ad_link'	 => $val['ad_link'],
-// 				'ad_img'	 => empty($val['ad_code']) ? '' : RC_Upload::upload_url().'/'.$val['ad_code'],
-// 				'start_time' => RC_Time::local_date(ecjia::config('date_format'), $val['start_time']),
-// 				'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $val['end_time']),
-// 			);
-// 		}
-// 	}
 	
 	$response = $adsense_list;
 	
