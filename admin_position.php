@@ -230,7 +230,6 @@ class admin_position extends ecjia_admin {
     	$this->admin_priv('ad_position_update');
     	 
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
@@ -250,7 +249,6 @@ class admin_position extends ecjia_admin {
     	
     	$data = array(
     		'position_name' => $position_name,
-    		'position_code' => $position_code,
     		'ad_width'      => $ad_width,
     		'ad_height'     => $ad_height,
     		'max_number'    => $max_number,

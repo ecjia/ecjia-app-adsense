@@ -116,8 +116,16 @@ class admin extends ecjia_admin {
 			$client_list = $ad->getAllClients();
 			$this->assign('client_list', $client_list);
 			
-			$available_clients = $ad->getAvailableClients($position_id);
-			$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
+			$ad_db = RC_DB::table('ad');
+			if (isset($_GET['media_type']) && $_GET['media_type'] != '-1' && $_GET['media_type'] != null) {
+				$ad_db->where('media_type', '=', intval($_GET['media_type']));
+				$filter = intval($_GET['media_type']);
+				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->where('media_type', $filter)->count();
+			}else{
+				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
+			}
+			
+			$available_clients = $ad->getAdClients($position_id, $filter);
 			if($show_client_number > 0) {
 				array_unshift($available_clients,$show_client_number);
 			}
@@ -128,19 +136,15 @@ class admin extends ecjia_admin {
 				$show_client = $client_list[head(array_keys($available_clients))];
 			}
 			$this->assign('show_client', $show_client);
-			$ad_db = RC_DB::table('ad');
-
-			if (isset($_GET['media_type'])) {
-				$ad_db->where('media_type', '=', intval($_GET['media_type']));
-				$filter = $_GET['media_type'];
-			} 
-
+			
+			
 			//对应的广告列表
 			if(empty($show_client)){
 				$ads_list = $ad_db->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
 			}else{
 				$ads_list = $ad->getAdsFilter($position_id, $show_client, '', $filter);
 			}
+			
 			foreach ($ads_list as $key => $val) {
 				$ads_list[$key]['start_time'] = RC_Time::local_date('Y-m-d', $val['start_time']);
 				$ads_list[$key]['end_time']   = RC_Time::local_date('Y-m-d', $val['end_time']);
