@@ -117,6 +117,31 @@ class PositionManage
 
             return $result->toArray();
         }
+        elseif ($this->type == 'adsense') {
+            $repository = new AdPositionRepository();
+            $where = [
+                'position_code' => $code,
+                'city_id'   => $this->city,
+                'type'  => $this->type,
+            ];
+            
+            $model = $repository->findWhereByFirst($where, ['position_id', 'max_number']);
+             
+            if (is_null($model)) {
+                return [];
+            }
+            
+            $adsModel = $model->ads();
+            $adsModel->where('show_client', '&', $client);
+            
+            if ($model->max_number) {
+                $adsModel->take($model->max_number);
+            }
+            
+            $result = $adsModel->get(['ad_id', 'ad_name', 'ad_code', 'ad_link', 'start_time', 'end_time', 'sort_order']);
+            
+            return $result->toArray();
+        }
 
     }
     

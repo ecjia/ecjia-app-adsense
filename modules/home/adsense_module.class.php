@@ -53,7 +53,7 @@ defined('IN_ECJIA') or exit('No permission resources.');
 class adsense_module extends api_front implements api_interface {
     public function handleRequest(\Royalcms\Component\HttpKernel\Request $request) {
     	
-    	$this->authSession();
+//     	$this->authSession();
 		$data = RC_Cache::app_cache_get('app_home_adsense', 'adsense');
 		if (empty($data)) {
 			//流程逻辑开始
