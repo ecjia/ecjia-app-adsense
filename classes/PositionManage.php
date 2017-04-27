@@ -132,7 +132,7 @@ class PositionManage
                 return [];
             }
             
-            $time = RC_Time::gmtime();
+            $time = \RC_Time::gmtime();
             
             $adsModel = $model->ads();
             $adsModel->where('show_client', '&', $client);
