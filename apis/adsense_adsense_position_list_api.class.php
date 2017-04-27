@@ -67,6 +67,8 @@ class adsense_adsense_position_list_api extends Component_Event_Api {
 	 */
 	private function adsense_position_list($options) {
 		$db = RC_DB::table('ad_position');
+		$db->where('type', 'adsense');
+		$db->where('city_id', 0);
 		$filter = array();
 		$filter['keywords'] = empty($options['keywords']) ? '' : trim($options['keywords']);
 		$filter['page_size'] = empty($options['page_size']) ? 15 : intval($options['page_size']);
