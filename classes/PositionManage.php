@@ -108,6 +108,7 @@ class PositionManage
             
             $adsModel = $model->ads();
             $adsModel->where('show_client', '&', $client);
+            $adsModel->where('enabled', 1);
             
             if ($model->max_number) {
                 $adsModel->take($model->max_number);
@@ -131,8 +132,12 @@ class PositionManage
                 return [];
             }
             
+            $time = RC_Time::gmtime();
+            
             $adsModel = $model->ads();
             $adsModel->where('show_client', '&', $client);
+            $adsModel->where('start_time', '<=', $time)->where('end_time', '>=', $time);
+            $adsModel->where('enabled', 1);
             
             if ($model->max_number) {
                 $adsModel->take($model->max_number);
