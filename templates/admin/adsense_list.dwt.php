@@ -8,28 +8,20 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+
 <div class="row-fluid">
-     <div class="span612">
-         <div class="alert alert-block alert-info fade in">
-                <h4 class="alert-heading">广告位信息</h4>
-                <table class="table m_t10">
-					<tr>
-						<td style="border-top: 0px"><div align="right">广告位名称：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</div></td>
-						
-						<td style="border-top: 0px"><div align="right">所在城市：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.city_name}</div></td>
-						
-						<td style="border-top: 0px"><div align="right">显示数量：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.max_number}</div></td>
-						
-						<td style="border-top: 0px"><div align="right">建议大小：</div></td>
-						<td style="border-top: 0px"><div align="left">{$position_data.ad_width} x {$position_data.ad_height}</div></td>
-					</tr>
-				</table>
-                <p class="t_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p>
-         </div>
-     </div>
+     <div class="span12">
+         <div class="position_alert">
+                <h3>广告位信息</h3>
+                <ul>
+                    <li><strong>广告位名称：</strong><span>{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</span></li>
+                    <li><strong>所在城市：</strong><span>{$position_data.city_name}</span></li>
+                    <li><strong>显示数量：</strong><span>{$position_data.max_number}</span></li>
+                    <li><strong>建议大小：</strong><span>{$position_data.ad_width} x {$position_data.ad_height}</span> <p class="f_r"><a href='{url path="adsense/admin_position/edit" args="position_id={$position_id}"}'>快速进入广告位 >></a></p></li>
+                </ul>
+               
+          </div>
+     </div>		
 </div>
 
 <div>
