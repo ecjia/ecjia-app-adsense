@@ -45,7 +45,7 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 			        <div class="control-group formSep">
 			        	<label class="control-label">轮播组描述：</label>
 			          	<div class="controls">
-			            	<textarea name="position_desc" class="w350"  cols="60" rows="5">{$data.position_desc}</textarea>
+			            	<textarea name="position_desc" class="w350"  cols="60" rows="5" id="position_desc">{$data.position_desc}</textarea>
 			            </div>
 			        </div>	
 			        
