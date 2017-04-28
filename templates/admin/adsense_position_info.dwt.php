@@ -46,7 +46,7 @@ ecjia.admin.ad_position_edit.init();
 			        <div class="control-group formSep">
 			        	<label class="control-label">广告位描述：</label>
 			          	<div class="controls">
-			            	<textarea name="position_desc" class="w350"  cols="60" rows="5">{$data.position_desc}</textarea>
+			            	<textarea id="position_desc" name="position_desc" class="w350"  cols="60" rows="5">{$data.position_desc}</textarea>
 			            </div>
 			        </div>	
 			        

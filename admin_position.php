@@ -299,7 +299,7 @@ class admin_position extends ecjia_admin {
 			$city_name = '默认';
 		}
 		 
-		$query = RC_DB::table('ad_position')->where('position_code', $data['position_code'])->where('city_id', $city_id)->where('type', 'adsense')->count();
+		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'adsense')->count();
 		if ($query > 0) {
 			return $this->showmessage('请重新选择城市，该广告位代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
