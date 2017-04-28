@@ -296,36 +296,41 @@ class admin_cycleimage extends ecjia_admin {
     public function copy() {
     	$this->admin_priv('cycleimage_update');
     	 
-    	$position_id = $_GET['position_id'];
-    	$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
-    	$this->assign('data', $data);
-    
+    	$position_id = intval($_GET['position_id']);
+    	$position_code = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_code');
+    	
+    	$position_name = trim($_GET['position_name']);
+    	$position_desc = $_GET['position_desc'];
+    	$ad_width      = intval($_GET['ad_width']);
+    	$ad_height     = intval($_GET['ad_height']);
+    	$max_number    = intval($_GET['max_number']);
+    	$sort_order    = intval($_GET['sort_order']);
+
     	$city_id = intval($_GET['city_id']);
     	$city_name     = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
     	if(!$city_name){
     		$city_name = '默认';
     	}
-    	
-    	$query = RC_DB::table('ad_position')->where('position_code', $data['position_code'])->where('city_id', $city_id)->where('type', 'cycleimage')->count();
+    	$position_id   = intval($_POST['position_id']);
+    		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'cycleimage')->count();
     	if ($query > 0) {
     		return $this->showmessage('请重新选择城市，该轮播组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
+
     	 
-    	
     	$data = array(
-    		'position_name' => $data['position_name'],
-    		'position_code' => $data['position_code'],
-    		'ad_width' 		=> $data['ad_width'],
-    		'ad_height' 	=> $data['ad_height'],
-    		'position_desc' => $data['position_desc'],
-    		'max_number' 	=> $data['max_number'],
+    		'position_name' => $position_name,
+    		'position_code' => $position_code,
+    		'position_desc' => $position_desc,
+    		'ad_width'      => $ad_width,
+    		'ad_height'     => $ad_height,
+    		'max_number'    => $max_number,
     		'city_id' 		=> $city_id,
     		'city_name' 	=> $city_name,
-    		'type' 			=> $data['type'],
-    		'group_id' 		=> $data['group_id'],
-    		'sort_order' 	=> $data['sort_order']
+    		'type' 			=> 'cycleimage',
+    		'sort_order' 	=> $sort_order,
     	);
-    
+
     	$position_id = RC_DB::table('ad_position')->insertGetId($data);
     	return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit_group', array('position_id' => $position_id, 'city_id' => $city_id))));
     }

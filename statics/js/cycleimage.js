@@ -8,7 +8,13 @@
 					message = $this.attr('data-msg'),
 					url = $this.attr('data-href');
 					var city_id = $("#city_id option:selected").val();
-	                url += '&city_id=' + city_id;
+					var position_name = $("input[name='position_name']").val();
+					var position_desc = $("#position_desc").val()
+					var max_number = $("input[name='max_number']").val();
+					var sort_order = $("input[name='sort_order']").val();
+					var ad_width = $("input[name='ad_width']").val();
+					var ad_height = $("input[name='ad_height']").val();
+	                url += '&city_id=' + city_id+'&position_name=' + position_name+'&position_desc=' + position_desc+'&max_number=' + max_number+'&sort_order=' + sort_order+'&ad_width=' + ad_width+'&ad_height=' + ad_height;
 				if (message != undefined) {
 					smoke.confirm(message, function(e) {
 						if (e) {
