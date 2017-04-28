@@ -38,8 +38,8 @@ ecjia.admin.cycleimage.cycleimage_group_info();
 								<input type="hidden" name="position_code_value" value="{$data.position_code}" />
 							{elseif $data.position_code eq ''}
 								<input class="w350" type="text" name="position_code_ifnull" />
-				          		<span class="input-must">{lang key='system::system.require_field'}</span>
 							{/if}
+							<span class="input-must">{lang key='system::system.require_field'}</span>
 							<span class="help-block">轮播组调用标识，且在同一地区下该标识不可重复。</span>
 						</div>
 			        </div>

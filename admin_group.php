@@ -63,9 +63,9 @@ class admin_group extends ecjia_admin {
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'));
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 			
-		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/group.js', __FILE__));
+		RC_Script::enqueue_script('group', RC_App::apps_url('statics/js/group.js', __FILE__));
 
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组编排', RC_Uri::url('adsense/admin_group/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组', RC_Uri::url('adsense/admin_group/init')));
 	}
 
 	
@@ -73,8 +73,8 @@ class admin_group extends ecjia_admin {
 		$this->admin_priv('cycleimage_manage');
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组编排'));
-		$this->assign('ur_here', '广告组列表');
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组'));
+		$this->assign('ur_here', '广告组');
 		
 		$this->display('adsense_group_list.dwt');
 	}
@@ -84,12 +84,12 @@ class admin_group extends ecjia_admin {
 		 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加广告组'));
 		$this->assign('ur_here', '添加广告组');
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init'), 'text' => '轮播图设置'));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init'), 'text' => '广告组'));
 		 
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
 		
-		$this->assign('form_action', RC_Uri::url('adsense/admin_cycleimage/insert_group'));
+		$this->assign('form_action', RC_Uri::url('adsense/admin_group/insert'));
 		 
 		$this->display('adsense_group_info.dwt');
 	}
@@ -101,66 +101,50 @@ class admin_group extends ecjia_admin {
 		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
 		$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
 		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-		$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-		$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
 		$city_id       = !empty($_POST['city_id']) ? intval($_POST['city_id']) : 0;
 		$city_name     = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
 		if(!$city_name){
 			$city_name = '默认';
 		}
-		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'cycleimage')->count();
+		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'group')->count();
 		if ($query > 0) {
-			return $this->showmessage('该轮播组代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('该广告组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		 
 		$data = array(
 				'position_name' => $position_name,
 				'position_code' => $position_code,
-				'ad_width'      => $ad_width,
-				'ad_height'     => $ad_height,
-				'max_number'    => $max_number,
 				'position_desc' => $position_desc,
 				'city_id' 		=> $city_id,
 				'city_name' 	=> $city_name,
-				'type' 			=> 'cycleimage',
+				'type' 			=> 'group',
 				'sort_order' 	=> $sort_order,
 		);
+		
 		$position_id = RC_DB::table('ad_position')->insertGetId($data);
-		return $this->showmessage('添加轮播组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit_group', array('position_id' => $position_id, 'city_id' => $city_id))));
+		return $this->showmessage('添加广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/edit', array('position_id' => $position_id, 'city_id' => $city_id))));
 	}
 	
 	public function edit() {
 		$this->admin_priv('ad_group_update');
 		 
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑轮播组'));
-		$this->assign('ur_here', '编辑轮播组');
-		 
-		ecjia_screen::get_current_screen()->add_help_tab(array(
-		'id'		=> 'overview',
-		'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
-		'content'	=> '<p>欢迎访问ECJia智能后台编辑轮播组页面，可以在此页面编辑相应的轮播组信息。</p>'
-				));
-		 
-		ecjia_screen::get_current_screen()->set_help_sidebar(
-		'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
-		'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于编辑轮播组帮助文档</a>') . '</p>'
-				);
-		 
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑广告组'));
+		$this->assign('ur_here', '编辑广告组');
+
 		$city_id     = $_GET['city_id'];
-		$position_id = $_GET['position_id'];
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('city_id' => $city_id, 'position_id' => $position_id)), 'text' => '轮播图设置'));
 		$this->assign('city_id', $city_id);
-		$this->assign('position_id', $position_id);
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
+
 		 
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
-		 
+		
+		$position_id = intval($_GET['position_id']);
 		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
 		$this->assign('data', $data);
 		 
-		$this->assign('form_action', RC_Uri::url('adsense/admin_cycleimage/update_group'));
+		$this->assign('form_action', RC_Uri::url('adsense/admin_group/update'));
 	
 		$this->display('adsense_group_info.dwt');
 	}
@@ -171,55 +155,63 @@ class admin_group extends ecjia_admin {
 		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
 		$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
 		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-		$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-		$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-		$city_id       = !empty($_POST['city_id']) ? intval($_POST['city_id']) : 0;
+		
+		$city_id       = intval($_POST['city_id']);
 		$city_name     = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
 		if(!$city_name){
 			$city_name = '默认';
 		}
 		$position_id   = intval($_POST['position_id']);
-		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('type', 'cycleimage')->where('city_id', $city_id)->where('position_id', '!=', $position_id)->count();
+		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('type', 'group')->where('city_id', $city_id)->where('position_id', '!=', $position_id)->count();
 		if ($query > 0) {
-			return $this->showmessage('该轮播组代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage('该广告组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
 		 
 		$data = array(
-				'position_name' => $position_name,
-				'ad_width'      => $ad_width,
-				'ad_height'     => $ad_height,
-				'max_number'    => $max_number,
-				'position_desc' => $position_desc,
-				'city_id' 		=> $city_id,
-				'city_name' 	=> $city_name,
-				'sort_order' 	=> $sort_order,
+			'position_name' => $position_name,
+			'position_desc' => $position_desc,
+			'city_id' 		=> $city_id,
+			'city_name' 	=> $city_name,
+			'sort_order' 	=> $sort_order,
 		);
 		 
 		RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
 		 
-		return $this->showmessage('编辑轮播组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/edit_group', array('position_id' => $position_id,'city_id' => $city_id))));
+		return $this->showmessage('编辑广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	
-	public function delete() {
-		$this->admin_priv('ad_group_delete');
-		 
+	public function copy() {
+		$this->admin_priv('ad_group_update');
+	
 		$position_id = intval($_GET['position_id']);
+		$position_code = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_code');
+		$position_name = trim($_GET['position_name']);
+		$position_desc = $_GET['position_desc'];
+		$sort_order    = intval($_GET['sort_order']);
+		
 		$city_id = intval($_GET['city_id']);
-		if (RC_DB::table('ad')->where('position_id', $position_id)->count() > 0) {
-			return $this->showmessage('该轮播组已存在轮播图，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		} else {
-			RC_DB::table('ad_position')->where('position_id', $position_id)->delete();
+		$city_name     = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
+		if(!$city_name){
+			$city_name = '默认';
 		}
-		 
-		$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->count();
-		if(!$count){
-			return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init')));
-		}else{
-			return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init',array('city_id' => $city_id))));
+		$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'group')->count();
+		if ($query > 0) {
+			return $this->showmessage('请重新选择城市，该广告组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		}
-		 
+	
+		$data = array(
+			'position_name' => $position_name,
+			'position_code' => $position_code,
+			'position_desc' => $position_desc,
+			'city_id' 		=> $city_id,
+			'city_name' 	=> $city_name,
+			'type' 			=> 'group',
+			'sort_order' 	=> $sort_order,
+		);
+	
+		$position_id = RC_DB::table('ad_position')->insertGetId($data);
+		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	
 	
