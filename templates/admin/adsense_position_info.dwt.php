@@ -30,13 +30,14 @@ ecjia.admin.ad_position_edit.init();
 			            </div>
 			        </div>
 			        
-			        <div class="control-group formSep">
+			         <div class="control-group formSep">
 			        	<label class="control-label">广告位代号：</label>
 				        <div class="controls">
 							{if $data.position_code}
 								<input class="w350" type="text" disabled="disabled" value="{$data.position_code}" />
+								<input type="hidden" name="position_code_value" value="{$data.position_code}" />
 							{elseif $data.position_code eq ''}
-								<input class="w350" type="text" name="position_code" />
+								<input class="w350" type="text" name="position_code_ifnull" />
 				          		<span class="input-must">{lang key='system::system.require_field'}</span>
 							{/if}
 							<span class="help-block">广告位调用标识，且在同一地区下该标识不可重复。</span>
