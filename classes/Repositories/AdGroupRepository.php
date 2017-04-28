@@ -59,7 +59,7 @@ class AdGroupRepository extends AbstractRepository
 	 * 类型：广告位(adsense)
 	 * @var string
 	 */
-	protected $type = 'adsense';
+	protected $type = 'group';
 	
 	protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
 	
@@ -73,15 +73,7 @@ class AdGroupRepository extends AbstractRepository
     		'type'     => $this->type,
     		'city_id'  => $city,
 		];
-		$group1 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
-	
-		$where = [
-		    'type'     => $this->type,
-		    'city_id'  => null,
-		];
-		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
-		
-		$group = $group1->merge($group2);
+		$group = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
 		
 		return $group->toArray();
 	}
