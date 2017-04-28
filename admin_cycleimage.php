@@ -183,7 +183,7 @@ class admin_cycleimage extends ecjia_admin {
     	}
     	$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'cycleimage')->count();
     	if ($query > 0) {
-    		return $this->showmessage('该轮播组代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该轮播组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
     	$data = array(
@@ -240,13 +240,21 @@ class admin_cycleimage extends ecjia_admin {
     	$this->admin_priv('cycleimage_update');
     	 
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
+    	$position_code_value = !empty($_POST['position_code_value']) ? trim($_POST['position_code_value']) : '';
+    	$position_code_ifnull = !empty($_POST['position_code_ifnull']) ? trim($_POST['position_code_ifnull']) : '';
+    	if(!empty($position_code_ifnull)){
+    		$position_code = $position_code_ifnull;
+    	}else{
+    		$position_code = $position_code_value;
+    	}
+    	
     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
     	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-    	$city_id       = !empty($_POST['city_id']) ? intval($_POST['city_id']) : 0;
+    	
+    	$city_id       = intval($_POST['city_id']);
     	$city_name     = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
     	if(!$city_name){
     		$city_name = '默认';
@@ -254,11 +262,13 @@ class admin_cycleimage extends ecjia_admin {
     	$position_id   = intval($_POST['position_id']);
     	$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('type', 'cycleimage')->where('city_id', $city_id)->where('position_id', '!=', $position_id)->count();
     	if ($query > 0) {
-    		return $this->showmessage('该轮播组代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该轮播组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
+    	
     	
     	$data = array(
     		'position_name' => $position_name,
+    		'position_code' => $position_code,
     		'ad_width'      => $ad_width,
     		'ad_height'     => $ad_height,
     		'max_number'    => $max_number,
@@ -316,7 +326,6 @@ class admin_cycleimage extends ecjia_admin {
     	if ($query > 0) {
     		return $this->showmessage('请重新选择城市，该轮播组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
-
     	 
     	$data = array(
     		'position_name' => $position_name,
