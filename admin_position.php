@@ -156,7 +156,7 @@ class admin_position extends ecjia_admin {
     	$this->admin_priv('ad_position_update');
     	
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
+    	$position_code = !empty($_POST['position_code_ifnull']) ? trim($_POST['position_code_ifnull']) : '';
     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
@@ -170,7 +170,7 @@ class admin_position extends ecjia_admin {
     	}
     	$query = RC_DB::table('ad_position')->where('position_code', $position_code)->where('city_id', $city_id)->where('type', 'adsense')->count();
     	if ($query > 0) {
-    		return $this->showmessage('该广告位代号已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该广告位代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
     	$data = array(
@@ -216,8 +216,6 @@ class admin_position extends ecjia_admin {
 		$city_list = $this->get_select_city();
 		$this->assign('city_list', $city_list);
 		
-	
-		 
 		$this->assign('form_action', RC_Uri::url('adsense/admin_position/update'));
 		
 		$this->display('adsense_position_info.dwt');
@@ -232,6 +230,7 @@ class admin_position extends ecjia_admin {
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
     	$position_code_value = !empty($_POST['position_code_value']) ? trim($_POST['position_code_value']) : '';
     	$position_code_ifnull = !empty($_POST['position_code_ifnull']) ? trim($_POST['position_code_ifnull']) : '';
+    	
     	if(!empty($position_code_ifnull)){
     		$position_code = $position_code_ifnull;
     	}else{

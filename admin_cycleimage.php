@@ -170,7 +170,7 @@ class admin_cycleimage extends ecjia_admin {
     	$this->admin_priv('cycleimage_update');
     	
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
+    	$position_code = !empty($_POST['position_code_ifnull']) ? trim($_POST['position_code_ifnull']) : '';
     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
