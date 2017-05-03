@@ -64,17 +64,32 @@ class admin_group extends ecjia_admin {
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 			
 		RC_Script::enqueue_script('group', RC_App::apps_url('statics/js/group.js', __FILE__));
+		RC_Style::enqueue_style('group', RC_App::apps_url('statics/styles/group.css', __FILE__), array());
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组', RC_Uri::url('adsense/admin_group/init')));
 	}
 
 	
 	public function init() {
-		$this->admin_priv('cycleimage_manage');
+		$this->admin_priv('ad_group_manage');
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组'));
 		$this->assign('ur_here', '广告组');
+		
+		//获取城市
+		$citymanage = new Ecjia\App\Adsense\CityManage('group');
+		$city_list = $citymanage->getAllCitys();
+		$this->assign('city_list', $city_list);
+		
+		//获取当前城市ID
+		$city_id = $citymanage->getCurrentCity(intval($_GET['city_id']));
+		$this->assign('city_id', $city_id);
+		
+		//获取广告组列表
+		$position = new Ecjia\App\Adsense\PositionManage('group', $city_id);
+		$data = $position->getAllPositions();
+		$this->assign('data', $data);
 		
 		$this->display('adsense_group_list.dwt');
 	}
@@ -214,79 +229,94 @@ class admin_group extends ecjia_admin {
 		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	
+	public function constitute() {
+		
+		$this->admin_priv('ad_group_update');
+		 
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位编排'));
+		$this->assign('ur_here', '广告位编排');
+
+		$city_id = intval($_GET['city_id']);
+		$city_name = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
+		$this->assign('city_id', $city_id);
+		$this->assign('city_name', $city_name);
+		
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
+
+		$position_id = intval($_GET['position_id']);
+		$this->assign('position_id', $position_id);
+		
+		$linked_goods = RC_DB::table('ad_position')
+		->where('group_id', $position_id)
+		->select('position_id', 'position_name', 'sort_order')
+		->orderBy('sort_order','asc')
+		->get();
+		
+		$this->assign('link_goods_list', $linked_goods);		
+		
+		$this->display('adsense_group_constitute.dwt');
 	
-	/**
-	 * 添加商品关联
-	 */
-	public function add_link_goods() {
-		$this->admin_priv('goods_update', ecjia::MSGTYPE_JSON);
+	}
 	
-		$goods_id		= intval($_GET['goods_id']);
-		$linked_array 	= !empty($_GET['linked_array']) ? $_GET['linked_array'] : '';
-	
-		$this->db_link_goods->where(array('link_goods_id' => $goods_id))->update(array('is_double' => 0));
-		$this->db_link_goods->where(array('goods_id' => $goods_id))->delete();
-	
-		$data = array();
-		if (!empty($linked_array)) {
-			foreach ($linked_array AS $val) {
-				$is_double = $val['is_double'] ? 1 : 0;
-				if (!empty($is_double)) {
-					/* 双向关联,先干掉与本商品关联的商品，再添加关联给与本商品关联的商品 */
-					$this->db_link_goods->where(array('goods_id' => $val, 'link_goods_id' => $goods_id))->delete();
-					$data[] = array(
-							'goods_id'		=> $val['id'],
-							'link_goods_id'	=> $goods_id,
-							'is_double'		=> $is_double,
-							'admin_id'		=> $_SESSION['admin_id'],
-					);
-				}
-				$data[] = array(
-						'goods_id'		=> $goods_id,
-						'link_goods_id'	=> $val['id'],
-						'is_double'		=> $is_double,
-						'admin_id'		=> $_SESSION['admin_id'],
-				);
-			}
+	public function constitute_insert() {
+		$this->admin_priv('ad_group_update');
+		$db_ad_position = RC_DB::table('ad_position');
+		$city_id	  = intval($_GET['city_id']);
+		
+		$group_position_id	= intval($_GET['position_id']);
+
+		$linked_array = $_GET['linked_array'];
+		$position_list = array ();
+		foreach ($linked_array as $row) {
+			$position_list[] = $row['position_id'];
 		}
-		if (!empty($data)) {
-			$this->db_link_goods->batch_insert($data);
-		}
-		$goods_name = $this->db_goods->where(array('goods_id'=>$goods_id))->get_field('goods_name');
+		
+		$data = array('group_id' => $group_position_id);
+		$db_ad_position->whereIn('position_id', $position_list)->update($data);
+		
+		return $this->showmessage('该广告位组中组合广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/constitute', array('position_id' => $group_position_id,'city_id' => $city_id))));
 	
-		/* 释放app缓存*/
-		$goods_cache_array = $this->orm_goods_db->get_cache_item('goods_list_cache_key_array');
-		if (!empty($goods_cache_array)) {
-			foreach ($goods_cache_array as $val) {
-				$this->orm_goods_db->delete_cache_item($val);
-			}
-			$this->orm_goods_db->delete_cache_item('goods_list_cache_key_array');
-		}
-		/*释放商品基本信息缓存*/
-		$cache_goods_basic_info_key = 'goods_basic_info_'.$goods_id;
-		$cache_basic_info_id = sprintf('%X', crc32($cache_goods_basic_info_key));
-		$this->orm_goods_db->delete_cache_item('goods_list_cache_key_array');
+	}
 	
-		ecjia_admin::admin_log('增加关联商品，被设置的商品名称是'.$goods_name, 'setup', 'goods');
+	public function group_position_list() {
 	
+		$this->admin_priv('ad_group_manage');
+			
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位列表'));
+		$this->assign('ur_here', '广告位列表');
+		
+		$city_id = $_GET['city_id'];
+		$this->assign('city_id', $city_id);
+		
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
+		
+			
+		$city_list = $this->get_select_city();
+		$this->assign('city_list', $city_list);
+		
+		$position_id = intval($_GET['position_id']);
+		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('data', $data);
+			
+		$this->assign('form_action', RC_Uri::url('adsense/admin_group/constitute_insert'));
+		
+		$this->display('adsense_group_position_list.dwt');
 	
-		$pjaxurl = RC_Uri::url('goods/admin/edit_link_goods', array('goods_id' => $goods_id));
-		return $this->showmessage(RC_Lang::get('goods::goods.edit_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => $pjaxurl));
 	}
 	
 	/**
 	 * 搜索商品，仅返回名称及ID
 	 */
-	public function get_position_list() {
-		$filter = $_GET['JSON'];
-		$arr = RC_Api::api('adsense', 'get_position_list', $filter);
+	public function get_goods_list() {
+		
+		$filter = intval($_GET['city_id']);
+		$arr =RC_DB::TABLE('ad_position')->where('city_id', $filter)->where('type', 'adsense')->select('position_name', 'position_id')->get();
 		$opt = array();
 		if (!empty($arr)) {
 			foreach ($arr AS $key => $val) {
 				$opt[] = array(
-					'value' => $val['goods_id'],
-					'text'  => $val['goods_name'],
-					'data'  => $val['shop_price']
+					'value' => $val['position_id'],
+					'text'  => $val['position_name'],
 				);
 			}
 		}
@@ -306,18 +336,5 @@ class admin_group extends ecjia_admin {
 			}
 		}
 		return $regions;
-	}
-	
-	private function get_show_client(){
-		$client_list = array(
-				'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
-				'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-				'H5' 	 => Ecjia\App\Adsense\Client::H5,
-				'PC'     => Ecjia\App\Adsense\Client::PC
-		);
-		return $client_list;
-	}
-	
-	
-    
+	}  
 }

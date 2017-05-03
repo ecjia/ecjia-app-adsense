@@ -48,6 +48,7 @@ namespace Ecjia\App\Adsense;
 
 use Ecjia\App\Adsense\Repositories\CycleImageRepository;
 use Ecjia\App\Adsense\Repositories\AdPositionRepository;
+use Ecjia\App\Adsense\Repositories\AdGroupRepository;
 
 class PositionManage
 {
@@ -77,6 +78,10 @@ class PositionManage
         } elseif($this->type == 'adsense'){
         	$repository = new AdPositionRepository();
         	return $repository->getAllGroups($this->city, $orderBy);
+        	
+        } elseif($this->type == 'group'){
+        	$repository = new AdGroupRepository();
+        	return $repository->getAllGroups($this->city);
         	
         }
         

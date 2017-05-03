@@ -112,7 +112,7 @@ class admin_position extends ecjia_admin {
 			$orderBy = array();
 		}
 		
-		//获取广告位列表s
+		//获取广告位列表
 		$position = new Ecjia\App\Adsense\PositionManage('adsense', $city_id);
 		$data = $position->getAllPositions($orderBy);
 		$this->assign('data', $data);

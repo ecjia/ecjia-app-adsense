@@ -1,0 +1,21 @@
+.wookmark .bd {
+    height: 150px;
+    line-height: 40px;
+}
+.wookmark .thumbnail {
+    margin-right: 5%;
+    width: 20%;
+}
+.add_content{
+	margin-top:35px;
+}
+.group_info{
+	margin-top:35px;
+	margin-bottom:60px;
+}
+.group_checkin{
+	background: #f6f7fb;
+	height:50px;
+	border-top:1px solid #d9d9d9;
+}
+

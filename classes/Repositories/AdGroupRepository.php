@@ -63,12 +63,8 @@ class AdGroupRepository extends AbstractRepository
 	
 	protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
 	
-	public function getAllGroups($city, array $orderBy)
+	public function getAllGroups($city)
 	{
-		if(!empty($orderBy)) {
-			$this->orderBy = $orderBy;
-		}
-		
 		$where = [
     		'type'     => $this->type,
     		'city_id'  => $city,
