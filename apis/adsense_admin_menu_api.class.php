@@ -55,7 +55,7 @@ class adsense_admin_menu_api extends Component_Event_Api {
 		$menus = ecjia_admin::make_admin_menu('08_content', RC_Lang::get('adsense::adsense.ads_manage'), '', 8);
 		$submenus = array(
 			ecjia_admin::make_admin_menu('01_adsense_position', '广告位管理', RC_Uri::url('adsense/admin_position/init'), 1)->add_purview('ad_position_manage'),
-// 			ecjia_admin::make_admin_menu('02_adsense_group', '广告组编排', RC_Uri::url('adsense/admin_group/init'), 2)->add_purview('ad_group_manage'),
+			ecjia_admin::make_admin_menu('02_adsense_group', '广告组编排', RC_Uri::url('adsense/admin_group/init'), 2)->add_purview('ad_group_manage'),
 // 			ecjia_admin::make_admin_menu('01_adsense_list', RC_Lang::get('adsense::adsense.ads_list'), RC_Uri::url('adsense/admin/init'), 2)->add_purview('adsense_manage')
 		);
 		$menus->add_submenu($submenus);

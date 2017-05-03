@@ -64,6 +64,10 @@ class admin_group extends ecjia_admin {
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'));
 			
 		RC_Script::enqueue_script('group', RC_App::apps_url('statics/js/group.js', __FILE__));
+		RC_Script::enqueue_script('ad_position', RC_App::apps_url('statics/js/ad_position.js', __FILE__));
+		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/adsense.js', __FILE__));
+		RC_Style::enqueue_style('adsense', RC_App::apps_url('statics/styles/adsense.css', __FILE__), array());
+		
 		RC_Style::enqueue_style('group', RC_App::apps_url('statics/styles/group.css', __FILE__), array());
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组', RC_Uri::url('adsense/admin_group/init')));
@@ -283,17 +287,20 @@ class admin_group extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位列表'));
 		$this->assign('ur_here', '广告位列表');
 		
-		$city_id = $_GET['city_id'];
+		$city_id = intval($_GET['city_id']);
 		$this->assign('city_id', $city_id);
 		
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
 		
-		$city_list = $this->get_select_city();
-		$this->assign('city_list', $city_list);
-		
 		$position_id = intval($_GET['position_id']);
-		$data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+	
+		$data = RC_DB::table('ad_position')
+		->where('group_id', $position_id)
+		->select('position_id', 'position_name','position_code','position_desc','ad_width','ad_height','sort_order')
+		->orderBy('sort_order','asc')
+		->get();
 		$this->assign('data', $data);
+		
 			
 		$this->assign('form_action', RC_Uri::url('adsense/admin_group/constitute_insert'));
 		
