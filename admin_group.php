@@ -241,7 +241,12 @@ class admin_group extends ecjia_admin {
 		$this->assign('ur_here', '广告位编排');
 
 		$city_id = intval($_GET['city_id']);
-		$city_name = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
+		if(empty($city_id)){
+			$city_name = '默认';
+		}else{
+			$city_name = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
+		}
+		
 		$this->assign('city_id', $city_id);
 		$this->assign('city_name', $city_name);
 		
