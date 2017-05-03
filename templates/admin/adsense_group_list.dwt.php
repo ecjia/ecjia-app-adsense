@@ -34,9 +34,13 @@
 					<div class="bd">
 						<div class="group_info">
 							{$val.position_name}（{$val.position_code}）
+							<span class="label label-info">{$val.count}</span>
+						</div>
+						<div class="group_middle">
+							{$val.position_desc}
 						</div>
 						<div class="group_checkin">
-							<a class="data-pjax" href='{url path="adsense/admin_group/group_position_list" args="city_id={$city_id}&position_id={$val.position_id}"}'><i class="fontello-icon-th-list"></i>广告位列表</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="data-pjax" href='{url path="adsense/admin_group/constitute" args="city_id={$city_id}&position_id={$val.position_id}"}'><i class="fontello-icon-plus-squared"></i>添加广告位</a>
+							<a class="data-pjax ecjiafc-gray" href='{url path="adsense/admin_group/group_position_list" args="city_id={$city_id}&position_id={$val.position_id}"}'><i class="fontello-icon-th-list"></i>广告位列表</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="data-pjax ecjiafc-gray" href='{url path="adsense/admin_group/constitute" args="city_id={$city_id}&position_id={$val.position_id}"}'><i class="fontello-icon-plus-squared"></i>添加广告位</a>
 						</div>
 					</div>
 				</li>

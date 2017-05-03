@@ -93,6 +93,10 @@ class admin_group extends ecjia_admin {
 		//获取广告组列表
 		$position = new Ecjia\App\Adsense\PositionManage('group', $city_id);
 		$data = $position->getAllPositions();
+		foreach ($data as $key => $val) {
+			$count = RC_DB::table('ad_position')->where('group_id', $val['position_id'])->count();
+			$data[$key]['count'] = $count;
+		}
 		$this->assign('data', $data);
 		
 		$this->display('adsense_group_list.dwt');
@@ -273,7 +277,9 @@ class admin_group extends ecjia_admin {
 		$city_id = intval($_GET['city_id']);
 		
 		$group_position_id	= intval($_GET['position_id']);//广告组id
-	
+		$data = array('group_id' => 0);
+		RC_DB::table('ad_position')->where('group_id', $group_position_id)->update($data);
+		
 		$linked_array = $_GET['linked_array'];
 		if (!empty($linked_array)) {
 			foreach ($linked_array AS $val) {
