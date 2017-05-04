@@ -1,18 +1,18 @@
 .wookmark .bd {
     height: 200px;
-    line-height: 40px;
+    line-height: 50px;
 }
 .wookmark .thumbnail {
     width: 30%;
 	margin-right: 3%;
 }
 .group_info{
-    border-bottom:1px solid #d9d9d9;
-    margin-top: -2px;
+ 	border-bottom: 1px solid #d9d9d9;
+    height: 40px;
+    line-height: 20px;
+    margin-top: 2px;
+    padding: 5px;
     text-align: left;
-	height:40px;
-	line-height:50px;  
-	padding:5px;  
 }
 .group_middle{
 	height:88px;
@@ -29,13 +29,14 @@
 	padding-top:39px;
 }
 .label-info{
-    cursor: default;
+ 	cursor: default;
     float: right;
     font-size: 11px;
     margin-right: 8px;
-    margin-top: 14px;
+    margin-top: 9px;
     padding: 4px 8px;
 }
+
 
 .ecjiafc-gray, .ecjiafc-gray:hover, .ecjiafc-gray:after, 
 table .fontello-icon-cancel, table .fontello-icon-trash,

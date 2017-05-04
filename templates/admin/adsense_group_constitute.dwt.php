@@ -25,7 +25,7 @@
 					
 						<div class="control-group choose_list span12" data-url="{url path='adsense/admin_group/get_searchPosition_list'}">
 							<!-- <div class="f_l"> -->
-								<select name="city_id" id="city_id">
+								<select name="city_id" id="city_id" disabled="disabled">
 			                   		<option value='{$city_id}'>{$city_name}</option>
 								</select>
 							<!-- </div> -->

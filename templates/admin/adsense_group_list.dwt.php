@@ -33,8 +33,7 @@
 				<li class="thumbnail">
 					<div class="bd">
 						<div class="group_info">
-							{$val.position_name}（{$val.position_code}）
-							<span class="label label-info">{$val.count}</span>
+							{$val.position_name}<span class="label label-info">{$val.count}</span><br>{$val.position_code}
 						</div>
 						<div class="group_middle">
 							{$val.position_desc}
