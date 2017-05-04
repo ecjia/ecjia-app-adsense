@@ -108,7 +108,7 @@ class adsense_adsense_group_api extends Component_Event_Api {
     public function getDefaultCityAds($code, $client)
     {
         $city = 0;
-        $position = new Ecjia\App\Adsense\PositionManage('adsense', $city);
+        $position = new Ecjia\App\Adsense\PositionManage('group', $city);
         $data = $position->findAdByCode($code, $client);
         
         return $data;
