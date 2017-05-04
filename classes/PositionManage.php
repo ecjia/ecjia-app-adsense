@@ -157,6 +157,44 @@ class PositionManage
             
             return $result->toArray();
         }
+        elseif ($this->type == 'group') {
+            $repository = new AdGroupRepository();
+            $where = [
+                'position_code' => $code,
+                'city_id'   => $this->city,
+                'type'  => $this->type,
+            ];
+            
+            $model = $repository->findWhereByFirst($where, ['position_id', 'position_code', 'position_name']);
+             
+            if (is_null($model)) {
+                return [];
+            }
+            
+            $adPositionsModel = $model->adPositions();
+            $result = $adPositionsModel->get(['position_id', 'position_code', 'position_desc', 'max_number']);
+            
+            $time = \RC_Time::gmtime();
+            
+            $result = $result->map(function($item, $key) use ($client, $time) {
+                $adsModel = $item->ads();
+                $adsModel->where('show_client', '&', $client);
+                $adsModel->where('start_time', '<=', $time)->where('end_time', '>=', $time);
+                $adsModel->where('enabled', 1);
+                
+                if ($model->max_number) {
+                    $adsModel->take($model->max_number);
+                }
+                
+                $result = $adsModel->get(['ad_id', 'ad_name', 'ad_code', 'ad_link', 'start_time', 'end_time', 'sort_order']);
+                
+                $result = \RC_Hook::apply_filters('filter_adsense_group_data', $result->toArray());
+                
+                return ['title' => $item->position_desc, 'adsense' => $result];
+            });
+            
+            return $result->toArray();
+        }
 
     }
     

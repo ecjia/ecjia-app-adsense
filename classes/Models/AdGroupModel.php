@@ -58,7 +58,7 @@ class AdGroupModel extends Model
 	
 	public function adPositions() 
 	{
-		return $this->hasMany('Ecjia\App\Adsense\Models\AdPositionModel', 'position_id', 'group_id');
+		return $this->hasMany('Ecjia\App\Adsense\Models\AdPositionModel', 'group_id', 'position_id');
 	}
 	
 	/* 获取缓存数据 */
