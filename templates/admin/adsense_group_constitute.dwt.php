@@ -30,7 +30,7 @@
 									</div>
 									<ul class="ms-list nav-list-ready">
 										<!-- {foreach from=$opt item=link_position} -->
-											<li class="ms-elem-selectable"  id="{$link_position.value}" data-id="{$link_position.value}"><span>{$link_position.text}</span></li>
+											<li class="ms-elem-selectable {if in_array($link_position, $group_position_list)}disabled{/if}"  id="{$link_position.position_id}" data-id="{$link_position.position_id}"><span>{$link_position.position_name}</span></li>
 										<!-- {foreachelse} -->
 											<li class="ms-elem-selectable disabled"><span>暂无内容</span></li>
 										<!-- {/foreach} -->

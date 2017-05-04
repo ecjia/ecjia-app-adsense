@@ -163,7 +163,7 @@
     			$('.nav-list-content .ms-elem-selection').on('dblclick', function() {
     				var $this = $(this);
     				$( ".nav-list-ready li" ).each(function(index) {
-    					if ($( ".nav-list-ready li" ).eq(index).attr('id') == 'positionId_' + $this.find('input').val()) {
+    					if ($( ".nav-list-ready li" ).eq(index).attr('id') == $this.find('input').val()) {
     						$( ".nav-list-ready li" ).eq(index).removeClass('disabled');
     					}
     				});
