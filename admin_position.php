@@ -369,7 +369,14 @@ class admin_position extends ecjia_admin {
 		$show_client  = intval($_GET['show_client']);
 		 
 		RC_DB::table('ad_position')->where('position_id', $id)->update(array('sort_order'=> $sort_order));
-		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_position/init', array('position_id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
+		$group_position_id  = intval($_GET['group_position_id']);
+		_dump($group_position_id,1);
+		if($group_position_id){
+			return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_group/group_position_list', array('position_id' => $group_position_id, 'city_id' => $city_id))));
+		}else{
+			return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_position/init', array('position_id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
+		}
+		
 	}
 
 	/**

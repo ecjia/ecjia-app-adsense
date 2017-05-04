@@ -316,7 +316,6 @@ class admin_group extends ecjia_admin {
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
 		$this->assign('edit_action_link', array('href' => RC_Uri::url('adsense/admin_group/constitute',array('city_id' => $city_id, 'position_id' => $group_position_id)), 'text' => '编排广告位'));
 	
-	
 		$filter['sort_by']    = empty($_GET['sort_by']) ? 'sort_order' : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'asc' : trim($_GET['sort_order']);
 		
