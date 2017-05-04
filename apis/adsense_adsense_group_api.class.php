@@ -69,6 +69,7 @@ class adsense_adsense_group_api extends Component_Event_Api {
             return array();
         }
         
+        RC_Hook::add_filter('filter_adsense_group_data', array($this, 'filter_adsense_group_data'), 9);
         
         $position = new Ecjia\App\Adsense\PositionManage('group', $city);
         $data = $position->findAdByCode($code, $client);
@@ -82,19 +83,21 @@ class adsense_adsense_group_api extends Component_Event_Api {
         if (empty($data)) {
             return [];
         }
-        
-        $data = collect($data)->map(function ($item, $key) {
-        	return [
-        	    'ad_id'		 => $item['ad_id'],
-        	    'ad_name'    => $item['ad_name'],
-        	    'ad_link'	 => $item['ad_link'],
-        	    'ad_img'	 => empty($item['ad_code']) ? '' : RC_Upload::upload_url($item['ad_code']),
-        	    'start_time' => RC_Time::local_date(ecjia::config('date_format'), $item['start_time']),
-        	    'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $item['end_time']),
-        	];
-        })->toArray();
-        
+
         return $data;
+    }
+    
+    public function filter_adsense_group_data($data) {
+        return collect($data)->map(function ($item, $key) {
+            return [
+                'ad_id'		 => $item['ad_id'],
+                'ad_name'    => $item['ad_name'],
+                'ad_link'	 => $item['ad_link'],
+                'ad_img'	 => empty($item['ad_code']) ? '' : RC_Upload::upload_url($item['ad_code']),
+                'start_time' => RC_Time::local_date(ecjia::config('date_format'), $item['start_time']),
+                'end_time'	 => RC_Time::local_date(ecjia::config('date_format'), $item['end_time']),
+                ];
+        })->toArray();
     }
     
     /**
