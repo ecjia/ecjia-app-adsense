@@ -258,8 +258,8 @@ class admin_group extends ecjia_admin {
 		if (!empty($arr)) {
 			foreach ($arr AS $key => $val) {
 				$optarray[] = array(
-					'value' => $val['position_id'],
-					'text'  => $val['position_name'],
+					'position_id' => $val['position_id'],
+					'position_name'  => $val['position_name'],
 				);
 			}
 		}
@@ -269,12 +269,11 @@ class admin_group extends ecjia_admin {
 		//选择广告组中的广告位-右边
 		$group_position_list = RC_DB::table('ad_position')
 		->where('group_id', $position_id)
-		->select('position_id', 'position_name', 'sort_order')
+		->select('position_id', 'position_name')
 		->orderBy('sort_order','asc')
 		->get();
 		
 		$this->assign('group_position_list', $group_position_list);
-		
 		$this->display('adsense_group_constitute.dwt');
 	
 	}
