@@ -172,6 +172,8 @@ class PositionManage
             }
             
             $adPositionsModel = $model->adPositions();
+            $adPositionsModel->orderBy('sort_order', 'asc');
+            $adPositionsModel->orderBy('position_id', 'desc');
             $result = $adPositionsModel->get(['position_id', 'position_code', 'position_desc', 'max_number']);
             
             $time = \RC_Time::gmtime();
