@@ -245,27 +245,35 @@ class admin_group extends ecjia_admin {
 		$this->assign('ur_here', '广告位编排');
 
 		$city_id = intval($_GET['city_id']);
-		if(empty($city_id)){
-			$city_name = '默认';
-		}else{
-			$city_name = RC_DB::TABLE('region')->where('region_id', $city_id)->pluck('region_name');
-		}
-		
 		$this->assign('city_id', $city_id);
-		$this->assign('city_name', $city_name);
 		
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
 
 		$position_id = intval($_GET['position_id']);
 		$this->assign('position_id', $position_id);
+
+		//指定地区下面的广告位列表-左边
+		$arr =RC_DB::TABLE('ad_position')->where('city_id', $city_id)->where('type', 'adsense')->select('position_name', 'position_id', 'sort_order')->get();
+		$optarray = array();
+		if (!empty($arr)) {
+			foreach ($arr AS $key => $val) {
+				$optarray[] = array(
+					'value' => $val['position_id'],
+					'text'  => $val['position_name'],
+				);
+			}
+		}
+		$this->assign('opt', $optarray);
 		
+		
+		//选择广告组中的广告位-右边
 		$group_position_list = RC_DB::table('ad_position')
 		->where('group_id', $position_id)
 		->select('position_id', 'position_name', 'sort_order')
 		->orderBy('sort_order','asc')
 		->get();
 		
-		$this->assign('group_position_list', $group_position_list);		
+		$this->assign('group_position_list', $group_position_list);
 		
 		$this->display('adsense_group_constitute.dwt');
 	
@@ -282,10 +290,9 @@ class admin_group extends ecjia_admin {
 		
 		$linked_array = $_GET['linked_array'];
 		if (!empty($linked_array)) {
-			foreach ($linked_array AS $val) {
-				$val_array = explode('_', $val);
-				$data= array('group_id' => $group_position_id ,'sort_order' => intval($val_array[1]));
-				RC_DB::table('ad_position')->where('position_id', intval($val_array[0]))->update($data);
+			foreach ($linked_array as $key => $val) {
+				$data= array('group_id' => $group_position_id ,'sort_order' => intval($key));
+				RC_DB::table('ad_position')->where('position_id', intval($val))->update($data);
 			}
 		}
 		return $this->showmessage('该广告位组中组合广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/constitute', array('position_id' => $group_position_id,'city_id' => $city_id))));
@@ -326,27 +333,7 @@ class admin_group extends ecjia_admin {
 		$this->display('adsense_group_position_list.dwt');
 	
 	}
-	
-	/**
-	 * 搜索该城市下面的所有广告位，返回广告位的名称/id/排序
-	 */
-	public function get_searchPosition_list() {
 		
-		$filter = intval($_GET['city_id']);
-		$arr =RC_DB::TABLE('ad_position')->where('city_id', $filter)->where('type', 'adsense')->select('position_name', 'position_id', 'sort_order')->get();
-		$opt = array();
-		if (!empty($arr)) {
-			foreach ($arr AS $key => $val) {
-				$opt[] = array(
-					'value' => $val['position_id'],
-					'text'  => $val['position_name'],
-					'sort_order'  => $val['sort_order'],
-				);
-			}
-		}
-		return $this->showmessage('', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('content' => $opt));
-	}
-	
 	/**
 	 * 获取热门城市
 	 */
