@@ -294,7 +294,7 @@ class admin_group extends ecjia_admin {
 				RC_DB::table('ad_position')->where('position_id', intval($val))->update($data);
 			}
 		}
-		return $this->showmessage('该广告位组中组合广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/constitute', array('position_id' => $group_position_id,'city_id' => $city_id))));
+		return $this->showmessage('编排广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/constitute', array('position_id' => $group_position_id,'city_id' => $city_id))));
 	}
 	
 	public function group_position_list() {
