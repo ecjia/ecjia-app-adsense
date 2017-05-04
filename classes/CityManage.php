@@ -49,6 +49,7 @@ namespace Ecjia\App\Adsense;
 use Ecjia\App\Adsense\Repositories\CycleImageRepository;
 use Ecjia\App\Adsense\Repositories\AdPositionRepository;
 use Ecjia\App\Adsense\Repositories\AdGroupRepository;
+use Ecjia\App\Adsense\Repositories\ShortcutMenuRepository;
 
 class CityManage
 {
@@ -72,6 +73,9 @@ class CityManage
         	return $repository->getAllCitys();
         }elseif($this->type == 'group') {
         	$repository = new AdGroupRepository();
+        	return $repository->getAllCitys();
+        }elseif($this->type == 'shortcut') {
+        	$repository = new ShortcutMenuRepository();
         	return $repository->getAllCitys();
         }
  
