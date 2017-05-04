@@ -5,11 +5,27 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+<div class="row-fluid">
+     <div class="span12">
+         <div class="position_detail">
+            <h3>广告组信息</h3>
+            <ul>
+                <li><div class="detail"><strong>广告组名称：</strong><span>{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</span></div></li>
+                <li><div class="detail"><strong>所在城市：</strong><span>{$position_data.city_name}</span></div></li>
+            </ul>
+          </div>
+     </div>		
+</div>
+
 <div>
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
 		{if $action_link}
 		<a href="{$action_link.href}" class="btn plus_or_reply data-pjax" id="sticky_a"><i class="fontello-icon-reply"></i>{$action_link.text}</a>
+		{/if}
+		
+		{if $edit_action_link}
+		<a href="{$edit_action_link.href}" class="btn plus_or_reply data-pjax" id="sticky_a"><i class="fontello-icon-plus"></i>{$edit_action_link.text}</a>
 		{/if}
 	</h3>
 </div>
@@ -18,13 +34,13 @@
 	<div class="span12">
 		<table class="table table-striped smpl_tbl dataTable table-hide-edit">
 			<thead>
-				<tr data-sorthref='{url path="adsense/admin_position/init"}'>
-				    <th class="w50">{lang key='adsense::adsense.ad_id'}</th>
-	                <th class="w200">{lang key='adsense::adsense.position_name'}</th>
+				<tr data-sorthref='{url path="adsense/admin_group/group_position_list" args="city_id={$city_id}&position_id={$position_id}"}'>
+				    <th class="w50">编号</th>
+	                <th class="w200">广告位名称</th>
 	                <th class="w130">广告位代号</th>
-	                <th>{lang key='adsense::adsense.position_desc'}</th>
+	                <th>广告位描述</th>
 				    <th class="w100">建议大小</th>
-				    <th class="w100">排序</th>
+				    <th class="w100" data-toggle="sortby" data-sortby="sort_order">排序</th>
 				    <th class="w80">查看</th>
                 </tr>
 			</thead>
