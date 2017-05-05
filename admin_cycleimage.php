@@ -83,12 +83,12 @@ class admin_cycleimage extends ecjia_admin {
 		
 		ecjia_screen::get_current_screen()->add_help_tab(array(
 		'id'		=> 'overview',
-		'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
+		'title'		=> '概述',
 		'content'	=> '<p>欢迎访问ECJia智能后台轮播图设置页面，可在此页面设置轮播组以及轮播图。</p>'
 		));
 		
 		ecjia_screen::get_current_screen()->set_help_sidebar(
-		'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
+		'<p><strong>更多信息:</strong></p>' .
 		'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于轮播图列表帮助文档</a>') . '</p>'
 		);
 		
@@ -151,12 +151,12 @@ class admin_cycleimage extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->add_help_tab(array(
     	'id'		=> 'overview',
-    	'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
+    	'title'		=> '概述',
     	'content'	=> '<p>欢迎访问ECJia智能后台添加轮播组页面，可以在此页面添加轮播组信息。</p>'
     	));
     	
     	ecjia_screen::get_current_screen()->set_help_sidebar(
-    	'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
+    	'<p><strong>更多信息</strong></p>' .
     	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于添加轮播组帮助文档</a>') . '</p>'
     	);
     		
@@ -214,12 +214,12 @@ class admin_cycleimage extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->add_help_tab(array(
     	'id'		=> 'overview',
-    	'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
+    	'title'		=> '概述',
     	'content'	=> '<p>欢迎访问ECJia智能后台编辑轮播组页面，可以在此页面编辑相应的轮播组信息。</p>'
     	));
     	
     	ecjia_screen::get_current_screen()->set_help_sidebar(
-    	'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
+    	'<p><strong>更多信息</strong></p>' .
     	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于编辑轮播组帮助文档</a>') . '</p>'
     	);
     	
@@ -384,12 +384,12 @@ class admin_cycleimage extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->add_help_tab(array(
     	'id'		=> 'overview',
-    	'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
+    	'title'		=> '概述',
     	'content'	=> '<p>欢迎访问ECJia智能后台添加轮播图页面，可以在此页面添加轮播图信息。</p>'
     	));
     	 
     	ecjia_screen::get_current_screen()->set_help_sidebar(
-    	'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
+    	'<p><strong>更多信息</strong></p>' .
     	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于添加轮播图帮助文档</a>') . '</p>'
     	);
     	
@@ -467,12 +467,12 @@ class admin_cycleimage extends ecjia_admin {
 		
     	ecjia_screen::get_current_screen()->add_help_tab(array(
     	'id'		=> 'overview',
-    	'title'		=> RC_Lang::get('cycleimage::flashplay.overview'),
+    	'title'		=> '概述',
     	'content'	=> '<p>欢迎访问ECJia智能后台编辑轮播图页面，可以在此页面编辑相应的轮播图信息。</p>'
     	));
     	 
     	ecjia_screen::get_current_screen()->set_help_sidebar(
-    	'<p><strong>' . RC_Lang::get('cycleimage::flashplay.more_info') . '</strong></p>' .
+    	'<p><strong>更多信息</strong></p>' .
     	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于编辑轮播图帮助文档</a>') . '</p>'
     	);
     	
