@@ -69,8 +69,9 @@ class adsense_admin_purview_api extends Component_Event_Api {
 			array('action_name' => '轮播图编辑', 'action_code' => 'cycleimage_update', 'relevance' => ''),
 			array('action_name' => '轮播图删除', 'action_code' => 'cycleimage_delete', 'relevance' => ''),
 				
-		
-			
+			array('action_name' => '快捷菜单管理', 'action_code' => 'shortcut_manage', 'relevance' => ''),
+			array('action_name' => '快捷菜单编辑', 'action_code' => 'shortcut_update', 'relevance' => ''),
+			array('action_name' => '快捷菜单删除', 'action_code' => 'shortcut_delete', 'relevance' => ''),
 		);
 		return $purviews;
 	}
