@@ -81,7 +81,7 @@ class admin extends ecjia_admin {
 			'gen_code_message' => RC_Lang::get('adsense::adsense.gen_code_message') 
 		);
 		RC_Script::localize_script('adsense', 'js_lang', $js_lang);
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_list'), RC_Uri::url('adsense/admin/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_list'), RC_Uri::url('adsense/admin/init', ['position_id' => $_GET['position_id']])));
 	}
 	
 	/**
