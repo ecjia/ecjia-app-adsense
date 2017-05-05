@@ -40,7 +40,7 @@ ecjia.admin.cycleimage.cycleimage_info();
 					<label class="control-label">图片预览：</label>
 					<div class="controls">
 						<div class="fileupload fileupload-new" data-provides="fileupload">
-							<img class="w600 h300"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$data.ad_code}"><br><br>
+							<img class="w200 h200"  class="img-polaroid" src="{RC_Upload::upload_url()}/{$data.ad_code}"><br><br>
 							图片地址： {$data.ad_code}<br><br>
 							<div class="fileupload-preview fileupload-exists thumbnail" style="width: 50px; height: 50px; line-height: 50px;"></div>
 							<span class="btn btn-file">
