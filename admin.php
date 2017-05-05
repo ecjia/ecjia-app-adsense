@@ -127,7 +127,7 @@ class admin extends ecjia_admin {
 				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
 			}
 			
-			$available_clients = $ad->getAdClients($position_id, $filter);
+			$available_clients = $ad->getAdClients($position_id, ['media_type' => $filter]);
 			if($show_client_number > 0) {
 				array_unshift($available_clients,$show_client_number);
 			}
@@ -144,7 +144,7 @@ class admin extends ecjia_admin {
 			if(empty($show_client)){
 				$ads_list = $ad_db->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
 			}else{
-				$ads_list = $ad->getAdsFilter($position_id, $show_client, '', $filter);
+				$ads_list = $ad->getAdsFilter($position_id, $show_client, null, ['media_type' => $filter]);
 			}
 			
 			foreach ($ads_list as $key => $val) {

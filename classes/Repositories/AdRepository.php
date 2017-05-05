@@ -57,7 +57,7 @@ class AdRepository extends AbstractRepository
         return $available->toArray();
     }
     
-    public function getAdClients($position, $filter) {
+    public function getAdClients($position, $filter = []) {
     	if (empty($position)) {
     		return [];
     	}
@@ -69,16 +69,15 @@ class AdRepository extends AbstractRepository
 	    		'position_id' => $position,
 	    		'show_client' => ['show_client', '&', $item],
     		];
-    		if(isset($filter)){
-    			$where = [
-	    			'position_id' => $position,
-		    		'show_client' => ['show_client', '&', $item],
-	    			'media_type' => $filter,
-    			];
+    		
+    		if ( ! empty($filter)) {
+    			$where = array_merge($where, $filter);
     		}
+    		
     		$count = $this->findWhere($where, ['ad_id'])->count();
     		if ($count > 0)
     			return [$key => $count];
+    		
     		return [];
     	});
     
@@ -92,7 +91,7 @@ class AdRepository extends AbstractRepository
      * @param integer $maxNum
      * @return array
      */
-    public function getSpecialAds($position, $client, $maxNum = 5) {
+    public function getSpecialAds($position, $client, $maxNum = null) {
         if (empty($client))
         {
             return [];
@@ -114,7 +113,7 @@ class AdRepository extends AbstractRepository
      * @param integer $maxNum
      * @return array
      */
-    public function getAds($position, $client, $maxNum = 5) {
+    public function getAds($position, $client, $maxNum = null) {
         if (empty($client))
         {
             return [];
@@ -138,7 +137,7 @@ class AdRepository extends AbstractRepository
      * @param integer $filter
      * @return integer 
      */
-    public function getAdsFilter($position, $client, $maxNum = 5, $filter) {
+    public function getAdsFilter($position, $client, $maxNum = null, $filter = []) {
     	if (empty($client))
     	{
     		return [];
@@ -148,12 +147,8 @@ class AdRepository extends AbstractRepository
 	    	'show_client' => ['show_client', '&', $client],
     	];
     	
-    	if(isset($filter)){
-    		$where = [
-	    		'position_id' => $position,
-	    		'show_client' => ['show_client', '&', $client],
-    			'media_type' => $filter,
-    		];
+    	if ( ! empty($filter)) {
+    		$where = array_merge($where, $filter);
     	}
     	
     	$result = $this->findWhereLimit($where, ['ad_id', 'ad_name', 'ad_code', 'ad_link', 'media_type', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count'], $maxNum);
@@ -161,7 +156,7 @@ class AdRepository extends AbstractRepository
     	return $result->toArray();
     }
    
-    public function findWhereLimit(array $where, $columns = ['*'], $limit= null)
+    public function findWhereLimit(array $where, $columns = ['*'], $limit = null)
     {
         $this->newQuery();
     
