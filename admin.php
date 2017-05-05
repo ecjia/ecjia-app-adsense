@@ -95,6 +95,8 @@ class admin extends ecjia_admin {
 		    return $this->showmessage("丢失广告位position_id", ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR);
 		}
 		
+		$this->assign('position_id', $position_id);
+		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(RC_Lang::get('adsense::adsense.ads_list')));
 		ecjia_screen::get_current_screen()->add_help_tab(array(
@@ -108,8 +110,6 @@ class admin extends ecjia_admin {
 		$show_client = array_get($_GET, 'show_client', 0);
 		$media_type = array_get($_GET, 'media_type', -1);
 		$city_id = array_get($_GET, 'city_id', 0);
-		
-		$this->assign('show_client', $show_client);
 
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.ads_list'));
 		$this->assign('back_position_list', array('text' => '广告位列表','href' => RC_Uri::url('adsense/admin_position/init',array('city_id' => $city_id))));
