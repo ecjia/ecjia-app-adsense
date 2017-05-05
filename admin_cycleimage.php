@@ -296,14 +296,13 @@ class admin_cycleimage extends ecjia_admin {
     		return $this->showmessage('该轮播组已存在轮播图，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	} else {
     		RC_DB::table('ad_position')->where('position_id', $position_id)->delete();
-    	}
-    	
-    	ecjia_admin::admin_log($position_name, 'remove', 'group_cycleimage');
-    	$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->count();
-    	if(!$count){
-    		return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init')));
-    	}else{
-    		return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init',array('city_id' => $city_id))));
+    		ecjia_admin::admin_log($position_name, 'remove', 'group_cycleimage');
+    		$count = RC_DB::TABLE('ad_position')->where('type', 'cycleimage')->where('city_id', $city_id)->count();
+    		if(!$count){
+    			return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init')));
+    		}else{
+    			return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_cycleimage/init',array('city_id' => $city_id))));
+    		}
     	}
     }
     

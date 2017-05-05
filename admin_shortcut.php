@@ -291,15 +291,14 @@ class admin_shortcut extends ecjia_admin {
     		return $this->showmessage('该菜单组已存在快捷菜单，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	} else {
     		RC_DB::table('ad_position')->where('position_id', $position_id)->delete();
+    		ecjia_admin::admin_log($position_name, 'remove', 'group_shortcut');
+    		$count = RC_DB::TABLE('ad_position')->where('type', 'shortcut')->where('city_id', $city_id)->count();
+    		if(!$count){
+    			return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init')));
+    		}else{
+    			return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init',array('city_id' => $city_id))));
+    		}
     	}
-    	ecjia_admin::admin_log($position_name, 'remove', 'group_shortcut');
-    	$count = RC_DB::TABLE('ad_position')->where('type', 'shortcut')->where('city_id', $city_id)->count();
-    	if(!$count){
-    		return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init')));
-    	}else{
-    		return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init',array('city_id' => $city_id))));
-    	}
-    	
     }
     
     public function copy() {

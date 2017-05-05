@@ -292,8 +292,8 @@ class admin_position extends ecjia_admin {
 			$position_name = RC_DB::table('ad_position')->where('position_id', $id)->pluck('position_name');
 			ecjia_admin::admin_log($position_name, 'remove', 'ads_position');
 			RC_DB::table('ad_position')->where('position_id', $id)->delete();
+			return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/init')));
 		}
-		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/init')));
 	}
 	
 	public function copy() {
