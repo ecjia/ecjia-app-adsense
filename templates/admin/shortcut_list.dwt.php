@@ -44,7 +44,7 @@
 	</div>
 	<div class="span9">
 		<h3 class="heading">
-			{if $ur_here}{$ur_here}{/if}（{$position_code}）
+			{if $ur_here}{$ur_here}{/if}{if $city_list}（{$position_code}）{/if}
 			{if $position_id}
 				<a href='{RC_Uri::url("adsense/admin_shortcut/edit_group","position_id={$position_id}&city_id={$city_id}")}' class="btn plus_or_reply data-pjax" ><i class="fontello-icon-edit"></i>编辑菜单组</a>
 				<a data-toggle="ajaxremove" class="ajaxremove btn plus_or_reply"  data-msg="您要删除该菜单组么？"  href='{RC_Uri::url("adsense/admin_shortcut/delete_group","position_id={$position_id}&city_id={$city_id}")}' title="删除"><i class="fontello-icon-trash"></i>删除菜单组</a>
