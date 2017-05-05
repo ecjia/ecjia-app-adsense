@@ -80,6 +80,36 @@ class admin_shortcut extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('快捷菜单管理'));
 		$this->assign('ur_here', '快捷菜单列表');
 		
+		ecjia_screen::$current_screen->add_help_tab(array(
+			'id'		=> 'overview',
+			'title'		=> RC_Lang::get('mobile::mobile.open_app_function'),
+			'content'	=>
+			'<p>'.RC_Lang::get('mobile::mobile.open_discover').'ecjiaopen://app?open_type=discover' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_qrcode').'ecjiaopen://app?open_type=qrcode</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_qrshare').'ecjiaopen://app?open_type=qrshare</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_history').'ecjiaopen://app?open_type=history</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_feedback').'ecjiaopen://app?open_type=feedback</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_map').'ecjiaopen://app?open_type=map</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_message').'ecjiaopen://app?open_type=message</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_search').'ecjiaopen://app?open_type=search</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_help').'ecjiaopen://app?open_type=help</p>'
+		));
+		ecjia_screen::$current_screen->add_help_tab(array(
+			'id'		=> 'managing-pages',
+			'title'		=> RC_Lang::get('mobile::mobile.open_goods_order_user'),
+			'content'	=>
+			'<p>'.RC_Lang::get('mobile::mobile.open_goods_list').'ecjiaopen://app?open_type=goods_list&category_id={id}, {id}'.RC_Lang::get('mobile::mobile.is_category_id').'</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_goods_comment').'ecjiaopen://app?open_type=goods_comment&goods_id={id}, {id}'.RC_Lang::get('mobile::mobile.is_goods_id').'</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_goods_detail').'ecjiaopen://app?open_type=goods_detail&goods_id={id}, {id}'.RC_Lang::get('mobile::mobile.is_goods_id').'</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_oder_list').'ecjiaopen://app?open_type=orders_list</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_order_detail').'ecjiaopen://app?open_type=orders_detail&order_id={id}, {id}'.RC_Lang::get('mobile::mobile.is_order_id').'</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_user_wallet').'ecjiaopen://app?open_type=user_wallet</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_user_address').'ecjiaopen://app?open_type=user_address</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_user_account').'ecjiaopen://app?open_type=user_account</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_user_password').'ecjiaopen://app?open_type=user_password</p>' .
+			'<p>'.RC_Lang::get('mobile::mobile.open_user_center').'ecjiaopen://app?open_type=user_center</p>'
+		));
+		
 		//获取城市 
 		$citymanage = new Ecjia\App\Adsense\CityManage('shortcut');
 		
