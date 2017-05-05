@@ -102,6 +102,7 @@ class admin extends ecjia_admin {
 		
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
+		$media_type = array_get($_GET, 'media_type', '-1');
 
 		$city_id = intval($_GET['city_id']);
 		
@@ -119,15 +120,14 @@ class admin extends ecjia_admin {
 			$this->assign('client_list', $client_list);
 			
 			$ad_db = RC_DB::table('ad');
-			if (isset($_GET['media_type']) && $_GET['media_type'] != '-1' && $_GET['media_type'] != null) {
-				$ad_db->where('media_type', '=', intval($_GET['media_type']));
-				$filter = intval($_GET['media_type']);
-				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->where('media_type', $filter)->count();
+			if ($media_type >= 0) {
+				$ad_db->where('media_type', '=', $media_type);
+				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->where('media_type', $media_type)->count();
 			}else{
 				$show_client_number = RC_DB::TABLE('ad')->where('position_id', $position_id)->where('show_client', 0)->count();
 			}
 			
-			$available_clients = $ad->getAdClients($position_id, ['media_type' => $filter]);
+			$available_clients = $ad->getAdClients($position_id, ['media_type' => $media_type]);
 			if($show_client_number > 0) {
 				array_unshift($available_clients,$show_client_number);
 			}
@@ -144,7 +144,7 @@ class admin extends ecjia_admin {
 			if(empty($show_client)){
 				$ads_list = $ad_db->where('position_id', $position_id)->where('show_client', 0)->select('ad_id', 'ad_name', 'ad_code', 'media_type', 'start_time', 'start_time', 'end_time', 'enabled', 'sort_order', 'click_count')->get();
 			}else{
-				$ads_list = $ad->getAdsFilter($position_id, $show_client, null, ['media_type' => $filter]);
+				$ads_list = $ad->getAdsFilter($position_id, $show_client, null, ['media_type' => $media_type]);
 			}
 			
 			foreach ($ads_list as $key => $val) {
