@@ -176,6 +176,7 @@ class admin_shortcut extends ecjia_admin {
     		'sort_order' 	=> $sort_order,
     	);
     	$position_id = RC_DB::table('ad_position')->insertGetId($data);
+    	ecjia_admin::admin_log($position_name, 'add', 'group_shortcut');
     	return $this->showmessage('添加菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/edit_group', array('position_id' => $position_id, 'city_id' => $city_id))));
     }    
     
@@ -231,7 +232,6 @@ class admin_shortcut extends ecjia_admin {
     		return $this->showmessage('该菜单组代号在当前城市中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
-    	
     	$data = array(
     		'position_name' => $position_name,
     		'position_code' => $position_code,
@@ -245,7 +245,7 @@ class admin_shortcut extends ecjia_admin {
     	);
     	
     	RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
-    	
+    	ecjia_admin::admin_log($position_name, 'edit', 'group_shortcut');
     	return $this->showmessage('编辑菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/edit_group', array('position_id' => $position_id,'city_id' => $city_id))));
     }
     
@@ -253,13 +253,14 @@ class admin_shortcut extends ecjia_admin {
     	$this->admin_priv('shortcut_delete');
     	
     	$position_id = intval($_GET['position_id']);
+    	$position_name = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->pluck('position_name');
     	$city_id = intval($_GET['city_id']);
     	if (RC_DB::table('ad')->where('position_id', $position_id)->count() > 0) {
     		return $this->showmessage('该菜单组已存在快捷菜单，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	} else {
     		RC_DB::table('ad_position')->where('position_id', $position_id)->delete();
     	}
-    	
+    	ecjia_admin::admin_log($position_name, 'remove', 'group_shortcut');
     	$count = RC_DB::TABLE('ad_position')->where('type', 'shortcut')->where('city_id', $city_id)->count();
     	if(!$count){
     		return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init')));
@@ -307,6 +308,7 @@ class admin_shortcut extends ecjia_admin {
     	);
 
     	$position_id = RC_DB::table('ad_position')->insertGetId($data);
+    	ecjia_admin::admin_log($position_name, 'copy', 'group_shortcut');
     	return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/edit_group', array('position_id' => $position_id, 'city_id' => $city_id))));
     }
         
@@ -325,6 +327,9 @@ class admin_shortcut extends ecjia_admin {
     	return $regions;
     }
     
+    /**
+     * 获取平台
+     */
     private function get_show_client(){
     	$client_list = array(
     		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
@@ -402,7 +407,7 @@ class admin_shortcut extends ecjia_admin {
     		'sort_order' 	=> $sort_order,
 		);
     	$id = RC_DB::table('ad')->insertGetId($data);
-    	
+    	ecjia_admin::admin_log($ad_name, 'add', 'shortcut');
     	$city_id = intval($_POST['city_id']);
     	return $this->showmessage('添加快捷菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/edit', array('id' => $id,'city_id'=>$city_id))));
     }
@@ -474,7 +479,7 @@ class admin_shortcut extends ecjia_admin {
     		'sort_order' 	=> $sort_order,
 		);
     	RC_DB::table('ad')->where('ad_id', $id)->update($data);
-    	
+    	ecjia_admin::admin_log($ad_name, 'edit', 'shortcut');
     	$city_id = intval($_POST['city_id']);
     	$show_client = intval($_POST['show_client_value']);
     	return $this->showmessage('编辑快捷菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/edit', array('id' => $id, 'city_id' => $city_id, 'show_client' => $show_client))));
@@ -486,11 +491,11 @@ class admin_shortcut extends ecjia_admin {
     	$this->admin_priv('shortcut_delete');
     	
     	$id = intval($_GET['id']);
-    	$ad_code = RC_DB::table('ad')->where('ad_id', $id)->pluck('ad_code');
+    	$data = RC_DB::TABLE('ad')->where('ad_id', $id)->select('ad_name', 'ad_code')->first();
     	$disk = RC_Filesystem::disk();
-    	$disk->delete(RC_Upload::upload_path() . $ad_code);
+    	$disk->delete(RC_Upload::upload_path() . $data['ad_code']);
     	RC_DB::table('ad')->where('ad_id', $id)->delete();
-    	
+    	ecjia_admin::admin_log($data['ad_name'], 'add', 'shortcut');
     	return $this->showmessage('成功删除快捷菜单', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     } 
     
@@ -507,7 +512,6 @@ class admin_shortcut extends ecjia_admin {
     	$show_client  = intval($_GET['show_client']);
     	
     	RC_DB::table('ad')->where('ad_id', $id)->update(array('enabled'=> $val));
-    	
     	return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/admin_shortcut/init', array('position_id' => $position_id, 'city_id' => $city_id, 'show_client' => $show_client))));
     }
     
