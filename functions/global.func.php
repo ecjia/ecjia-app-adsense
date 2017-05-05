@@ -51,12 +51,15 @@ defined('IN_ECJIA') or exit('No permission resources.');
  */
 function assign_adminlog_contents() {
 	ecjia_admin_log::instance()->add_action('copy', '复制');
-
+	ecjia_admin_log::instance()->add_action('constitute', '编排');
+	
 	ecjia_admin_log::instance()->add_object('group_cycleimage', '轮播组');
 	ecjia_admin_log::instance()->add_object('cycleimage', '轮播图');
 	
 	ecjia_admin_log::instance()->add_object('group_shortcut', '菜单组');
 	ecjia_admin_log::instance()->add_object('shortcut', '快捷菜单');
+	
+	ecjia_admin_log::instance()->add_object('group_position', '广告组');
 	
 	
 	

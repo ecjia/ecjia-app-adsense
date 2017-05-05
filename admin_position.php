@@ -61,6 +61,9 @@ class admin_position extends ecjia_admin {
 		RC_Style::enqueue_style('uniform-aristo');
 		RC_Script::enqueue_script('jquery-uniform');
 		RC_Script::enqueue_script('jquery-chosen');
+		RC_Loader::load_app_func('global');
+		assign_adminlog_contents();
+		
 		RC_Script::enqueue_script('bootstrap-editable.min', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/js/bootstrap-editable.min.js'), array(), false, false);
 		RC_Style::enqueue_style('bootstrap-editable', RC_Uri::admin_url('statics/lib/x-editable/bootstrap-editable/css/bootstrap-editable.css'), array(), false, false);
 		
@@ -190,6 +193,7 @@ class admin_position extends ecjia_admin {
     		'sort_order' 	=> $sort_order,
     	);
     	$position_id = RC_DB::table('ad_position')->insertGetId($data);
+    	ecjia_admin::admin_log($position_name, 'add', 'ads_position');
     	return $this->showmessage('添加广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id))));
     }
 	
@@ -271,7 +275,7 @@ class admin_position extends ecjia_admin {
     	);
     	
     	RC_DB::table('ad_position')->where('position_id', $position_id)->update($data);
-    	
+    	ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
     	return $this->showmessage('编辑广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id, 'city_id' => $city_id))));
     }
 
@@ -330,6 +334,7 @@ class admin_position extends ecjia_admin {
     	);
 	
 		$position_id = RC_DB::table('ad_position')->insertGetId($data);
+		ecjia_admin::admin_log($position_name, 'copy', 'ads_position');
 		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_position/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	

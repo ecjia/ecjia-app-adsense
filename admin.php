@@ -283,7 +283,7 @@ class admin extends ecjia_admin {
 		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
 		$cache_key = sprintf('%X', crc32('adsense_position-' . $_POST['position_id']));
 		$ad_postion_db->delete_cache_item($cache_key);
-		ecjia_admin::admin_log($_POST['ad_name'], 'add', 'ads');
+		ecjia_admin::admin_log($ad_name, 'add', 'ads');
 		
 		return $this->showmessage('添加广告成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $ad_id,'position_id' => $position))));
 	}
