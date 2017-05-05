@@ -158,7 +158,7 @@ class admin_group extends ecjia_admin {
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑广告组'));
 		$this->assign('ur_here', '编辑广告组');
 
-		$city_id     = $_GET['city_id'];
+		$city_id = $_GET['city_id'];
 		$this->assign('city_id', $city_id);
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
 
@@ -241,6 +241,28 @@ class admin_group extends ecjia_admin {
 		return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/edit', array('position_id' => $position_id,'city_id' => $city_id))));
 	}
 	
+	/**
+	 * 删除广告组
+	 */
+	public function remove() {
+		$this->admin_priv('ad_group_delete');
+		$group_position_id = intval($_GET['group_position_id']);
+		$city_id = intval($_GET['city_id']);
+
+		if (RC_DB::table('ad_position')->where('group_id', $group_position_id)->count() > 0) {
+			if($_GET['key']) {
+				return $this->showmessage('该广告组已进行广告位编排，不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,array('pjaxurl' => RC_Uri::url('adsense/admin_group/constitute',array('city_id' => $city_id, 'position_id' => $group_position_id))));
+			}else{
+				return $this->showmessage('该广告组已进行广告位编排，不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,array('pjaxurl' => RC_Uri::url('adsense/admin_group/group_position_list',array('city_id' => $city_id, 'position_id' => $group_position_id))));
+			}
+		} else {
+			$position_name = RC_DB::table('ad_position')->where('position_id', $group_position_id)->pluck('position_name');
+			ecjia_admin::admin_log($position_name, 'remove', 'group_position');
+			RC_DB::table('ad_position')->where('position_id', $group_position_id)->delete();
+			return $this->showmessage('删除广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin_group/init')));
+		}
+	}
+	
 	public function constitute() {
 		$this->admin_priv('ad_group_update');
 		 
@@ -254,6 +276,9 @@ class admin_group extends ecjia_admin {
 
 		$position_id = intval($_GET['position_id']);
 		$this->assign('position_id', $position_id);
+		
+		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
 
 		//指定地区下面的广告位列表-左边
 		$arr =RC_DB::TABLE('ad_position')->where('city_id', $city_id)->where('type', 'adsense')->select('position_name', 'position_id', 'sort_order')->get();
@@ -276,6 +301,7 @@ class admin_group extends ecjia_admin {
 		->get();
 		
 		$this->assign('group_position_list', $group_position_list);
+		
 		$this->display('adsense_group_constitute.dwt');
 	
 	}
@@ -305,8 +331,8 @@ class admin_group extends ecjia_admin {
 	
 		$this->admin_priv('ad_group_manage');
 			
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编排广告位'));
-		$this->assign('ur_here', '编排广告位');
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编排列表'));
+		$this->assign('ur_here', '编排列表');
 		
 		$city_id = intval($_GET['city_id']);
 		$this->assign('city_id', $city_id);

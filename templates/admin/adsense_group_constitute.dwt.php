@@ -8,6 +8,26 @@
 <!-- {/block} -->
 
 <!-- {block name="main_content"} -->
+<div class="row-fluid">
+     <div class="span12">
+         <div class="position_detail">
+            <h3>广告组信息</h3>
+            <ul>
+                <li><div class="detail"><strong>广告组名称：</strong><span>{$position_data.position_name}{if $position_data.position_code}（{$position_data.position_code}）{else}（无）{/if}</span></div></li>
+                <li>
+                	<div class="detail">
+		                <strong>所在城市：</strong><span>{$position_data.city_name}</span>
+		                <p class="f_r"> 
+			               <a class="data-pjax ecjiafc-gray" href='{RC_Uri::url("adsense/admin_group/edit", "position_id={$position_data.position_id}&city_id={$city_id}")}'><i class="fontello-icon-edit"></i>编辑广告组</a>&nbsp;|&nbsp;
+			               <a class="ajaxremove ecjiafc-gray" data-toggle="ajaxremove" data-msg="你确定要删除该广告组吗？" href='{RC_Uri::url("adsense/admin_group/remove", "group_position_id={$position_data.position_id}&city_id={$city_id}&key=constitute")}' title="删除"><i class="fontello-icon-trash"></i>删除广告组</a>
+		                </p>
+	                </div>
+                </li>
+            </ul>
+          </div>
+     </div>		
+</div>
+
 <div>
 	<h3 class="heading">
 		<!-- {if $ur_here}{$ur_here}{/if} -->
@@ -16,6 +36,7 @@
 		<!-- {/if} -->
 	</h3>
 </div>
+
 <div class="row-fluid">
 	<div class="span12">
 		<div class="tabbable">
