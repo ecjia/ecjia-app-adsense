@@ -70,7 +70,8 @@ class AdPositionModel extends Model
 	    'max_number', 
 	    'city_id', 
 	    'city_name', 
-	    'type'
+	    'type',
+	    'group_id'
 	];
 	
 	/**
