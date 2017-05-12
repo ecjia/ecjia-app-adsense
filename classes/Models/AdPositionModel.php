@@ -71,7 +71,8 @@ class AdPositionModel extends Model
 	    'city_id', 
 	    'city_name', 
 	    'type',
-	    'group_id'
+	    'group_id',
+	    'sort_order'
 	];
 	
 	/**
