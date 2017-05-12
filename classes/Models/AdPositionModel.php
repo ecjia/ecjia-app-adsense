@@ -63,7 +63,8 @@ class AdPositionModel extends Model
 	 */
 	protected $fillable = [
 	    'position_name', 
-	    'position_code', 
+	    'position_code',
+	    'position_desc', 
 	    'ad_width', 
 	    'ad_height', 
 	    'max_number', 
