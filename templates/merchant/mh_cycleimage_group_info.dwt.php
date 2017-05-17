@@ -3,7 +3,6 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
-    ecjia.merchant.favourable_info.init();
 </script>
 <!-- {/block} -->
 
@@ -13,7 +12,7 @@
         <h2 class="page-header">
         <!-- {if $ur_here}{$ur_here}{/if} -->
         {if $action_link}
-        <a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" style="float:right;margin-top:-3px;"><i class="fa fa-reply"></i> {$action_link.text}</a>
+        	<a class="btn btn-primary data-pjax" href="{$action_link.href}" id="sticky_a" style="float:right;margin-top:-3px;"><i class="fa fa-reply"></i> {$action_link.text}</a>
         {/if}
         </h2>
     </div>
