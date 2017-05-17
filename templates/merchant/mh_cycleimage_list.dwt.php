@@ -32,7 +32,7 @@
 								{if $position_id}
 									<div class="pull-right">
 										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary data-pjax"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
-										<a href='{RC_Uri::url("adsense/mh_cycleimage/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-plus"></i> 编辑轮播组</a>
+										<a href='{RC_Uri::url("adsense/mh_cycleimage/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑轮播组</a>
 									</div>
 								{/if}
 							</h3>

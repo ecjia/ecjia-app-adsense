@@ -3,6 +3,7 @@
 
 <!-- {block name="footer"} -->
 <script type="text/javascript">
+ecjia.merchant.mh_cycleimage.cycleimage_group_info();
 </script>
 <!-- {/block} -->
 
@@ -29,38 +30,39 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-3">轮播组名称：</label>
                                         <div class="controls col-lg-8">
-                                            <input class="form-control" type="text" name="position_name" id="position_name" value="" />
+                                            <input class="form-control" type="text" name="position_name" id="position_name" value="{$data.position_name}" />
                                         </div>
                                         <span class="input-must">{lang key='system::system.require_field'}</span>
                                     </div>
                                     
-									<div class="form-group">
-									 	<label class="control-label col-lg-3">轮播组代号：</label>
-                                     	<div class="controls col-lg-8">
-                                             <select class="form-control"  name="" id="">
-                                                  <option value="0" selected="selected" >请选择轮播组代号</option>
-                                             </select>
-                                        </div>
-									</div>
+<!-- 									<div class="form-group"> -->
+<!-- 									 	<label class="control-label col-lg-3">轮播组代号：</label> -->
+<!--                                      	<div class="controls col-lg-8"> -->
+<!--                                              <select class="form-control"  name="" id=""> -->
+<!--                                                   <option value="0" selected="selected" >请选择轮播组代号</option> -->
+<!--                                              </select> -->
+<!--                                         </div> -->
+<!-- 									</div> -->
                                     
                                     <div class="form-group">
                                         <label class="control-label col-lg-3">轮播组代号：</label>
                                         <div class="controls col-lg-8">
-                                            <input class="form-control" type="text" name="" id="" value="" />
+                                            <input class="form-control" type="text" name="position_code" id="position_code" value="{$data.position_code}" />
                                         </div>
+                                        <span class="input-must">{lang key='system::system.require_field'}</span>
                                     </div>
                                     
  									<div class="form-group">
 				                        <label class="control-label col-lg-3">轮播组描述：</label>
 				                        <div class="controls col-lg-8 ">
-				                          <textarea class="form-control" id="position_desc" name="position_desc">{$staff_group.groupdescribe}</textarea>
+				                          <textarea class="form-control" id="position_desc" name="position_desc">{$data.position_desc}</textarea>
 				                        </div>
 			                      	</div>
 			                      	
 			                      	<div class="form-group">
                                         <label class="control-label col-lg-3">可展示数量最大值：</label>
                                         <div class="controls col-lg-8">
-                                            <input class="form-control" type="text" name="max_number" id="max_number" value="" />
+                                            <input class="form-control" type="text" name="max_number" id="max_number" value="{$data.max_number}" />
                                             <span class="help-block">在此可设置前台调用该轮播组的轮播图显示数量。</span>
                                         </div>
                                     </div>
@@ -68,13 +70,19 @@
                                     <div class="form-group">
                                         <label class="control-label col-lg-3">排序：</label>
                                         <div class="controls col-lg-8">
-                                            <input class="form-control" type="text" name="sort_order" id="sort_order" value="" />
+                                            <input class="form-control" type="text" name="sort_order" id="sort_order" value="{$data.sort_order}" />
                                         </div>
                                     </div>
 			                      	
                                     <div class="form-group">
                                         <div class="col-lg-offset-3 col-lg-8">
-                                           <button class="btn btn-info" type="submit">确定</button>
+                                           {if $data.position_id}
+							        			<input type="hidden" name="position_id" value="{$data.position_id}" />
+							        			<input type="submit" value="更新" class="btn btn-info" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该轮播组信息吗？" data-href='{url path="adsense/mh_cycleimage/copy" args="position_id={$position_id}"}' title="复制"><button class="btn btn-info" type="button">复制</button></a>
+							        		{else}
+							        			<input type="submit" value="确定" class="btn btn-info" />
+							        		{/if}
                                         </div>
                                     </div>
                                 </fieldset>
@@ -94,20 +102,19 @@
 						              			<div class="panel-body">
 			                                        <div class="form-group">
 							              				<label class="control-label col-lg-3">宽度：</label>
-							              				<div class="col-lg-8">
-							                            	<input class="form-control" name="give_integral" value="" type="text" placeholder="像素">
+							              				<div class="col-lg-9">
+							                            	<input class="form-control" name="ad_width" value="{$data.ad_width}" type="text" placeholder="像素">
 							                            	<span class="help-block">建议轮播组宽度单位为Px</span>
 							                          	</div>
 							              			</div>
 							              			
 							              			<div class="form-group">
 							              				<label class="control-label col-lg-3">高度：</label>
-							              				<div class="col-lg-8">
-							                          		<input class="form-control" name="rank_integral" value="" type="text" placeholder="像素">
+							              				<div class="col-lg-9">
+							                          		<input class="form-control" name="ad_height" value="{$data.ad_height}" type="text" placeholder="像素">
 							                          		<span class="help-block">建议轮播组高度单位为Px</span>
 							                          	</div>
 							              			</div>
-							              			
 			                                    </div>
 					              			</div>
 						        		</div>
