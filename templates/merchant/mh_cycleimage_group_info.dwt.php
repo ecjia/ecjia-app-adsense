@@ -24,7 +24,7 @@
                 <div class="panel-body">
                     <div class="form">
                         <form id="form-privilege" class="form-horizontal" name="theForm" action="{$form_action}" method="post" data-edit-url="{url path='user/admin/edit'}" >
-                            <div class="col-lg-7" style="padding-left:0px;">
+                            <div class="col-lg-8" style="padding-left:0px;">
                                 <fieldset>
                                     <div class="form-group">
                                         <label class="control-label col-lg-3">轮播组名称：</label>
@@ -80,7 +80,7 @@
                                 </fieldset>
                             </div>
 
-                            <div class="col-lg-5">
+                            <div class="col-lg-4">
                                 <fieldset>
                                     <div class="panel-group">
 							            <div class="panel panel-info">
