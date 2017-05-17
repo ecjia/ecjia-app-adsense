@@ -79,7 +79,6 @@ ecjia.merchant.mh_cycleimage.cycleimage_group_info();
                                            {if $data.position_id}
 							        			<input type="hidden" name="position_id" value="{$data.position_id}" />
 							        			<input type="submit" value="更新" class="btn btn-info" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							        			<a class="copy ecjiafc-red" style="cursor: pointer;" data-msg="您确定要进行复制该轮播组信息吗？" data-href='{url path="adsense/mh_cycleimage/copy" args="position_id={$position_id}"}' title="复制"><button class="btn btn-info" type="button">复制</button></a>
 							        		{else}
 							        			<input type="submit" value="确定" class="btn btn-info" />
 							        		{/if}
