@@ -145,7 +145,10 @@ class mh_cycleimage extends ecjia_merchant {
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
     	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-
+    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('store_id', $_SESSION['store_id'])->where('type', 'cycleimage')->count();
+    	if ($query > 0) {
+    		return $this->showmessage('该轮播组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
     	$data = array(
     		'store_id'		=> $_SESSION['store_id'],
     		'position_name' => $position_name,
@@ -191,7 +194,11 @@ class mh_cycleimage extends ecjia_merchant {
     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-     	
+    	
+    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('type', 'cycleimage')->where('store_id', $_SESSION['store_id'])->where('position_id', '!=', $position_id)->count();
+    	if ($query > 0) {
+    		return $this->showmessage('该轮播组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
     	$data = array(
     		'position_name' => $position_name,
     		'position_code' => $position_code,
@@ -225,33 +232,4 @@ class mh_cycleimage extends ecjia_merchant {
     		}
     	}
     }
-    
-    public function copy() {
-    	$this->admin_priv('cycleimage_update');
-    	 
-    	$position_id = intval($_GET['position_id']);
-    	$position_code = RC_DB::TABLE('merchants_ad_position')->where('position_id', $position_id)->pluck('position_code');
-    	$position_name = trim($_GET['position_name']);
-    	$position_desc = $_GET['position_desc'];
-    	$max_number    = intval($_GET['max_number']);
-    	$sort_order    = intval($_GET['sort_order']);
-    	$ad_width      = intval($_GET['ad_width']);
-    	$ad_height     = intval($_GET['ad_height']);
-    	
-    	$data = array(
-    		'store_id'		=> $_SESSION['store_id'],	
-    		'position_name' => $position_name,
-    		'position_code' => $position_code,
-    		'position_desc' => $position_desc,
-    		'ad_width'      => $ad_width,
-    		'ad_height'     => $ad_height,
-    		'max_number'    => $max_number,
-    		'type' 			=> 'cycleimage',
-    		'sort_order' 	=> $sort_order,
-    	);
-    	$position_id = RC_DB::table('merchants_ad_position')->insertGetId($data);
-    	ecjia_merchant::admin_log($position_name, 'copy', 'group_cycleimage');
-    	return $this->showmessage('复制成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/edit_group', array('position_id' => $position_id))));
-    }
-    
 }
