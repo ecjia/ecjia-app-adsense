@@ -28,7 +28,7 @@
 					<div class="col-lg-9">
 						<div class="panel-body panel-body-small">
 							<h3 class="page-header">
-								{if $ur_here}{$ur_here}{/if}{if $city_list}（{$position_code}）{/if}
+								{if $ur_here}{$ur_here}{/if}（{$position_code}）
 								{if $position_id}
 									<div class="pull-right">
 										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary data-pjax"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
