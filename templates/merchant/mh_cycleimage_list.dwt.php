@@ -31,7 +31,7 @@
 								{if $ur_here}{$ur_here}{/if}（{$position_code}）
 								{if $position_id}
 									<div class="pull-right">
-										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary data-pjax"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
+										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
 										<a href='{RC_Uri::url("adsense/mh_cycleimage/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑轮播组</a>
 									</div>
 								{/if}
@@ -72,9 +72,13 @@
 											    </div>
 											</td>
 											<td>
-												<i class="cursor_pointer fa {if $item.enabled eq '1'}fa-check {else}fa-times{/if}" data-trigger="toggle_on_sale" data-url='{RC_Uri::url("adsense/mh_cycleimage/toggle_show","position_id={$position_id}&show_client={$show_client}")}' data-id="{$item.ad_id}"></i>
+										    	<i class="cursor_pointer fa {if $item.enabled}fa-check {else}fa-times{/if}" data-trigger="toggleState" data-url="{RC_Uri::url('adsense/mh_cycleimage/toggle_show')}" data-id="{$item.ad_id}"></i>
 											</td>
-											<td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/mh_cycleimage/edit_sort", "position_id={$position_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="排序">{$item.sort_order}</span></td>
+											<td>
+												<span class="cursor_pointer" data-trigger="editable" data-placement="left" data-url='{RC_Uri::url("adsense/mh_cycleimage/edit_sort", "position_id={$position_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="请输入排序序号"> 
+												{$item.sort_order}
+												</span>
+											</td>
 										</tr>
 										<!-- {foreachelse} -->
 										   <tr><td class="no-records" colspan="5">{lang key='system::system.no_records'}</td></tr>
