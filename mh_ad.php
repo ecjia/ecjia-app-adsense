@@ -62,7 +62,7 @@ class mh_ad extends ecjia_merchant {
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
 		RC_Script::enqueue_script('mh_adsense', RC_App::apps_url('statics/js/mh_adsense.js', __FILE__));
-		
+		RC_Script::enqueue_script('mh_ad_position', RC_App::apps_url('statics/js/mh_ad_position.js', __FILE__));
 	}
 	
 	/**
@@ -86,7 +86,7 @@ class mh_ad extends ecjia_merchant {
 		$show_client = array_get($_GET, 'show_client', 0);
 		$media_type = array_get($_GET, 'media_type', -1);
 		$this->assign('media_type', $media_type);
-		$this->assign('action_link', array('text' => '添加广告','href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id, 'show_client' => $show_client))));
+		$this->assign('action_link', array('text' => '添加广告','href' => RC_Uri::url('adsense/mh_ad/add',array('position_id' => $position_id, 'show_client' => $show_client))));
 		
 		//获取投放平台
 		$ad = new Ecjia\App\Adsense\Repositories\MerchantAdRepository('adsense');
