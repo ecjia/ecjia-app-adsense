@@ -1,8 +1,8 @@
 // JavaScript Document
 ;
 (function(app, $) {
-	app.mh_cycleimage = {
-		cycleimage_group_info: function() {
+	app.mh_shortcut = {
+		shortcut_group_info: function() {		
 			var $this = $('form[name="theForm"]');
 			var option = {
 				rules: {
@@ -15,10 +15,10 @@
 				},
 				messages: {
 					position_name: {
-						required: "请输入轮播组名称"
+						required: "请输入菜单组名称"
 					},
 					position_code: {
-						required: "请输入轮播组代号"
+						required: "请输入菜单组代号"
 					},
 				},
 				submitHandler: function() {
@@ -34,7 +34,7 @@
 			$this.validate(options);
 		},
 		
-		cycleimage_info: function() {
+		shortcut_info: function() {
 			var $this = $('form[name="theForm"]');
 			var option = {
 				rules: {

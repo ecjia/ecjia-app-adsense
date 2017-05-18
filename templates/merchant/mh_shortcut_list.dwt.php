@@ -8,10 +8,9 @@
 {if !$data}
 	<div class="alert alert-info">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times" data-original-title="" title=""></i></button>
-		<strong>温馨提示：</strong>请您先添加轮播组。
+		<strong>温馨提示：</strong>请您先添加菜单组。
 	</div>
 {/if}
-
 <div class="row">
     <div class="col-lg-12">
         <div class="tab-content">
@@ -19,17 +18,17 @@
                 <div class="panel-body">
                 	<div class="col-lg-3">
 						<div class="setting-group">
-					        <span class="setting-group-title"><i class="fa fa-gear"></i> 轮播组</span>
+					        <span class="setting-group-title"><i class="fa fa-gear"></i> 菜单组</span>
 					        <!-- {if $data} -->
 					        <ul class="nav nav-list m_t10">
 						        <!-- {foreach from=$data item=val} -->
-						        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/mh_cycleimage/init" args="position_id={$val.position_id}"}'>{$val.position_name}</a></li>
+						        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/mh_shortcut/init" args="position_id={$val.position_id}"}'>{$val.position_name}</a></li>
 						        <!-- {/foreach} -->
 					        </ul>
 					        <!-- {/if} -->
 					        <br>
 						</div>
-						<a href='{RC_Uri::url("adsense/mh_cycleimage/add_group")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加轮播组</a>	
+						<a href='{RC_Uri::url("adsense/mh_shortcut/add_group")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加菜单组</a>	
 					</div>
 					
 					<div class="col-lg-9">
@@ -38,8 +37,8 @@
 								{if $ur_here}{$ur_here}{/if}{if $data}（{$position_code}）{/if}
 								{if $position_id}
 									<div class="pull-right">
-										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
-										<a href='{RC_Uri::url("adsense/mh_cycleimage/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑轮播组</a>
+										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要删除该菜单组么？"  href='{RC_Uri::url("adsense/mh_shortcut/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除菜单组</a>
+										<a href='{RC_Uri::url("adsense/mh_shortcut/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑菜单组</a>
 									</div>
 								{/if}
 							</h3>
@@ -47,7 +46,7 @@
 							<!-- {if $available_clients} -->
 							<ul class="nav nav-pills pull-left">
 						 		<!-- {foreach from=$available_clients key=key item=val} -->
-									<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/mh_cycleimage/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
+									<li class="{if $show_client eq $client_list.$key}active{/if}"><a class="data-pjax" href='{url path="adsense/mh_shortcut/init" args="show_client={$client_list.$key}&position_id={$position_id}"}'>{$key}<span class="badge badge-info">{$val}</span></a></li>
 								<!-- {/foreach} -->
 							</ul>
 							<!-- {/if} -->
@@ -63,7 +62,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<!-- {foreach from=$cycleimage_list item=item key=key} -->
+										<!-- {foreach from=$shortcut_list item=item key=key} -->
 										<tr>
 											<td>
 												{if $item.ad_code}
@@ -74,15 +73,15 @@
 												<span><a href="{$item.ad_link}" target="_blank">{$item.ad_link}</a></span><br>
 												{$item.ad_name}
 												<div class="edit-list">
-													<a class="data-pjax" href='{RC_Uri::url("adsense/mh_cycleimage/edit", "id={$item.ad_id}&show_client={$show_client}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
-													<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除这张轮播图么？" href='{RC_Uri::url("adsense/mh_cycleimage/delete", "id={$item.ad_id}&position_id={$position_id}")}' title="删除">删除</a>
+													<a class="data-pjax" href='{RC_Uri::url("adsense/mh_shortcut/edit", "id={$item.ad_id}&show_client={$show_client}")}' title="编辑">编辑</a>&nbsp;|&nbsp;
+													<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除该菜单么？" href='{RC_Uri::url("adsense/mh_shortcut/delete", "id={$item.ad_id}&position_id={$position_id}")}' title="删除">删除</a>
 											    </div>
 											</td>
 											<td>
-										    	<i class="cursor_pointer fa {if $item.enabled}fa-check {else}fa-times{/if}" data-trigger="toggleState" data-url='{RC_Uri::url("adsense/mh_cycleimage/toggle_show","position_id={$position_id}&show_client={$show_client}")}' data-id="{$item.ad_id}"></i>
+										    	<i class="cursor_pointer fa {if $item.enabled}fa-check {else}fa-times{/if}" data-trigger="toggleState" data-url='{RC_Uri::url("adsense/mh_shortcut/toggle_show","position_id={$position_id}&show_client={$show_client}")}' data-id="{$item.ad_id}"></i>
 											</td>
 											<td>
-												<span class="cursor_pointer" data-trigger="editable" data-placement="left" data-url='{RC_Uri::url("adsense/mh_cycleimage/edit_sort", "position_id={$position_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="请输入排序序号"> 
+												<span class="cursor_pointer" data-trigger="editable" data-placement="left" data-url='{RC_Uri::url("adsense/mh_shortcut/edit_sort", "position_id={$position_id}&show_client={$show_client}")}' data-name="sort_order" data-pk="{$item.ad_id}" data-title="请输入排序序号"> 
 												{$item.sort_order}
 												</span>
 											</td>
@@ -94,7 +93,7 @@
 								</table>
 							</section>
 							{if $data}
-								<a href='{RC_Uri::url("adsense/mh_cycleimage/add","position_id={$position_id}")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加轮播图</a>	
+								<a href='{RC_Uri::url("adsense/mh_shortcut/add","position_id={$position_id}")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加菜单</a>	
 							{/if}
 						</div>
 					</div>

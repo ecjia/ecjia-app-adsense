@@ -49,7 +49,7 @@ namespace Ecjia\App\Adsense\Merchant;
 use Ecjia\App\Adsense\Repositories\MerchantCycleImageRepository;
 use Ecjia\App\Adsense\Repositories\AdPositionRepository;
 use Ecjia\App\Adsense\Repositories\AdGroupRepository;
-use Ecjia\App\Adsense\Repositories\ShortcutMenuRepository;
+use Ecjia\App\Adsense\Repositories\MerchantShortcutMenuRepository;
 
 class PositionManage
 {
@@ -84,8 +84,8 @@ class PositionManage
         	return $repository->getAllGroups($this->city);
         	
         }elseif($this->type == 'shortcut'){
-        	$repository = new ShortcutMenuRepository();
-        	return $repository->getAllGroups($this->city);
+        	$repository = new MerchantShortcutMenuRepository();
+        	return $repository->getAllGroups($this->store);
         	
         }
         

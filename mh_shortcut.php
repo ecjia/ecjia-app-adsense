@@ -46,7 +46,7 @@
 //
 defined('IN_ECJIA') or exit('No permission resources.');
 
-class mh_cycleimage extends ecjia_merchant {
+class mh_shortcut extends ecjia_merchant {
     
     public function __construct() {
 		parent::__construct();
@@ -61,22 +61,23 @@ class mh_cycleimage extends ecjia_merchant {
 		RC_Script::enqueue_script('bootstrap-editable-script', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.js', array());
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
-		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/mh_cycleimage.js', __FILE__));
+		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/mh_shortcut.js', __FILE__));
 		
 	}
     
     public function init() {
-    	$this->admin_priv('mh_cycleimage_manage');
+    	$this->admin_priv('mh_shortcut_manage');
     	
     	ecjia_screen::get_current_screen()->remove_last_nav_here();
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图管理'));
-    	$this->assign('ur_here', '轮播图列表');
-    
-    	//获取轮播组
-    	$position = new Ecjia\App\Adsense\Merchant\PositionManage('cycleimage', $_SESSION['store_id']);
+    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('菜单管理'));
+    	$this->assign('ur_here', '菜单列表');
+    	
+
+    	//获取菜单组
+    	$position = new Ecjia\App\Adsense\Merchant\PositionManage('shortcut', $_SESSION['store_id']);
     	$data = $position->getAllPositions();
     	$this->assign('data', $data);
-
+    	
     	$position_id = intval($_GET['position_id']);
     	if (empty($position_id) && !empty($data)) {
     		$position_id = head($data)['position_id'];
@@ -86,7 +87,7 @@ class mh_cycleimage extends ecjia_merchant {
     	
     	if ($position_id > 0) {
     		//获取投放平台
-    		$ad = new Ecjia\App\Adsense\Repositories\MerchantAdRepository('cycleimage');
+    		$ad = new Ecjia\App\Adsense\Repositories\MerchantAdRepository('shortcut');
     		$client_list = $ad->getAllClients();
     		$available_clients = $ad->getAvailableClients($position_id);
     	
@@ -99,31 +100,31 @@ class mh_cycleimage extends ecjia_merchant {
     		}
     		$this->assign('show_client', $show_client);
     	
-    		//对应的轮播图列表
-    		$cycleimage_list = $ad->getSpecialAds($position_id, $show_client);
-    		$this->assign('cycleimage_list', $cycleimage_list);
+    		//对应的菜单列表
+    		$shortcut_list = $ad->getSpecialAds($position_id, $show_client);
+    		$this->assign('shortcut_list', $shortcut_list);
     	
     		$position_code = RC_DB::TABLE('merchants_ad_position')->where('position_id', $position_id)->pluck('position_code');
     	}
     	
     	$this->assign('position_code', $position_code);
     	
-    	$this->display('mh_cycleimage_list.dwt');
+    	$this->display('mh_shortcut_list.dwt');
     }
 
     public function add_group() {
-    	$this->admin_priv('mh_cycleimage_update');
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加轮播组'));
-    	$this->assign('ur_here', '添加轮播组');
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init'), 'text' => '轮播图设置'));
+    	$this->admin_priv('mh_shortcut_update');
+    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加菜单组'));
+    	$this->assign('ur_here', '添加菜单组');
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init'), 'text' => '菜单设置'));
     	
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_cycleimage/insert_group'));
+    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/insert_group'));
     	
-    	$this->display('mh_cycleimage_group_info.dwt');
+    	$this->display('mh_shortcut_group_info.dwt');
     }
 
     public function insert_group() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
     	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
@@ -132,9 +133,9 @@ class mh_cycleimage extends ecjia_merchant {
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
     	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('store_id', $_SESSION['store_id'])->where('type', 'cycleimage')->count();
+    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('store_id', $_SESSION['store_id'])->where('type', 'shortcut')->count();
     	if ($query > 0) {
-    		return $this->showmessage('该轮播组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该菜单组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	$data = array(
     		'store_id'		=> $_SESSION['store_id'],
@@ -144,34 +145,34 @@ class mh_cycleimage extends ecjia_merchant {
     		'ad_width'      => $ad_width,
     		'ad_height'     => $ad_height,
     		'max_number'    => $max_number,
-    		'type' 			=> 'cycleimage',
+    		'type' 			=> 'shortcut',
     		'sort_order' 	=> $sort_order,
     	);
     	$position_id = RC_DB::table('merchants_ad_position')->insertGetId($data);
-    	ecjia_merchant::admin_log($position_name, 'add', 'group_cycleimage');
-    	return $this->showmessage('添加轮播组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/edit_group', array('position_id' => $position_id))));
+    	ecjia_merchant::admin_log($position_name, 'add', 'group_shortcut');
+    	return $this->showmessage('添加菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit_group', array('position_id' => $position_id))));
     }    
 
     public function edit_group() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑轮播组'));
-    	$this->assign('ur_here', '编辑轮播组');
+    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑菜单组'));
+    	$this->assign('ur_here', '编辑菜单组');
     	
     	$position_id = intval($_GET['position_id']);
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $position_id)), 'text' => '轮播图设置'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单设置'));
     	$this->assign('position_id', $position_id);
    
     	$data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
     	$this->assign('data', $data);
     	
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_cycleimage/update_group'));
+    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/update_group'));
     	 
-    	$this->display('mh_cycleimage_group_info.dwt');
+    	$this->display('mh_shortcut_group_info.dwt');
     }
     
     public function update_group() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	
     	$position_id   = intval($_POST['position_id']);
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
@@ -191,37 +192,37 @@ class mh_cycleimage extends ecjia_merchant {
     	);
     	
     	RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->update($data);
-    	ecjia_merchant::admin_log($position_name, 'edit', 'group_cycleimage');
-    	return $this->showmessage('编辑轮播组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/edit_group', array('position_id' => $position_id))));
+    	ecjia_merchant::admin_log($position_name, 'edit', 'group_shortcut');
+    	return $this->showmessage('编辑菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit_group', array('position_id' => $position_id))));
     }
     
     public function delete_group() {
-    	$this->admin_priv('mh_cycleimage_delete');
+    	$this->admin_priv('mh_shortcut_delete');
     	
     	$position_id = intval($_GET['position_id']);
     	$position_name = RC_DB::TABLE('merchants_ad_position')->where('position_id', $position_id)->pluck('position_name');
     	if (RC_DB::table('merchants_ad')->where('position_id', $position_id)->count() > 0) {
-    		return $this->showmessage('该轮播组已存在轮播图，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该菜单组已存在菜单，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	} else {
     		RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->delete();
-    		ecjia_merchant::admin_log($position_name, 'remove', 'group_cycleimage');
-    		return $this->showmessage('成功删除轮播组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init')));
+    		ecjia_merchant::admin_log($position_name, 'remove', 'group_shortcut');
+    		return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init')));
     	}
     }
 
     
     /**
-     * 处理轮播图
+     * 处理菜单
      */
     public function add() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	    	 
     	$position_id = intval($_GET['position_id']);
     	$this->assign('position_id', $position_id);
     
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加轮播图'));
-    	$this->assign('ur_here', '添加轮播图');
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $position_id)), 'text' => '轮播图列表'));
+    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加菜单'));
+    	$this->assign('ur_here', '添加菜单');
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单列表'));
     
     	$info = RC_DB::TABLE('merchants_ad_position')->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
     	$data['ad_width'] = $info['ad_width'];
@@ -232,14 +233,14 @@ class mh_cycleimage extends ecjia_merchant {
     	$client_list = $this->get_show_client();
     	$this->assign('client_list', $client_list);
     
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_cycleimage/insert'));
+    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/insert'));
     
-    	$this->display('mh_cycleimage_info.dwt');
+    	$this->display('mh_shortcut_info.dwt');
     
     }
     
     public function insert() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	 
     	$position_id   = !empty($_POST['position_id']) ? intval($_POST['position_id']) : 0;
     	$ad_name       = !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
@@ -247,7 +248,7 @@ class mh_cycleimage extends ecjia_merchant {
     	 
     	if (!empty($_FILES['ad_code']['name'])) {
     		if (isset($_FILES['ad_code']['error']) && $_FILES['ad_code']['error'] == 0 || ! isset($_FILES['ad_code']['error']) && isset($_FILES['ad_code']['tmp_name']) && $_FILES['ad_code']['tmp_name'] != 'none') {
-    			$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/cycleimage';
+    			$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/shortcut';
     			$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
     			$image_info = $upload->upload($_FILES['ad_code']);
     			if (!empty($image_info)) {
@@ -257,7 +258,7 @@ class mh_cycleimage extends ecjia_merchant {
     			}
     		}
     	}else{
-    		return $this->showmessage('请上传轮播图片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('请上传菜单片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	 
     	if(empty($_POST['show_client'])){
@@ -276,15 +277,15 @@ class mh_cycleimage extends ecjia_merchant {
     		'sort_order' 	=> $sort_order,
     	);
     	$id = RC_DB::table('merchants_ad')->insertGetId($data);
-    	ecjia_merchant::admin_log($ad_name, 'add', 'cycleimage');
-    	return $this->showmessage('添加轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/edit', array('id' => $id))));
+    	ecjia_merchant::admin_log($ad_name, 'add', 'shortcut');
+    	return $this->showmessage('添加菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit', array('id' => $id))));
     }
     
     public function edit() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	 
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑轮播图'));
-    	$this->assign('ur_here', '编辑轮播图');
+    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑菜单'));
+    	$this->assign('ur_here', '编辑菜单');
     
     	$id = intval($_GET['id']);
     	$data = RC_DB::table('merchants_ad')->where('ad_id', $id)->first();
@@ -296,7 +297,7 @@ class mh_cycleimage extends ecjia_merchant {
     	$show_client = intval($_GET['show_client']);
     	$this->assign('show_client', $show_client);
     	 
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => '轮播图列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => '菜单列表'));
     	 
     	$client_list = $this->get_show_client();
     	$this->assign('client_list', $client_list);
@@ -304,13 +305,13 @@ class mh_cycleimage extends ecjia_merchant {
     	$data['show_client'] = Ecjia\App\Adsense\Client::clients($data['show_client']);
     	$this->assign('data', $data);
     	 
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_cycleimage/update'));
+    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/update'));
     	 
-    	$this->display('mh_cycleimage_info.dwt');
+    	$this->display('mh_shortcut_info.dwt');
     }
     
     public function update() {
-    	$this->admin_priv('mh_cycleimage_update');
+    	$this->admin_priv('mh_shortcut_update');
     	 
     	$id 		= intval($_POST['id']);
     	$ad_name	= !empty($_POST['ad_name']) 	? trim($_POST['ad_name']) 		: '';
@@ -318,7 +319,7 @@ class mh_cycleimage extends ecjia_merchant {
     	 
     	$old_pic = RC_DB::TABLE('merchants_ad')->where('ad_id', $id)->pluck('ad_code');
     	if (isset($_FILES['ad_code']['error']) && $_FILES['ad_code']['error'] == 0 || ! isset($_FILES['ad_code']['error']) && isset($_FILES['ad_code']['tmp_name']) && $_FILES['ad_code']['tmp_name'] != 'none') {
-    		$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/cycleimage';
+    		$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/shortcut';
     		$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
     		$image_info = $upload->upload($_FILES['ad_code']);
     		if (!empty($image_info)) {
@@ -346,13 +347,13 @@ class mh_cycleimage extends ecjia_merchant {
     		'sort_order' 	=> $sort_order,
     	);
     	RC_DB::table('merchants_ad')->where('ad_id', $id)->update($data);
-    	ecjia_merchant::admin_log($ad_name, 'edit', 'cycleimage');
+    	ecjia_merchant::admin_log($ad_name, 'edit', 'shortcut');
     	$show_client = intval($_POST['show_client_value']);
-    	return $this->showmessage('编辑轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/edit', array('id' => $id, 'show_client' => $show_client))));
+    	return $this->showmessage('编辑菜单成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit', array('id' => $id, 'show_client' => $show_client))));
     }
     
     public function delete() {
-    	$this->admin_priv('merchant_cycleimage_delete');
+    	$this->admin_priv('merchant_shortcut_delete');
     	 
     	$id = intval($_GET['id']);
     	$data = RC_DB::TABLE('merchants_ad')->where('ad_id', $id)->select('ad_name', 'ad_code')->first();
@@ -360,15 +361,15 @@ class mh_cycleimage extends ecjia_merchant {
     	$disk->delete(RC_Upload::upload_path() . $data['ad_code']);
     	RC_DB::table('merchants_ad')->where('ad_id', $id)->delete();
     	 
-    	ecjia_merchant::admin_log($data['ad_name'], 'remove', 'cycleimage');
-    	return $this->showmessage('成功删除轮播图', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
+    	ecjia_merchant::admin_log($data['ad_name'], 'remove', 'shortcut');
+    	return $this->showmessage('成功删除菜单', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS);
     }
     
     /**
      * 切换是否显示
      */
     public function toggle_show() {
-    	$this->admin_priv('merchant_cycleimage_update');
+    	$this->admin_priv('merchant_shortcut_update');
     	 
     	$id       = intval($_POST['id']);
     	$val      = intval($_POST['val']);
@@ -376,14 +377,14 @@ class mh_cycleimage extends ecjia_merchant {
     	$show_client  = intval($_GET['show_client']);
     	 
     	RC_DB::table('merchants_ad')->where('ad_id', $id)->update(array('enabled'=> $val));
-    	return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+    	return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init', array('position_id' => $position_id, 'show_client' => $show_client))));
     }
     
     /**
      * 编辑排序
      */
     public function edit_sort() {
-    	$this->admin_priv('merchant_cycleimage_update');
+    	$this->admin_priv('merchant_shortcut_update');
     
     	$id    = intval($_POST['pk']);
     	$sort_order   = intval($_POST['value']);
@@ -391,7 +392,7 @@ class mh_cycleimage extends ecjia_merchant {
     	$show_client  = intval($_GET['show_client']);
     	 
     	RC_DB::table('merchants_ad')->where('ad_id', $id)->update(array('sort_order'=> $sort_order));
-    	return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+    	return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init', array('position_id' => $position_id, 'show_client' => $show_client))));
     }
     
     /**
