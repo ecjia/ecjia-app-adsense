@@ -191,4 +191,42 @@ class mh_position extends ecjia_merchant {
     		return $this->showmessage('删除广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_position/init')));
     	}
     }
+    
+    
+    /**
+     * 编辑广告位置名称
+     */
+    public function edit_position_name() {
+    	$this->admin_priv('mh_adsense_position_update');
+    
+    	$id = intval($_POST['pk']);
+    	$position_name = trim($_POST['value']);
+    	if (!empty($position_name)) {
+    		$data = array('position_name' => $position_name);
+    		RC_DB::table('merchants_ad_position')->where('position_id', $id)->update($data);
+    		ecjia_admin::admin_log($position_name, 'edit', 'ads_position');
+    		return $this->showmessage('编辑广告位名称成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_position/init')));
+    	} else {
+    		return $this->showmessage('请输入广告位名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	}
+    }
+    
+    /**
+     * 编辑排序
+     */
+    public function edit_sort() {
+    	$this->admin_priv('mh_adsense_position_update');
+    
+    	$id    = intval($_POST['pk']);
+    	$sort_order   = intval($_POST['value']);
+    	RC_DB::table('merchants_ad_position')->where('position_id', $id)->update(array('sort_order'=> $sort_order));
+    	
+    	$group_position_id  = intval($_GET['group_position_id']);
+    	if($group_position_id){
+    		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_group/group_position_list', array('position_id' => $group_position_id))));
+    	}else{
+    		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_position/init', array('position_id' => $id))));
+    	}
+    
+    }
 }
