@@ -69,7 +69,6 @@ class admin_group extends ecjia_admin {
 		RC_Script::enqueue_script('ad_position', RC_App::apps_url('statics/js/ad_position.js', __FILE__));
 		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/adsense.js', __FILE__));
 		RC_Style::enqueue_style('adsense', RC_App::apps_url('statics/styles/adsense.css', __FILE__), array());
-		
 		RC_Style::enqueue_style('group', RC_App::apps_url('statics/styles/group.css', __FILE__), array());
 
 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组', RC_Uri::url('adsense/admin_group/init')));

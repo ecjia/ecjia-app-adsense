@@ -55,7 +55,7 @@
 							    <td><span>{$val.ad_width} x {$val.ad_height}</span></td>
 							    <td><span class="edit_sort cursor_pointer" data-trigger="editable" data-url='{RC_Uri::url("adsense/mh_position/edit_sort")}' data-name="sort_order" data-pk="{$val.position_id}" data-title="排序">{$val.sort_order}</span></td>
 							    <td>
-								   	<a class="btn btn-primary data-pjax" href='{RC_Uri::url("adsense/mg_ad/init", "position_id={$val.position_id}")}'>查看广告</a>
+								   	<a class="btn btn-primary data-pjax" href='{RC_Uri::url("adsense/mh_ad/init", "position_id={$val.position_id}")}'>查看广告</a>
 							    </td>
 							</tr>
 							<!-- {foreachelse}-->

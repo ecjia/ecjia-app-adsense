@@ -74,7 +74,6 @@ class admin_position extends ecjia_admin {
 		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/adsense.js', __FILE__));
 		RC_Style::enqueue_style('adsense', RC_App::apps_url('statics/styles/adsense.css', __FILE__), array());
 		
-		RC_Style::enqueue_style('adsense', RC_App::apps_url('statics/styles/adsense.css', __FILE__), array());
 		$js_lang = array(
 			'position_name_required' => RC_Lang::get('adsense::adsense.position_name_required'),
 			'ad_width_required' => RC_Lang::get('adsense::adsense.ad_width_required'),

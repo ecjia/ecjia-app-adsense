@@ -50,7 +50,7 @@ class mh_shortcut extends ecjia_merchant {
     
     public function __construct() {
 		parent::__construct();
-		RC_Style::enqueue_style('adsense', RC_App::apps_url('statics/styles/merchant.css', __FILE__), array());
+		RC_Style::enqueue_style('merchant', RC_App::apps_url('statics/styles/merchant.css', __FILE__), array());
 		
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('jquery-validate');
@@ -61,7 +61,7 @@ class mh_shortcut extends ecjia_merchant {
 		RC_Script::enqueue_script('bootstrap-editable-script', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.js', array());
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
-		RC_Script::enqueue_script('adsense', RC_App::apps_url('statics/js/mh_shortcut.js', __FILE__));
+		RC_Script::enqueue_script('mh_shortcut', RC_App::apps_url('statics/js/mh_shortcut.js', __FILE__));
 		
 	}
     
