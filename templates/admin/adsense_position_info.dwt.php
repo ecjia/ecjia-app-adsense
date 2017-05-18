@@ -55,7 +55,7 @@ ecjia.admin.ad_position_edit.init();
 			        	<label class="control-label">可展示数量最大值：</label>
 			          	<div class="controls">
 			            	<input class="w350" type="text" name="max_number" value="{$data.max_number}" />
-			            	<span class="help-block">在此可设置前台调用该广告位置的轮播图显示数量。</span>
+			            	<span class="help-block">在此可设置前台调用该广告位置的显示数量。</span>
 			            </div>
 			        </div>	
 			        

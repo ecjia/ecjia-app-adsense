@@ -44,39 +44,97 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
+namespace Ecjia\App\Adsense\Repositories;
 
-/**
- * 广告管理权限API
- * @author songqianqian
- */
-class adsense_merchant_purview_api extends Component_Event_Api {
-    
-    public function call(&$options) {
-        $purviews = array(
-        	array('action_name' => '轮播图管理', 'action_code' => 'mh_cycleimage_manage', 'relevance' => ''),
-        	array('action_name' => '轮播图编辑', 'action_code' => 'mh_cycleimage_update', 'relevance' => ''),
-        	array('action_name' => '轮播图删除', 'action_code' => 'mh_cycleimage_delete', 'relevance' => ''),
+use Royalcms\Component\Repository\Repositories\AbstractRepository;
 
-        		
-        	array('action_name' => '快捷菜单管理', 'action_code' => 'mh_shortcut_manage', 'relevance' => ''),
-        	array('action_name' => '快捷菜单变价', 'action_code' => 'mh_shortcut_update', 'relevance' => ''),
-        	array('action_name' => '快捷菜单删除', 'action_code' => 'mh_shortcut_delete', 'relevance' => ''),
-        		
-        	array('action_name' => '广告管理', 'action_code' => 'mh_adsense_manage', 'relevance' => ''),
-        	array('action_name' => '广告编辑', 'action_code' => 'mh_adsense_update', 'relevance' => ''),
-        	array('action_name' => '广告删除', 'action_code' => 'mh_adsense_delete', 'relevance' => ''),
-        		
-            array('action_name' => '广告位管理', 'action_code' => 'mh_adsense_position_manage', 'relevance' => ''),
-        	array('action_name' => '广告位编辑', 'action_code' => 'mh_adsense_position_update', 'relevance' => ''),
-        	array('action_name' => '广告位删除', 'action_code' => 'mh_adsense_position_delete', 'relevance' => ''),
-        		
-        	array('action_name' => '广告组管理', 'action_code' => 'mh_adsense_group_manage', 'relevance' => ''),
-        	array('action_name' => '广告组编辑', 'action_code' => 'mh_adsense_group_update', 'relevance' => ''),
-        	array('action_name' => '广告组删除', 'action_code' => 'mh_adsense_group_delete', 'relevance' => ''),
-        );
-        return $purviews;
-    }
+class MerchantAdPositionRepository extends AbstractRepository
+{
+
+
+
+	protected $model = 'Ecjia\App\Adsense\Models\MerchantAdPositionModel';
+	
+	/**
+	 * 类型：广告位(adsense)
+	 * @var string
+	 */
+	protected $type = 'adsense';
+	
+	protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
+	
+	public function getAllGroups($store, array $orderBy)
+	{
+		if(!empty($orderBy)) {
+			$this->orderBy = $orderBy;
+		}
+		
+		$where = [
+    		'type'     => $this->type,
+    		'store_id'  => $store,
+		];
+		$group = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
+	
+// 		$where = [
+// 		    'type'     => $this->type,
+// 		    'city_id'  => null,
+// 		];
+// 		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
+		
+// 		$group = $group1->merge($group2);
+		
+		return $group->toArray();
+	}
+	
+	/**
+	 * Find data by multiple fields
+	 *
+	 * @param array $where
+	 * @param array $columns
+	 *
+	 * @return mixed
+	 */
+	public function findWhereByFirst(array $where, $columns = ['*'])
+	{
+		$this->newQuery();
+	
+		foreach ($where as $field => $value) {
+			if (is_array($value)) {
+				list($field, $condition, $val) = $value;
+				$this->query->where($field, $condition, $val);
+			}
+			else {
+				$this->query->where($field, '=', $value);
+			}
+		}
+	
+		return $this->query->first($columns);
+	}	
+	
+	/**
+	 * Retrieve all data of repository, paginated
+	 *
+	 * @param array $where
+	 * @param null  $limit
+	 * @param array $columns
+	 *
+	 * @return \Royalcms\Component\Pagination\Paginator
+	 */
+	public function wherePaginate(array $where, $limit = null, $columns = ['*'])
+	{
+	    $this->newQuery();
+	
+	    foreach ($where as $field => $value) {
+	        if (is_array($value)) {
+	            list($field, $condition, $val) = $value;
+	            $this->query->where($field, $condition, $val);
+	        }
+	        else {
+	            $this->query->where($field, '=', $value);
+	        }
+	    }
+	
+	    return $this->query->paginate($limit, $columns);
+	}
+	
 }
-
-// end

@@ -24,7 +24,7 @@ ecjia.merchant.mh_shortcut.shortcut_group_info();
             <div class="panel">
                 <div class="panel-body">
                     <div class="form">
-                        <form id="form-privilege" class="form-horizontal" name="theForm" action="{$form_action}" method="post" data-edit-url="{url path='user/admin/edit'}" >
+                        <form id="form-privilege" class="form-horizontal" name="theForm" action="{$form_action}" method="post" >
                             <div class="col-lg-8" style="padding-left:0px;">
                                 <fieldset>
                                     <div class="form-group">
@@ -52,6 +52,7 @@ ecjia.merchant.mh_shortcut.shortcut_group_info();
 											{elseif $data.position_code eq ''}
 												 <input class="form-control" type="text" name="position_code" id="position_code"/>
 											{/if}
+											<span class="help-block">菜单组调用标识，且在同门店下该标识不可重复。</span>
                                         </div>
                                         <span class="input-must">{lang key='system::system.require_field'}</span>
                                     </div>

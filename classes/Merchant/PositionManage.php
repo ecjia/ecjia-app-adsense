@@ -47,7 +47,7 @@
 namespace Ecjia\App\Adsense\Merchant;
 
 use Ecjia\App\Adsense\Repositories\MerchantCycleImageRepository;
-use Ecjia\App\Adsense\Repositories\AdPositionRepository;
+use Ecjia\App\Adsense\Repositories\MerchantAdPositionRepository;
 use Ecjia\App\Adsense\Repositories\AdGroupRepository;
 use Ecjia\App\Adsense\Repositories\MerchantShortcutMenuRepository;
 
@@ -76,8 +76,8 @@ class PositionManage
             return $repository->getAllGroups($this->store);
             
         } elseif($this->type == 'adsense'){
-        	$repository = new AdPositionRepository();
-        	return $repository->getAllGroups($this->city, $orderBy);
+        	$repository = new MerchantAdPositionRepository();
+        	return $repository->getAllGroups($this->store, $orderBy);
         	
         } elseif($this->type == 'group'){
         	$repository = new AdGroupRepository();
