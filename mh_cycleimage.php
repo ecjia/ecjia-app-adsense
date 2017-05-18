@@ -177,20 +177,14 @@ class mh_cycleimage extends ecjia_merchant {
     	
     	$position_id   = intval($_POST['position_id']);
     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
     	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-    	
-    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('type', 'cycleimage')->where('store_id', $_SESSION['store_id'])->where('position_id', '!=', $position_id)->count();
-    	if ($query > 0) {
-    		return $this->showmessage('该轮播组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-    	}
+    
     	$data = array(
     		'position_name' => $position_name,
-    		'position_code' => $position_code,
     		'position_desc' => $position_desc,
     		'max_number'    => $max_number,
     		'sort_order' 	=> $sort_order,

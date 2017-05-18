@@ -47,7 +47,11 @@ ecjia.merchant.mh_cycleimage.cycleimage_group_info();
                                     <div class="form-group">
                                         <label class="control-label col-lg-3">轮播组代号：</label>
                                         <div class="controls col-lg-8">
-                                            <input class="form-control" type="text" name="position_code" id="position_code" value="{$data.position_code}" />
+	                                        {if $data.position_code}
+												<input class="form-control" name="position_code" type="text" disabled="disabled" value="{$data.position_code}" />
+											{elseif $data.position_code eq ''}
+												 <input class="form-control" type="text" name="position_code" id="position_code"/>
+											{/if}
                                         </div>
                                         <span class="input-must">{lang key='system::system.require_field'}</span>
                                     </div>
