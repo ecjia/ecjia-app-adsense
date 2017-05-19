@@ -131,7 +131,7 @@ class mh_ad extends ecjia_merchant {
 		}
 		$this->assign('ads_list', $ads_list);
 		
-		$position_data = RC_DB::table('ad_position')->where('position_id', $position_id)->first();
+		$position_data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
 		$this->assign('position_data', $position_data);
 		
 		$this->assign('search_action', RC_Uri::url('adsense/mh_ad/init'));
