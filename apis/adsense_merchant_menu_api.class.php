@@ -56,8 +56,8 @@ class adsense_merchant_menu_api extends Component_Event_Api {
 		$submenus = array(
 			ecjia_merchant::make_admin_menu('01_cycleimage_list', __('轮播图'), RC_Uri::url('adsense/mh_cycleimage/init'), 1)->add_purview('mh_cycleimage_manage')->add_icon('fa-picture-o'), 
 			ecjia_merchant::make_admin_menu('02_shortcut_list', __('快捷菜单'), RC_Uri::url('adsense/mh_shortcut/init'), 2)->add_purview('mh_shortcut_manage')->add_icon('fa-th-list'),
-			ecjia_merchant::make_admin_menu('03_adsense_position_list', __('广告位'), RC_Uri::url('adsense/mh_position/init'),3)->add_purview('mh_adsense_position_manage')->add_icon('fa-volume-up'),
-			ecjia_merchant::make_admin_menu('04_adsense_group_list', __('广告组'), RC_Uri::url('adsense/mh_group/init'),4)->add_purview('mh_adsense_group_manage')->add_icon('fa-th-large')
+			ecjia_merchant::make_admin_menu('03_adsense_position_list', __('广告位管理'), RC_Uri::url('adsense/mh_position/init'),3)->add_purview('mh_adsense_position_manage')->add_icon('fa-volume-up'),
+			ecjia_merchant::make_admin_menu('04_adsense_group_list', __('广告组编排'), RC_Uri::url('adsense/mh_group/init'),4)->add_purview('mh_adsense_group_manage')->add_icon('fa-th-large')
 		);
         $menus->add_submenu($submenus);
         return $menus;
