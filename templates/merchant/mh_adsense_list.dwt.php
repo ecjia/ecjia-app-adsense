@@ -26,14 +26,13 @@
 		<h2 class="page-header">
 			<!-- {if $ur_here}{$ur_here}{/if} -->
 			<div class="pull-right">
-				<div class="pull-right">
-					{if $back_position_list}
-			        	<a class="btn btn-primary data-pjax" href="{$back_position_list.href}" ><i class="fa fa-reply"></i> {$back_position_list.text}</a>
-			        {/if}
-					{if $action_link}
-						<a class="btn btn-primary data-pjax" href="{$action_link.href}" ><i class="fa fa-plus"></i> {$action_link.text}</a>
-					{/if}
-				</div>
+				{if $back_position_list}
+		        	<a class="btn btn-primary data-pjax" href="{$back_position_list.href}" ><i class="fa fa-reply"></i> {$back_position_list.text}</a>
+		        {/if}
+		        
+				{if $action_link}
+					<a class="btn btn-primary data-pjax" href="{$action_link.href}" ><i class="fa fa-plus"></i> {$action_link.text}</a>
+				{/if}
 			</div>
 		</h2>
 	</div>
