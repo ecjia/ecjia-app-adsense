@@ -78,7 +78,7 @@
 								    	{$list.ad_name}
 								    </span>
 								    <span>
-								    {if $list.ad_code}
+								    {if $list.ad_code and $list.media_type eq 0}
 									    <a tabindex="0" role="button" href="javascript:;" class="no-underline cursor_pointor" data-id="{$list.ad_id}" data-trigger="focus" data-toggle="popover" data-placement="top" title="{$list.ad_name}">（预览）</a>
 									    <div class="hide" id="content_{$list.ad_id}"><img class="mh150" src="{RC_Upload::upload_url()}/{$list.ad_code}"></div> 
 								    {/if}
@@ -89,9 +89,7 @@
 							      		<a data-toggle="ajaxremove" class="ajaxremove ecjiafc-red" data-msg="您要删除该广告么？" href='{RC_Uri::url("adsense/mh_ad/remove","ad_id={$list.ad_id}")}' title="删除">删除</a>
 									</div>
 							    </td>
-							    <td>
-							    {if $list.media_type eq 0}图片{elseif $list.media_type eq 2}代码{else}文字{/if}
-							    </td>
+							    <td>{if $list.media_type eq 0}图片{elseif $list.media_type eq 2}代码{else}文字{/if}</td>
 							    <td>{$list.start_time}</td>
 							    <td>{$list.end_time}</td>
 							    <td>
