@@ -61,6 +61,10 @@ class mh_ad extends ecjia_merchant {
 		RC_Script::enqueue_script('bootstrap-editable-script', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.js', array());
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
+		/*时间控件*/
+		RC_Style::enqueue_style('datepicker', RC_Uri::admin_url('statics/lib/datepicker/datepicker.css'));
+		RC_Script::enqueue_script('bootstrap-datepicker', RC_Uri::admin_url('statics/lib/datepicker/bootstrap-datepicker.min.js'));
+		
 		RC_Script::enqueue_script('mh_adsense', RC_App::apps_url('statics/js/mh_adsense.js', __FILE__));
 		RC_Script::enqueue_script('mh_ad_position', RC_App::apps_url('statics/js/mh_ad_position.js', __FILE__));
 	}
@@ -133,6 +137,414 @@ class mh_ad extends ecjia_merchant {
 		$this->assign('search_action', RC_Uri::url('adsense/mh_ad/init'));
 		
 		$this->display('mh_adsense_list.dwt');
+	}
+	
+	/**
+	 * 添加新广告页面
+	 */
+	public function add() {
+		$this->admin_priv('mh_adsense_update');
+	
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加广告'));
+		
+		$show_client =intval($_GET['show_client']);
+		$this->assign('show_client', $show_client);
+		
+		$position_id = intval($_GET['position_id']);
+		$this->assign('ur_here', '添加广告');
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_ad/init',array('position_id' => $position_id, 'show_client' => $show_client)), 'text' => '广告列表'));
+		
+		$position_list = $this->get_position_select_list();
+		$this->assign('position_list', $position_list);
+		
+		$this->assign('action', 'insert');
+		
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
+		
+		$ads['start_time'] = date('Y-m-d');
+		$ads['end_time'] = date('Y-m-d', time() + 30 * 86400);
+		$ads['enabled'] = 1;
+		$ads['position_id'] = $position_id;
+		$this->assign('ads', $ads);
+		
+		$position_data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
+		
+		$this->assign('form_action', RC_Uri::url('adsense/mh_ad/insert'));
+		
+		$this->display('mh_adsense_info.dwt');
+
+	}
+	
+	/**
+	 * 新广告的处理
+	 */
+	public function insert() {
+		$this->admin_priv('mh_adsense_update');
+		
+		$position_id= intval($_POST['position_id']);
+		$ad_name 	= !empty($_POST['ad_name']) ? trim($_POST['ad_name']) : '';
+		$media_type = !empty($_POST['media_type']) ? intval($_POST['media_type']) : 0;
+		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '0';
+		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '0';
+		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+		$link_man    = !empty($_POST['link_man']) ? $_POST['link_man'] : '';
+		$link_email  = !empty($_POST['link_email']) ? $_POST['link_email'] : '';
+		$link_phone  = !empty($_POST['link_phone']) ? $_POST['link_phone'] : '';
+		
+		if ($media_type === 0) {
+			$ad_link = !empty($_POST['ad_link']) ? trim($_POST['ad_link']) : '';
+		} else {
+			$ad_link = !empty($_POST['ad_link2']) ? trim($_POST['ad_link2']) : '';
+		}
+		/* 添加图片类型的广告 */
+		if ($media_type === 0) {
+			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
+				$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/adsense';
+				$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
+				$image_info = $upload->upload($_FILES['ad_img']);
+				if (!empty($image_info)) {
+					$ad_code = $upload->get_position($image_info);
+				} else {
+					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
+			}
+		} elseif ($media_type === 2) {
+			if (!empty($_POST['ad_code'])) {
+				$ad_code = $_POST['ad_code'];
+			} else {
+				return $this->showmessage('广告的代码不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		} elseif ($media_type === 3) {
+			if (!empty($_POST['ad_text'])) {
+				$ad_code = $_POST['ad_text'];
+			} else {
+				return $this->showmessage('广告内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}
+	
+		if(empty($_POST['show_client'])){
+			return $this->showmessage('请选择投放平台', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
+		}
+		
+		$data = array(
+				'store_id'	  =>$_SESSION['store_id'],	
+				'position_id' => $position_id,
+				'media_type'  => $media_type,
+				'ad_name'     => $ad_name,
+				'ad_link'     => $ad_link,
+				'ad_code'     => $ad_code,
+				'start_time'  => $start_time,
+				'end_time'    => $end_time,
+				'link_man'    => $link_man,
+				'link_email'  => $link_email,
+				'link_phone'  => $link_phone,
+				'click_count' => 0,
+				'show_client' => $show_client,
+				'enabled'     => intval($_POST['enabled']),
+				'sort_order'  => $sort_order,
+		);
+		$ad_id = RC_DB::table('merchants_ad')->insertGetId($data);
+		/* 释放广告位缓存 */
+		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+		$cache_key = sprintf('%X', crc32('adsense_position-' . $_POST['position_id']));
+		$ad_postion_db->delete_cache_item($cache_key);
+		ecjia_merchant::admin_log($ad_name, 'add', 'ads');
+	
+		return $this->showmessage('添加广告成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_ad/edit', array('ad_id' => $ad_id,'position_id' => $position_id))));
+	}
+	
+	public function edit() {
+		$this->admin_priv('mh_adsense_update');
+	
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告列表'));
+	
+		$ad_id =intval($_GET['ad_id']);
+		$position_id =intval($_GET['position_id']);
+		$show_client =intval($_GET['show_client']);
+		$this->assign('show_client', $show_client);
+		$this->assign('ur_here','编辑广告');
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_ad/init', array('position_id' => $position_id, 'show_client' => $show_client)), 'text' => RC_Lang::get('adsense::adsense.ads_list')));
+
+		$ads_arr = RC_DB::table('merchants_ad')->where('ad_id', $ad_id)->first();
+		$ads_arr['start_time'] = RC_Time::local_date('Y-m-d', $ads_arr['start_time']);
+		$ads_arr['end_time']   = RC_Time::local_date('Y-m-d', $ads_arr['end_time']);
+
+		/* 标记为图片链接还是文字链接 */
+		if (!empty($ads_arr['ad_code'])) {
+			if (strpos($ads_arr['ad_code'], 'http://') === false) {
+				$ads_arr['type'] = 1;
+				$ads_arr['url'] = RC_Upload::upload_url($ads_arr['ad_code']);
+			} else {
+				$ads_arr['type'] = 0;
+				$ads_arr['url'] = $ads_arr['ad_code'];
+			}
+		} else {
+			$ads_arr['type'] = 0;
+		}
+		
+		if ($ads_arr['media_type'] === 0) {
+			if (strpos($ads_arr['ad_code'], 'http://') === false) {
+				$src = $ads_arr['ad_code'];
+				$this->assign('img_src', $src);
+			} else {
+				$src = $ads_arr['ad_code'];
+				$this->assign('url_src', $src);
+			}
+		}
+		
+		if ($ads_arr['media_type'] === 0) {
+			$this->assign('media_type', '图片');
+		} elseif ($ads_arr['media_type'] === 2) {
+			$this->assign('media_type', '代码');
+		} elseif ($ads_arr['media_type'] === 3) {
+			$this->assign('media_type', '文字');
+		}
+
+		$client_list = $this->get_show_client();
+		$this->assign('client_list', $client_list);
+
+		$ads_arr['show_client'] = Ecjia\App\Adsense\Client::clients($ads_arr['show_client']);
+		$this->assign('ads', $ads_arr);
+
+		$position_list = $this->get_position_select_list();
+		$this->assign('position_list', $position_list);
+
+		$this->assign('form_action', RC_Uri::url('adsense/mh_ad/update'));
+
+		$position_data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
+		$this->assign('position_data', $position_data);
+
+		$this->display('mh_adsense_info.dwt');
+	}
+	
+	/**
+	 * 广告编辑的处理
+	 */
+	public function update() {
+		$this->admin_priv('mh_adsense_update');
+	
+		$type 		= !empty($_POST['media_type']) 	? intval($_POST['media_type']) 	: 0;
+		$id 		= !empty($_POST['id']) 			? intval($_POST['id']) 			: 0;
+		$ad_name	= !empty($_POST['ad_name']) 	? trim($_POST['ad_name']) 		: '';
+		$enabled    = intval($_POST['enabled']);
+		$sort_order = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+		$link_man	= !empty($_POST['link_man']) ? $_POST['link_man'] : '';
+		$link_email = !empty($_POST['link_email']) ? $_POST['link_email'] : '';
+		$link_phone = !empty($_POST['link_phone']) ? $_POST['link_phone'] : '';
+		$start_time = !empty($_POST['start_time']) ? RC_Time::local_strtotime($_POST['start_time']) : '0';
+		$end_time = !empty($_POST['end_time']) ? RC_Time::local_strtotime($_POST['end_time']) : '0';
+		
+		if ($type === 0) {
+			$ad_link = !empty($_POST['ad_link']) ? trim($_POST['ad_link']) : '';
+		} else {
+			$ad_link = !empty($_POST['ad_link2']) ? trim($_POST['ad_link2']) : '';
+		}
+		
+		$ad_info = RC_DB::table('merchants_ad')->where('ad_id', $id)->first();
+		$ad_logo = $ad_info['ad_code'];
+		if ($type === 0) {
+			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
+				$save_path = 'merchant/' . $_SESSION['store_id'] . '/data/adsense';
+				$upload = RC_Upload::uploader('image', array('save_path' => $save_path, 'auto_sub_dirs' => true));
+				$image_info = $upload->upload($_FILES['ad_img']);
+				if (!empty($image_info)) {
+					if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
+						$upload->remove($ad_logo);
+					}
+					$ad_code = $upload->get_position($image_info);
+				} else {
+					return $this->showmessage($upload->error(), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+				}
+			} else {
+				$ad_code = $ad_logo;
+			}
+		} elseif ($type === 2) {
+			if (!empty($_POST['ad_code'])) {
+				$ad_code = $_POST['ad_code'];
+			} else {
+				return $this->showmessage('广告的代码不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		} elseif ($type === 3) {
+			if (!empty($_POST['ad_text'])) {
+				$ad_code = $_POST['ad_text'];
+			} else {
+				return $this->showmessage('广告内容不能为空', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			}
+		}
+		
+		if(empty($_POST['show_client'])){
+			return $this->showmessage('请选择投放平台', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
+		}
+		$position_id = intval($_POST['position_id']);
+		$show_client_value = intval($_POST['show_client_value']);
+		
+	
+		$old_enabled = RC_DB::TABLE('merchants_ad')->where('ad_id', $id)->pluck('enabled');
+		$now_end_time = $_POST['end_time'];
+		$now = RC_Time::local_date('Y-m-d', RC_Time::gmtime());
+	
+		if($now > $now_end_time && $old_enabled != $enabled){
+			return $this->showmessage('该广告已过期暂无法进行开启/关闭操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			$data = array(
+				'position_id' 	=> $position_id,
+				'ad_name' 		=> $ad_name,
+				'ad_link' 		=> $ad_link,
+				'ad_code' 		=> $ad_code,
+				'start_time' 	=> $start_time,
+				'end_time' 		=> $end_time,
+				'link_man'    	=> $link_man,
+				'link_email'  	=> $link_email,
+				'link_phone'  	=> $link_phone,
+				'enabled' 		=> $enabled,
+				'sort_order' 	=> $sort_order,
+				'show_client'   => $show_client,
+			);
+			
+			$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+			$new_cache_key = sprintf('%X', crc32('adsense_position-' . $_POST['position_id']));
+			$ad_postion_db->delete_cache_item($new_cache_key);
+			$old_cache_key = sprintf('%X', crc32('adsense_position-' . $ad_info['position_id']));
+			$ad_postion_db->delete_cache_item($old_cache_key);
+				
+			/* 更新数据 */
+			RC_DB::table('merchants_ad')->where('ad_id', $id)->update($data);
+			ecjia_merchant::admin_log($ad_name, 'edit', 'ads');
+			return $this->showmessage('编辑广告成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_ad/edit', array('ad_id' => $id, 'position_id' => $position_id))));
+		}
+	}
+	
+	/**
+	 * 删除附件
+	 */
+	public function delfile() {
+		$this->admin_priv('mh_adsense_delete');
+	
+		$ad_id = intval($_GET['ad_id']);
+		$position_id = intval($_GET['position_id']);
+		$show_client = intval($_GET['show_client']);
+	
+		$old_url = RC_DB::table('merchants_ad')->where('ad_id', $ad_id)->pluck('ad_code');
+		$disk = RC_Filesystem::disk();
+		$disk->delete(RC_Upload::upload_path() . $old_url);
+		$data = array(
+			'ad_code' => ''
+		);
+		RC_DB::table('merchants_ad')->where('ad_id', $ad_id)->update($data);
+	
+		return $this->showmessage('删除图片成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $ad_id, 'position_id' => $position_id, 'show_client' => $show_client))));
+	}
+	
+	/**
+	 * 删除广告
+	 */
+	public function remove() {
+		$this->admin_priv('mh_adsense_delete');
+	
+		$ad_id = intval($_GET['ad_id']);
+		$info = RC_DB::table('merchants_ad')->where('ad_id', $ad_id)->first();
+		$disk = RC_Filesystem::disk();
+		$disk->delete(RC_Upload::upload_path() . $info['ad_code']);
+		RC_DB::table('merchants_ad')->where('ad_id', $ad_id)->delete();
+	
+		$ad_postion_db = RC_Model::model('adsense/orm_ad_position_model');
+		$cache_key = sprintf('%X', crc32('adsense_position-' . $info['position_id']));
+		$ad_postion_db->delete_cache_item($cache_key);
+		ecjia_merchant::admin_log($info['ad_name'], 'remove', 'ads');
+	
+		return $this->showmessage('删除广告成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_ad/init', array('position_id' => $info['position_id']))));
+	}
+	
+
+	
+	/**
+	 * 编辑广告名称
+	 */
+	public function edit_ad_name() {
+		$this->admin_priv('mh_adsense_update');
+	
+		$id = intval($_POST['pk']);
+		$ad_name = trim($_POST['value']);
+		$position_id  = intval($_GET['position_id']);
+		$show_client  = intval($_GET['show_client']);
+		
+		if (!empty($ad_name)) {
+			$data = array('ad_name' => $ad_name);
+			RC_DB::table('merchants_ad')->where('ad_id', $id)->update($data);
+			ecjia_merchant::admin_log($ad_name, 'edit', 'ads');
+			return $this->showmessage('编辑广告名称成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_ad/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+		} else {
+			return $this->showmessage('请输入广告名称', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}
+	}
+	
+	/**
+	 * 切换是否显示
+	 */
+	public function toggle_show() {
+		$this->admin_priv('mh_adsense_update');
+			
+		$id       = intval($_POST['id']);
+		$val      = intval($_POST['val']);
+		$position_id  = intval($_GET['position_id']);
+		$show_client  = intval($_GET['show_client']);
+	
+		$end_time = RC_Time::local_date('Y-m-d', RC_DB::TABLE('ad')->where('ad_id', $id)->pluck('end_time'));
+		$now = RC_Time::local_date('Y-m-d', RC_Time::gmtime());
+		if($now > $end_time){
+			return $this->showmessage('该广告已过期暂无法进行开启/关闭操作', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		}else{
+			RC_DB::table('merchants_ad')->where('ad_id', $id)->update(array('enabled'=> $val));
+			return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_ad/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+		}
+	}
+	
+	/**
+	 * 编辑排序
+	 */
+	public function edit_sort() {
+		$this->admin_priv('mh_adsense_update');
+	
+		$id    		  = intval($_POST['pk']);
+		$sort_order   = intval($_POST['value']);
+		$show_client  = intval($_GET['show_client']);
+		$position_id   = intval($_GET['position_id']);
+			
+		RC_DB::table('merchants_ad')->where('ad_id', $id)->update(array('sort_order'=> $sort_order));
+		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_ad/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+	}
+
+	/**
+	 * 获取广告位置下拉列表
+	 */
+	private function get_position_select_list() {
+		$data = RC_DB::table('merchants_ad_position')->where('type','adsense')->select('position_id', 'position_name', 'ad_width', 'ad_height')->orderBy('position_id', 'desc')->get();
+		$position_list = array();
+		if (!empty($data)) {
+			foreach ($data as $row) {
+				$position_list[$row['position_id']] = addslashes($row['position_name']) . ' [' . $row['ad_width'] . 'x' . $row['ad_height'] . ']';
+			}
+		}
+		return $position_list;
+	}
+	
+	/**
+	 * 获取投放平台
+	 */
+	private function get_show_client(){
+		$client_list = array(
+				'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
+				'Android'=> Ecjia\App\Adsense\Client::ANDROID,
+				'H5' 	 => Ecjia\App\Adsense\Client::H5,
+				'PC'     => Ecjia\App\Adsense\Client::PC
+		);
+		return $client_list;
 	}
     
 }
