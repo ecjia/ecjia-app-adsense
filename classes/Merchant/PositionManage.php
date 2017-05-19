@@ -48,7 +48,7 @@ namespace Ecjia\App\Adsense\Merchant;
 
 use Ecjia\App\Adsense\Repositories\MerchantCycleImageRepository;
 use Ecjia\App\Adsense\Repositories\MerchantAdPositionRepository;
-use Ecjia\App\Adsense\Repositories\AdGroupRepository;
+use Ecjia\App\Adsense\Repositories\MerchantAdGroupRepository;
 use Ecjia\App\Adsense\Repositories\MerchantShortcutMenuRepository;
 
 class PositionManage
@@ -80,8 +80,8 @@ class PositionManage
         	return $repository->getAllGroups($this->store, $orderBy);
         	
         } elseif($this->type == 'group'){
-        	$repository = new AdGroupRepository();
-        	return $repository->getAllGroups($this->city);
+        	$repository = new MerchantAdGroupRepository();
+        	return $repository->getAllGroups($this->store);
         	
         }elseif($this->type == 'shortcut'){
         	$repository = new MerchantShortcutMenuRepository();
@@ -102,11 +102,11 @@ class PositionManage
     {
         if ($this->type == 'cycleimage') {
             
-            $repository = new CycleImageRepository();
+            $repository = new MerchantCycleImageRepository();
             $where = [
                 'position_code' => $code,
-                'city_id'   => $this->city,
-                'type'  => $this->type,
+                'store_id'   	=> $this->store,
+                'type'  		=> $this->type,
             ];
             
             $model = $repository->findWhereByFirst($where, ['position_id', 'max_number']);
@@ -129,12 +129,12 @@ class PositionManage
         }
         if ($this->type == 'shortcut') {
         
-            $repository = new ShortcutMenuRepository();
+            $repository = new MerchantShortcutMenuRepository();
             $where = [
                 'position_code' => $code,
-                'city_id'   => $this->city,
-                'type'  => $this->type,
-                ];
+                'store_id'   	=> $this->store,
+                'type'  		=> $this->type,
+            ];
         
             $model = $repository->findWhereByFirst($where, ['position_id', 'max_number']);
              
@@ -155,11 +155,11 @@ class PositionManage
             return $result->toArray();
         }
         elseif ($this->type == 'adsense') {
-            $repository = new AdPositionRepository();
+            $repository = new MerchantAdPositionRepository();
             $where = [
                 'position_code' => $code,
-                'city_id'   => $this->city,
-                'type'  => $this->type,
+                'store_id'   	=> $this->store,
+                'type'  		=> $this->type,
             ];
             
             $model = $repository->findWhereByFirst($where, ['position_id', 'max_number']);
@@ -184,11 +184,11 @@ class PositionManage
             return $result->toArray();
         }
         elseif ($this->type == 'group') {
-            $repository = new AdGroupRepository();
+            $repository = new MerchantAdGroupRepository();
             $where = [
                 'position_code' => $code,
-                'city_id'   => $this->city,
-                'type'  => $this->type,
+                'store_id'   	=> $this->store,
+                'type'  		=> $this->type,
             ];
             
             $model = $repository->findWhereByFirst($where, ['position_id', 'position_code', 'position_name']);
@@ -225,8 +225,6 @@ class PositionManage
         }
 
     }
-    
- 
 }
 
 // end

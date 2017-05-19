@@ -13,11 +13,7 @@
 		<h2><!-- {if $ur_here}{$ur_here}{/if} --></h2>
   	</div>
   	<div class="pull-right">
-  		{if $action_link}
-		<a href="{$action_link.href}" class="btn btn-primary data-pjax">
-			<i class="fa fa-reply"></i> {$action_link.text}
-		</a>
-		{/if}
+  		{if $action_link}<a href="{$action_link.href}" class="btn btn-primary data-pjax"><i class="fa fa-reply"></i> {$action_link.text}</a>{/if}
   	</div>
   	<div class="clearfix"></div>
 </div>

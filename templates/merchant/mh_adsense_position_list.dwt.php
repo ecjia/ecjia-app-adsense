@@ -12,11 +12,7 @@
 		<h2 class="page-header">
 			<!-- {if $ur_here}{$ur_here}{/if} -->
 			<div class="pull-right">
-				{if $action_link}
-				<a href="{$action_link.href}" class="btn btn-primary data-pjax">
-					<i class="fa fa-plus"></i> {$action_link.text}
-				</a>
-				{/if}
+				{if $action_link}<a href="{$action_link.href}" class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> {$action_link.text}</a>{/if}
 			</div>
 		</h2>
 	</div>
