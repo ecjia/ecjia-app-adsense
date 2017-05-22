@@ -2,10 +2,13 @@
 <!-- {extends file="ecjia-merchant.dwt.php"} -->
 
 <!-- {block name="footer"} -->
+<script type="text/javascript">
+	ecjia.merchant.mh_shortcut.shortcut_list();
+</script>
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->
-{if !$data}
+{if $cycimage_config}
 	<div class="alert alert-info">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times" data-original-title="" title=""></i></button>
 		<strong>温馨提示：</strong>请您先添加菜单组。
@@ -27,21 +30,20 @@
 						        <!-- {/foreach} -->
 					        </ul>
 					        <!-- {/if} -->
-					        <br>
 						</div>
-						<a href='{RC_Uri::url("adsense/mh_shortcut/add_group")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加菜单组</a>	
 					</div>
 					
 					<div class="col-lg-9">
 						<div class="panel-body panel-body-small">
 							<h3 class="page-header">
-								{if $ur_here}{$ur_here}{/if}{if $data}（{$position_code}）{/if}
-								{if $position_id}
-									<div class="pull-right">
-										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要删除该菜单组么？"  href='{RC_Uri::url("adsense/mh_shortcut/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除菜单组</a>
-										<a href='{RC_Uri::url("adsense/mh_shortcut/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑菜单组</a>
-									</div>
-								{/if}
+								{if $ur_here}{$ur_here}{/if}{if $position_code}（{$position_code}）{/if}
+								<div class="pull-right">
+									{if $cycimage_config}
+										<a id="ajaxstart" href='{RC_Uri::url("adsense/mh_shortcut/insert_group")}' class="btn btn-primary" title="启用"><i class="fa fa-check-square-o"></i> 启用菜单组</a>
+									{else}
+										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要关闭该菜单组么？"  href='{RC_Uri::url("adsense/mh_shortcut/delete_group","position_id={$position_id}")}' title="关闭"><i class="fa fa-minus-square"></i> 关闭菜单组</a>
+									{/if}
+								</div>
 							</h3>
 							
 							<!-- {if $available_clients} -->
@@ -93,7 +95,7 @@
 									</tbody>
 								</table>
 							</section>
-							{if $data}
+							{if !$cycimage_config}
 								<a href='{RC_Uri::url("adsense/mh_shortcut/add","position_id={$position_id}")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加菜单</a>	
 							{/if}
 						</div>

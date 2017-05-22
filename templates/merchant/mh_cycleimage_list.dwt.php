@@ -2,13 +2,16 @@
 <!-- {extends file="ecjia-merchant.dwt.php"} -->
 
 <!-- {block name="footer"} -->
+<script type="text/javascript">
+ecjia.merchant.mh_cycleimage.cycleimage_list();
+</script>
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->
-{if !$data}
+{if $cycimage_config}
 	<div class="alert alert-info">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times" data-original-title="" title=""></i></button>
-		<strong>温馨提示：</strong>请您先添加轮播组。
+		<strong>温馨提示：</strong>请您先启用轮播组。
 	</div>
 {/if}
 
@@ -27,21 +30,20 @@
 						        <!-- {/foreach} -->
 					        </ul>
 					        <!-- {/if} -->
-					        <br>
 						</div>
-						<a href='{RC_Uri::url("adsense/mh_cycleimage/add_group")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加轮播组</a>	
 					</div>
 					
 					<div class="col-lg-9">
 						<div class="panel-body panel-body-small">
 							<h3 class="page-header">
-								{if $ur_here}{$ur_here}{/if}{if $data}（{$position_code}）{/if}
-								{if $position_id}
-									<div class="pull-right">
-										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要删除该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="删除"><i class="fa fa-trash-o"></i> 删除轮播组</a>
-										<a href='{RC_Uri::url("adsense/mh_cycleimage/edit_group","position_id={$position_id}")}' class="btn btn-primary data-pjax" title="编辑"><i class="fa fa-edit"></i> 编辑轮播组</a>
-									</div>
-								{/if}
+								{if $ur_here}{$ur_here}{/if}{if $position_code}（{$position_code}）{/if}
+								<div class="pull-right">
+									{if $cycimage_config}
+										<a id="ajaxstart" href='{RC_Uri::url("adsense/mh_cycleimage/insert_group")}' class="btn btn-primary" title="启用"><i class="fa fa-check-square-o"></i> 启用轮播组</a>
+									{else}
+										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要关闭该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="关闭"><i class="fa fa-minus-square"></i> 关闭轮播组</a>
+									{/if}
+								</div>
 							</h3>
 							
 							<!-- {if $available_clients} -->
@@ -93,7 +95,7 @@
 									</tbody>
 								</table>
 							</section>
-							{if $data}
+							{if !$cycimage_config}
 								<a href='{RC_Uri::url("adsense/mh_cycleimage/add","position_id={$position_id}")}' class="btn btn-primary data-pjax"><i class="fa fa-plus"></i> 添加轮播图</a>	
 							{/if}
 						</div>

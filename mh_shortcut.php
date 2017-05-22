@@ -73,10 +73,14 @@ class mh_shortcut extends ecjia_merchant {
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('菜单管理'));
     	$this->assign('ur_here', '菜单列表');
     	
-
     	//获取菜单组
     	$position = new Ecjia\App\Adsense\Merchant\PositionManage('shortcut', $_SESSION['store_id']);
     	$data = $position->getAllPositions();
+    	
+    	if(empty($data)){
+    		$data = RC_Loader::load_app_config('merchant_shortcut');
+    		$this->assign('cycimage_config', 'cycimage_config');
+    	}
     	$this->assign('data', $data);
     	
     	$position_id = intval($_GET['position_id']);
@@ -113,103 +117,108 @@ class mh_shortcut extends ecjia_merchant {
     	$this->display('mh_shortcut_list.dwt');
     }
 
-    public function add_group() {
-    	$this->admin_priv('mh_shortcut_update');
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加菜单组'));
-    	$this->assign('ur_here', '添加菜单组');
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init'), 'text' => '菜单设置'));
+//     public function add_group() {
+//     	$this->admin_priv('mh_shortcut_update');
+//     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加菜单组'));
+//     	$this->assign('ur_here', '添加菜单组');
+//     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init'), 'text' => '菜单设置'));
     	
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/insert_group'));
+//     	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/insert_group'));
     	
-    	$this->display('mh_shortcut_group_info.dwt');
-    }
+//     	$this->display('mh_shortcut_group_info.dwt');
+//     }
 
     public function insert_group() {
     	$this->admin_priv('mh_shortcut_update');
     	
-    	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
-    	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-    	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-    	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-    	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
-    	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-    	$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('store_id', $_SESSION['store_id'])->where('type', 'shortcut')->count();
-    	if ($query > 0) {
-    		return $this->showmessage('该菜单组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    	$data = RC_Loader::load_app_config('merchant_shortcut');
+    	$position_code = array_keys($data);    
+    	
+    	foreach ($data as $row) {
+    		$position_name 	= $row['position_name'];
+    		$position_code 	= $position_code[0];
+    		$position_desc	= $row['position_desc'];
+    		$ad_width		= $row['ad_width'];
+    		$ad_height 		= $row['ad_height'];
+    		$max_number 	= $row['max_number'];
+    		$sort_order 	= $row['sort_order'];
+    		
+    		$data = array(
+    			'store_id'		=> $_SESSION['store_id'],
+    			'position_name' => $position_name,
+    			'position_code' => $position_code,
+    			'position_desc' => $position_desc,
+    			'ad_width'      => $ad_width,
+    			'ad_height'     => $ad_height,
+    			'max_number'    => $max_number,
+    			'type' 			=> 'shortcut',
+    			'sort_order' 	=> $sort_order,
+    		);
+    		RC_DB::table('merchants_ad_position')->insertGetId($data);
     	}
-    	$data = array(
-    		'store_id'		=> $_SESSION['store_id'],
-    		'position_name' => $position_name,
-    		'position_code' => $position_code,
-    		'position_desc' => $position_desc,
-    		'ad_width'      => $ad_width,
-    		'ad_height'     => $ad_height,
-    		'max_number'    => $max_number,
-    		'type' 			=> 'shortcut',
-    		'sort_order' 	=> $sort_order,
-    	);
-    	$position_id = RC_DB::table('merchants_ad_position')->insertGetId($data);
-    	ecjia_merchant::admin_log($position_name, 'add', 'group_shortcut');
-    	return $this->showmessage('添加菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit_group', array('position_id' => $position_id))));
-    }    
+    
+    	ecjia_merchant::admin_log($position_name, 'add', 'group_cycleimage');
+    	return $this->showmessage('启用菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init')));
+    }  
 
-    public function edit_group() {
-    	$this->admin_priv('mh_shortcut_update');
-    	
-    	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑菜单组'));
-    	$this->assign('ur_here', '编辑菜单组');
-    	
-    	$position_id = intval($_GET['position_id']);
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单设置'));
-    	$this->assign('position_id', $position_id);
-   
-    	$data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
-    	$this->assign('data', $data);
-    	
-    	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/update_group'));
-    	 
-    	$this->display('mh_shortcut_group_info.dwt');
-    }
-    
-    public function update_group() {
-    	$this->admin_priv('mh_shortcut_update');
-    	
-    	$position_id   = intval($_POST['position_id']);
-    	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-    	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-    	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
-    	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-    	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
-    	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
-    
-    	$data = array(
-    		'position_name' => $position_name,
-    		'position_desc' => $position_desc,
-    		'max_number'    => $max_number,
-    		'sort_order' 	=> $sort_order,
-    		'ad_width'      => $ad_width,
-    		'ad_height'     => $ad_height,
-    	);
-    	
-    	RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->update($data);
-    	ecjia_merchant::admin_log($position_name, 'edit', 'group_shortcut');
-    	return $this->showmessage('编辑菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit_group', array('position_id' => $position_id))));
-    }
-    
     public function delete_group() {
     	$this->admin_priv('mh_shortcut_delete');
-    	
+    	 
     	$position_id = intval($_GET['position_id']);
     	$position_name = RC_DB::TABLE('merchants_ad_position')->where('position_id', $position_id)->pluck('position_name');
     	if (RC_DB::table('merchants_ad')->where('position_id', $position_id)->count() > 0) {
-    		return $this->showmessage('该菜单组已存在菜单，暂不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('该菜单组已存在菜单，暂不能关闭！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	} else {
     		RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->delete();
     		ecjia_merchant::admin_log($position_name, 'remove', 'group_shortcut');
-    		return $this->showmessage('成功删除菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init')));
+    		return $this->showmessage('成功关闭菜单组', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init')));
     	}
     }
+
+//     public function edit_group() {
+//     	$this->admin_priv('mh_shortcut_update');
+    	
+//     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑菜单组'));
+//     	$this->assign('ur_here', '编辑菜单组');
+    	
+//     	$position_id = intval($_GET['position_id']);
+//     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单设置'));
+//     	$this->assign('position_id', $position_id);
+   
+//     	$data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
+//     	$this->assign('data', $data);
+    	
+//     	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/update_group'));
+    	 
+//     	$this->display('mh_shortcut_group_info.dwt');
+//     }
+    
+//     public function update_group() {
+//     	$this->admin_priv('mh_shortcut_update');
+    	
+//     	$position_id   = intval($_POST['position_id']);
+//     	$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
+//     	$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
+//     	$max_number    = !empty($_POST['max_number']) ? intval($_POST['max_number']) : 0;
+//     	$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+//     	$ad_width      = !empty($_POST['ad_width']) ? intval($_POST['ad_width']) : 0;
+//     	$ad_height     = !empty($_POST['ad_height']) ? intval($_POST['ad_height']) : 0;
+    
+//     	$data = array(
+//     		'position_name' => $position_name,
+//     		'position_desc' => $position_desc,
+//     		'max_number'    => $max_number,
+//     		'sort_order' 	=> $sort_order,
+//     		'ad_width'      => $ad_width,
+//     		'ad_height'     => $ad_height,
+//     	);
+    	
+//     	RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->update($data);
+//     	ecjia_merchant::admin_log($position_name, 'edit', 'group_shortcut');
+//     	return $this->showmessage('编辑菜单组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/edit_group', array('position_id' => $position_id))));
+//     }
+    
+   
 
     
     /**
