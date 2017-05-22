@@ -292,7 +292,7 @@ class mh_group extends ecjia_merchant {
 				RC_DB::table('merchants_ad_position')->where('position_id', intval($val))->update($data);
 			}
 		}
-		ecjia_admin::admin_log($position_name, 'constitute', 'group_position');
+		ecjia_merchant::admin_log($position_name, 'constitute', 'group_position');
 		return $this->showmessage('编排广告位成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_group/constitute', array('position_id' => $group_position_id))));
 	}
 }
