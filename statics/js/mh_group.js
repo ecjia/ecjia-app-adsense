@@ -76,18 +76,18 @@
     			app.link_goods.add_link_goods();
     			app.link_goods.del_link_goods();
     			app.link_goods.submit_link_goods();
-//    			app.link_goods.movemod();
+    			app.link_goods.movemod();
     		},
     		
-//    		movemod: function() {
-//    			$(".nav-list-content").sortable({
-//    				placeholder: 'ui-sortable-placeholder',
-//    				items: "li:not(.ms-elem-selection1)",
-//    				sort: function() {
-//    					$(this).removeClass("ui-state-default");
-//    				}
-//    			});
-//    		},
+    		movemod: function() {
+    			$(".nav-list-content").sortable({
+    				placeholder: 'ui-sortable-placeholder',
+    				items: "li:not(.ms-elem-selection1)",
+    				sort: function() {
+    					$(this).removeClass("ui-state-default");
+    				}
+    			});
+    		},
     		
     		//对该列表关键词快捷筛选
     		search_link_goods_opt : function() {

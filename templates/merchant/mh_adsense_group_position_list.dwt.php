@@ -2,7 +2,50 @@
 <!--{extends file="ecjia-merchant.dwt.php"} -->
 
 <!-- {block name="footer"} -->
+<script type="text/javascript">
+$(document).ready(function(){
+	  	var fixHelperModified = function(e, tr) {
+	     var $originals = tr.children();
+	     var $helper = tr.clone();
+	     $helper.children().each(function(index) {
+	      	$(this).width($originals.eq(index).width())
+	     });
+	     return $helper;
+	    },
+	    
+	    updateIndex = function(e, ui) {
+		     $('td.index', ui.item.parent()).each(function (i) {
+		      	$(this).html(i + 1);
+		     });
 
+		      	var url = $('.position_detail').attr('data-url');
+				var info = {literal}{'position_array' : []}{/literal};
+		
+				$('tbody tr').each(function (index){
+					var position_id = $('tbody tr').eq(index).find('.position_id').text();
+					var position_sort = $('tbody tr').eq(index).find('.position_sort').text();
+					info.position_array.push({
+						'position_id': position_id,
+						'position_sort': position_sort
+					});
+				});
+				
+				$.get(url, info, function(data) {
+					ecjia.merchant.showmessage(data);
+				});
+	    };
+	    
+		  $("#sort tbody").sortable({
+			   helper: fixHelperModified,
+			   stop: updateIndex
+		  }).disableSelection();
+});
+</script>
+<style>
+tr{
+ 	cursor: pointer;
+}
+</style>
 <!-- {/block} -->
 
 <!-- {block name="home-content"} -->

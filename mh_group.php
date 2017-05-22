@@ -54,6 +54,7 @@ class mh_group extends ecjia_merchant {
 		
 		RC_Script::enqueue_script('smoke');
 		RC_Script::enqueue_script('jquery-validate');
+		RC_Script::enqueue_script('jquery-ui');
 		RC_Script::enqueue_script('jquery-form');
 		RC_Script::enqueue_script('ecjia-mh-editable-js');
 		RC_Style::enqueue_style('ecjia-mh-editable-css');
@@ -229,7 +230,7 @@ class mh_group extends ecjia_merchant {
 		if (!empty($position_array)) {
 			foreach ($position_array as $row) {
 				$data= array('sort_order' => $row['position_sort']);
-				RC_DB::table('merhcants_ad_position')->where('position_id', $row['position_id'])->update($data);
+				RC_DB::table('merchants_ad_position')->where('position_id', $row['position_id'])->update($data);
 			}
 		}
 	}
