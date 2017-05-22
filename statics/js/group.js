@@ -93,9 +93,6 @@
         }
 	}
     
-    
-
-    /* 关联商品 */
     app.link_goods = {
     		init : function() {    				
     			app.link_goods.search_link_goods_opt();

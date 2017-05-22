@@ -62,6 +62,7 @@ class mh_shortcut extends ecjia_merchant {
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
 		RC_Script::enqueue_script('mh_shortcut', RC_App::apps_url('statics/js/mh_shortcut.js', __FILE__));
+		ecjia_merchant_screen::get_current_screen()->set_parentage('adsense', 'adsense/mh_shortcut.php');
 		
 	}
     

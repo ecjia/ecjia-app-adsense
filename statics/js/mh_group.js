@@ -38,29 +38,6 @@
     /* **编辑** */
     app.merchant_group_edit = {
         init: function () {
-        	$('.copy').on('click', function() {
-				var $this = $(this),
-					message = $this.attr('data-msg'),
-					url = $this.attr('data-href');
-					var city_id = $("#city_id option:selected").val();
-					var position_name = $("input[name='position_name']").val();
-					var position_desc = $("#position_desc").val()
-					var sort_order = $("input[name='sort_order']").val();
-	                url += '&city_id=' + city_id+'&position_name=' + position_name+'&position_desc=' + position_desc+'&sort_order=' + sort_order;
-				if (message != undefined) {
-					smoke.confirm(message, function(e) {
-						if (e) {
-							$.get(url, function(data){
-								ecjia.merchant.showmessage(data);
-							})
-						}
-					}, {ok:"确定", cancel:"取消"});
-				} 
-			});
-			
-            app.merchant_group_edit.submit_form();
-        },
-        submit_form: function (formobj) {
             var $form = $("form[name='theForm']");
             var option = {
                 rules: {
@@ -91,29 +68,27 @@
             var options = $.extend(ecjia.merchant.defaultOptions.validate, option);
             $form.validate(options);
         }
-	}
-    
-    
+	};
 
-    /* 关联商品 */
     app.link_goods = {
-    		init : function() {    				
+    		init : function() {    	
     			app.link_goods.search_link_goods_opt();
     			app.link_goods.add_link_goods();
     			app.link_goods.del_link_goods();
     			app.link_goods.submit_link_goods();
-    			app.link_goods.movemod();
+//    			app.link_goods.movemod();
     		},
     		
-            movemod: function () {
-                $(".nav-list-content").sortable({
-                    placeholder: 'ui-sortable-placeholder',
-                    items: "li:not(.ms-elem-selection1)",
-                    sort: function () {
-                        $(this).removeClass("ui-state-default");
-                    }
-                });
-            },
+//    		movemod: function() {
+//    			$(".nav-list-content").sortable({
+//    				placeholder: 'ui-sortable-placeholder',
+//    				items: "li:not(.ms-elem-selection1)",
+//    				sort: function() {
+//    					$(this).removeClass("ui-state-default");
+//    				}
+//    			});
+//    		},
+    		
     		//对该列表关键词快捷筛选
     		search_link_goods_opt : function() {
     			$('#ms-search').quicksearch(
@@ -142,7 +117,7 @@
     			$('.nav-list-ready li')
     			.on('click', function() {
     				var $this = $(this),
-    					tmpobj = $( '<li class="ms-elem-selection"><input type="hidden" name="sort_order[]" value="' + $this.attr('sort_order') + '" /><input type="hidden" name="position_id[]"  value="' + $this.attr('data-id') + '" />' + $this.text() + '<span class="edit-list"><i class="fontello-icon-minus-circled ecjiafc-red del"></i></span></li>');
+    					tmpobj = $( '<li class="ms-elem-selection"><input type="hidden" name="sort_order[]" value="' + $this.attr('sort_order') + '" /><input type="hidden" name="position_id[]"  value="' + $this.attr('data-id') + '" />' + $this.text() + '<span class="edit-list"><i class="fa fa-minus-circle ecjiafc-red del"></i></span></li>');
     				if (!$this.hasClass('disabled')) {
     					tmpobj.appendTo( $( ".ms-selection .nav-list-content" ) );
     					$this.addClass('disabled');
