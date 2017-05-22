@@ -68,121 +68,53 @@ class mh_group extends ecjia_merchant {
 		
 		ecjia_merchant_screen::get_current_screen()->set_parentage('adsense', 'adsense/mh_group.php');
 	}
-    
+	
+
     public function init() {
 		$this->admin_priv('mh_adsense_group_manage');
 	
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告组'));
-		$this->assign('ur_here', '广告组');
-		
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编排列表'));
+		$this->assign('ur_here', '编排列表');
 		$position = new Ecjia\App\Adsense\Merchant\PositionManage('group', $_SESSION['store_id']);
 		$data = $position->getAllPositions();
-		foreach ($data as $key => $val) {
-			$count = RC_DB::table('merchants_ad_position')->where('group_id', $val['position_id'])->count();
-			$data[$key]['count'] = $count;
+
+		if(empty($data)){
+			$data = RC_Loader::load_app_config('merchant_adgroup');
+			$this->assign('cycimage_config', 'cycimage_config');
 		}
 		$this->assign('data', $data);
 		
-		$this->display('mh_adsense_group_list.dwt');
-	}
-	
-	public function add() {
-		$this->admin_priv('mh_adsense_group_update');
-			
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加广告组'));
-		$this->assign('ur_here', '添加广告组');
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
-				
-		$this->assign('form_action', RC_Uri::url('adsense/mh_group/insert'));
-			
-		$this->display('mh_adsense_group_info.dwt');
-	}
-	
-	public function insert() {
-		$this->admin_priv('mh_adsense_group_update');
-			
-		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-		$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
-		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-		
-		$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('store_id', $_SESSION['store_id'])->where('type', 'group')->count();
-		if ($query > 0) {
-			return $this->showmessage('该广告组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
-		}
-			
-		$data = array(
-			'store_id'		=> $_SESSION['store_id'],
-			'position_name' => $position_name,
-			'position_code' => $position_code,
-			'position_desc' => $position_desc,
-			'type' 			=> 'group',
-			'sort_order' 	=> $sort_order,
-		);
-	
-		$position_id = RC_DB::table('merchants_ad_position')->insertGetId($data);
-		ecjia_merchant::admin_log($position_name, 'add', 'group_position');
-		return $this->showmessage('添加广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_group/edit', array('position_id' => $position_id))));
-	}
-	
-	public function edit() {
-		$this->admin_priv('mh_adsense_group_update');
-			
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑广告组'));
-		$this->assign('ur_here', '编辑广告组');
-	
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
-	
 		$position_id = intval($_GET['position_id']);
-		$data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
-		$this->assign('data', $data);
-			
-		$this->assign('form_action', RC_Uri::url('adsense/mh_group/update'));
-	
-		$this->display('mh_adsense_group_info.dwt');
-	}
-	
-	public function update() {
-		$this->admin_priv('mh_adsense_group_update');
-	
-		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
-		$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
-		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
-		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
-	
-		$position_id   = intval($_POST['position_id']);
-		$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('type', 'group')->where('store_id',$_SESSION['store_id'])->where('position_id', '!=', $position_id)->count();
-		if ($query > 0) {
-			return $this->showmessage('该广告组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+		if (empty($position_id) && !empty($data)) {
+			$position_id = head($data)['position_id'];
+			$position_code = head($data)['position_code'];
 		}
-			
-		$data = array(
-			'position_name' => $position_name,
-			'position_desc' => $position_desc,
-			'sort_order' 	=> $sort_order,
-		);
-			
-		RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->update($data);
-		ecjia_merchant::admin_log($position_name, 'edit', 'group_position');
-		return $this->showmessage('编辑广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_group/edit', array('position_id' => $position_id))));
+		$this->assign('position_id', $position_id);
+		$this->assign('position_code', $position_code);
+
+		$filter['sort_by']    = empty($_GET['sort_by']) ? 'sort_order' : trim($_GET['sort_by']);
+		$filter['sort_order'] = empty($_GET['sort_order']) ? 'asc' : trim($_GET['sort_order']);
+		
+		$data_position = RC_DB::table('merchants_ad_position')
+		->where('store_id', $_SESSION['store_id'])
+		->where('group_id', $position_id)
+		->select('position_id', 'position_name','position_code','position_desc','ad_width','ad_height','sort_order')
+		->orderBy($filter['sort_by'], $filter['sort_order'])
+		->get();
+		$this->assign('data_position', $data_position);
+
+		$this->display('mh_adsense_group_position_list.dwt');
 	}
 	
-	/**
-	 * 删除广告组
-	 */
+
+	//关闭广告组
 	public function remove() {
 		$this->admin_priv('mh_adsense_group_delete');
-		
-		$group_position_id = intval($_GET['group_position_id']);
-		$city_id = intval($_GET['city_id']);
 	
+		$group_position_id = intval($_GET['position_id']);
 		if (RC_DB::table('merchants_ad_position')->where('group_id', $group_position_id)->where('store_id',$_SESSION['store_id'])->count() > 0) {
-			if($_GET['key']) {
-				return $this->showmessage('该广告组已进行广告位编排，不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,array('pjaxurl' => RC_Uri::url('adsense/mh_group/constitute',array( 'position_id' => $group_position_id))));
-			}else{
-				return $this->showmessage('该广告组已进行广告位编排，不能删除！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,array('pjaxurl' => RC_Uri::url('adsense/mh_group/group_position_list',array('position_id' => $group_position_id))));
-			}
+			return $this->showmessage('该广告组已进行广告位编排，不能关闭！', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR,array('pjaxurl' => RC_Uri::url('adsense/mh_group/init',array('position_id' => $group_position_id))));
 		} else {
 			$position_name = RC_DB::table('merchants_ad_position')->where('position_id', $group_position_id)->pluck('position_name');
 			ecjia_merchant::admin_log($position_name, 'remove', 'group_position');
@@ -191,41 +123,91 @@ class mh_group extends ecjia_merchant {
 		}
 	}
 	
-	public function group_position_list() {
+// 	public function add() {
+// 		$this->admin_priv('mh_adsense_group_update');
+			
+// 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('添加广告组'));
+// 		$this->assign('ur_here', '添加广告组');
+// 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
+				
+// 		$this->assign('form_action', RC_Uri::url('adsense/mh_group/insert'));
+			
+// 		$this->display('mh_adsense_group_info.dwt');
+// 	}
 	
+	public function insert() {
 		$this->admin_priv('mh_adsense_group_update');
 			
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编排列表'));
-		$this->assign('ur_here', '编排列表');
-	
-		$store_id = intval($_SESSION['store_id']);
-		$group_position_id = intval($_GET['position_id']);
-		$this->assign('position_id', $group_position_id);
-	
-		$position_data = RC_DB::table('merchants_ad_position')->where('position_id', $group_position_id)->first();
-		$this->assign('position_data', $position_data);
-	
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
-		$this->assign('edit_action_link', array('href' => RC_Uri::url('adsense/mh_group/constitute',array('store_id' => $store_id, 'position_id' => $group_position_id)), 'text' => '编排广告位'));
-	
-		$filter['sort_by']    = empty($_GET['sort_by']) ? 'sort_order' : trim($_GET['sort_by']);
-		$filter['sort_order'] = empty($_GET['sort_order']) ? 'asc' : trim($_GET['sort_order']);
-	
-		$data = RC_DB::table('merchants_ad_position')
-		->where('group_id', $group_position_id)
-		->select('position_id', 'position_name','position_code','position_desc','ad_width','ad_height','sort_order')
-		->orderBy($filter['sort_by'], $filter['sort_order'])
-		->get();
-		$this->assign('data', $data);
-	
-		$this->assign('form_action', RC_Uri::url('adsense/mh_group/constitute_insert'));
-	
-		$this->display('mh_adsense_group_position_list.dwt');
+		
+		$data 	  = RC_Loader::load_app_config('merchant_adgroup');
+		$position_code = array_keys($data);
+		 
+		foreach ($data as $row) {
+			$position_name 	= $row['position_name'];
+			$position_code 	= $position_code[0];
+			$position_desc	= $row['position_desc'];
+			$sort_order 	= $row['sort_order'];
+		
+			$data = array(
+					'store_id'		=> $_SESSION['store_id'],
+					'position_name' => $position_name,
+					'position_code' => $position_code,
+					'position_desc' => $position_desc,
+					'type' 			=> 'group',
+					'sort_order' 	=> $sort_order,
+			);
+			RC_DB::table('merchants_ad_position')->insertGetId($data);
+		}
+		
+		ecjia_merchant::admin_log($position_name, 'add', 'group_position');
+		return $this->showmessage('启用广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_group/init')));
 	}
+	
+// 	public function edit() {
+// 		$this->admin_priv('mh_adsense_group_update');
+			
+// 		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编辑广告组'));
+// 		$this->assign('ur_here', '编辑广告组');
+	
+// 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
+	
+// 		$position_id = intval($_GET['position_id']);
+// 		$data = RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->first();
+// 		$this->assign('data', $data);
+			
+// 		$this->assign('form_action', RC_Uri::url('adsense/mh_group/update'));
+	
+// 		$this->display('mh_adsense_group_info.dwt');
+// 	}
+	
+// 	public function update() {
+// 		$this->admin_priv('mh_adsense_group_update');
+	
+// 		$position_name = !empty($_POST['position_name']) ? trim($_POST['position_name']) : '';
+// 		$position_code = !empty($_POST['position_code']) ? trim($_POST['position_code']) : '';
+// 		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
+// 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
+	
+// 		$position_id   = intval($_POST['position_id']);
+// 		$query = RC_DB::table('merchants_ad_position')->where('position_code', $position_code)->where('type', 'group')->where('store_id',$_SESSION['store_id'])->where('position_id', '!=', $position_id)->count();
+// 		if ($query > 0) {
+// 			return $this->showmessage('该广告组代号在当前店铺中已存在', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+// 		}
+			
+// 		$data = array(
+// 			'position_name' => $position_name,
+// 			'position_desc' => $position_desc,
+// 			'sort_order' 	=> $sort_order,
+// 		);
+			
+// 		RC_DB::table('merchants_ad_position')->where('position_id', $position_id)->update($data);
+// 		ecjia_merchant::admin_log($position_name, 'edit', 'group_position');
+// 		return $this->showmessage('编辑广告组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_group/edit', array('position_id' => $position_id))));
+// 	}
+
 	
 	public function update_sort() {
 		$this->admin_priv('mh_adsense_group_update');
-	
 		$position_array = $_GET['position_array'];
 		if (!empty($position_array)) {
 			foreach ($position_array as $row) {

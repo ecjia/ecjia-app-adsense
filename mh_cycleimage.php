@@ -137,7 +137,6 @@ class mh_cycleimage extends ecjia_merchant {
     	$position_code = array_keys($data);    
     	
     	foreach ($data as $row) {
-
     		$position_name 	= $row['position_name'];
     		$position_code 	= $position_code[0];
     		$position_desc	= $row['position_desc'];
@@ -161,7 +160,7 @@ class mh_cycleimage extends ecjia_merchant {
     	}
     
     	ecjia_merchant::admin_log($position_name, 'add', 'group_cycleimage');
-    	return $this->showmessage('启用轮播图成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init')));
+    	return $this->showmessage('启用轮播组成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init')));
     }   
      
     //关闭轮播组

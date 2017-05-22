@@ -368,8 +368,6 @@ class admin_group extends ecjia_admin {
 		->get();
 		$this->assign('data', $data);
 		
-		$this->assign('form_action', RC_Uri::url('adsense/admin_group/constitute_insert'));
-		
 		$this->display('adsense_group_position_list.dwt');
 	}
 		

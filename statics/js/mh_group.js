@@ -2,35 +2,13 @@
 ;(function (app, $) {
     app.merhcant_group_list = {
         init: function () {
-            //搜索功能
-            $("form[name='searchForm'] .search_ad_position").on('click', function (e) {
-                e.preventDefault();
-                var url = $("form[name='searchForm']").attr('action');
-                var keywords = $("input[name='keywords']").val();
-                if (keywords != '') {
-                    url += '&keywords=' + keywords;
-                }
-                ecjia.pjax(url);
-            });
-
-			$('[href="#editArea"]').on('click', function() {
-				var name = $(this).attr('data-name'),
-					val	 = $(this).attr('value');
-				$('#editArea .parent_name').text(name);
-				$('#editArea input[name="id"]').val(val);
-			});
-
-			$('form').on('submit', function(e) {
-				e.preventDefault();
-				$(this).ajaxSubmit({
-					dataType : "json",
-					success : function(data) {
-						$('#editArea').modal('hide');
-						$('#addArea').modal('hide');
-						ecjia.merchant.showmessage(data);
-					}
-				});
-			});
+        	 $("#ajaxstart").on('click', function (e) {
+                 e.preventDefault();
+                 var url = $(this).attr('href');
+                 $.get(url, function (data) {
+                     ecjia.merchant.showmessage(data);
+                 }, 'json');
+             });
         }
     };
  

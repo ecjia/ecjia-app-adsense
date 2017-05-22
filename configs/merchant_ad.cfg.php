@@ -1,5 +1,5 @@
 <?php
-//广告组
+//广告位
 return array(
 	
     
