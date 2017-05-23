@@ -226,7 +226,7 @@ class mh_position extends ecjia_merchant {
     	
     	$group_position_id  = intval($_GET['group_position_id']);
     	if($group_position_id){
-    		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_group/group_position_list', array('position_id' => $group_position_id))));
+    		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_group/init', array('position_id' => $group_position_id))));
     	}else{
     		return $this->showmessage('编辑排序成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_position/init', array('position_id' => $id))));
     	}
