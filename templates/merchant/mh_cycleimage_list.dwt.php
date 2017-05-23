@@ -17,14 +17,13 @@ ecjia.merchant.mh_cycleimage.cycleimage_list();
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="tab-content">
             <div class="panel">
                 <div class="panel-body">
                 	<div class="col-lg-3">
 						<div class="setting-group">
 					        <span class="setting-group-title"><i class="fa fa-gear"></i> 轮播组</span>
 					        <!-- {if $data} -->
-					        <ul class="nav nav-list m_t10">
+					        <ul class="nav nav-list m_t10 change">
 						        <!-- {foreach from=$data item=val} -->
 						        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/mh_cycleimage/init" args="position_id={$val.position_id}"}'>{$val.position_name}</a></li>
 						        <!-- {/foreach} -->
@@ -102,7 +101,6 @@ ecjia.merchant.mh_cycleimage.cycleimage_list();
 					</div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 

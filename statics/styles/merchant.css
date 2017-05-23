@@ -27,7 +27,7 @@
     background-color: #f2f2f2;
 	border-radius: 4px; 
 }
-.nav > li > a {
+.change > li > a {
     display: block;
     padding: 5px 15px;
     position: relative;

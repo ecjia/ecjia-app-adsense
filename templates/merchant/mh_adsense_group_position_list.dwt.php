@@ -66,7 +66,7 @@ tr{
 						<div class="setting-group">
 					        <span class="setting-group-title"><i class="fa fa-gear"></i> 广告组</span>
 					        <!-- {if $data} -->
-					        <ul class="nav nav-list m_t10">
+					        <ul class="nav nav-list m_t10 change">
 						        <!-- {foreach from=$data item=val} -->
 						        	<li><a class="setting-group-item data-pjax {if $position_id eq $val.position_id}llv-active{/if}" href='{url path="adsense/mh_group/init" args="position_id={$val.position_id}"}'>{$val.position_name}</a></li>
 						        <!-- {/foreach} -->
