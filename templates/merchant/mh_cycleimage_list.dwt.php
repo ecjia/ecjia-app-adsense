@@ -35,7 +35,7 @@ ecjia.merchant.mh_cycleimage.cycleimage_list();
 					
 					<div class="col-lg-9">
 						<div class="panel-body panel-body-small">
-							<h3 class="page-header">
+							<h2 class="page-header">
 								{if $ur_here}{$ur_here}{/if}{if $position_code}（{$position_code}）{/if}
 								<div class="pull-right">
 									{if $cycimage_config}
@@ -44,7 +44,7 @@ ecjia.merchant.mh_cycleimage.cycleimage_list();
 										<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要关闭该轮播组么？"  href='{RC_Uri::url("adsense/mh_cycleimage/delete_group","position_id={$position_id}")}' title="关闭"><i class="fa fa-minus-square"></i> 关闭轮播组</a>
 									{/if}
 								</div>
-							</h3>
+							</h2>
 							
 							<!-- {if $available_clients} -->
 							<ul class="nav nav-pills pull-left">

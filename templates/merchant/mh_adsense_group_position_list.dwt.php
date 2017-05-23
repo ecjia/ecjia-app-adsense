@@ -77,7 +77,7 @@ tr{
 					
 					<div class="col-lg-9">
 						<div class="panel-body panel-body-small">
-							<h3 class="page-header">
+							<h2 class="page-header">
 								<!-- {if $ur_here}{$ur_here}{/if} --><font style="color: #999;">（拖拽列表可排序）</font>
 								<div class="pull-right"  data-url='{RC_Uri::url("adsense/mh_group/update_sort")}'>
 								{if $cycimage_config}
@@ -86,7 +86,7 @@ tr{
 									<a data-toggle="ajaxremove" class="ajaxremove btn btn-primary"  data-msg="您要关闭该广告组么？"  href='{RC_Uri::url("adsense/mh_group/remove","position_id={$position_id}")}' title="关闭"><i class="fa fa-minus-square"></i> 关闭广告组</a>
 								{/if}
 								</div>
-							</h3>
+							</h2>
 							
 							<section class="panel">
 								<table class="table table-striped" id="sort">
