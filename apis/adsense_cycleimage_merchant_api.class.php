@@ -44,80 +44,47 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-namespace Ecjia\App\Adsense\Repositories;
+defined('IN_ECJIA') or exit('No permission resources.');
 
-use Royalcms\Component\Repository\Repositories\AbstractRepository;
-
-class MerchantCycleImageRepository extends AbstractRepository
-{
-    
-    
-    protected $model = 'Ecjia\App\Adsense\Models\MerchantAdPositionModel';
+/**
+ * 获取广告位的广告列表
+ * 
+ */
+class adsense_cycleimage_merchant_api extends Component_Event_Api {
     
     /**
-     * 类型：轮播图(cycleimage)
-     * @var string
-     */
-    protected $type = 'cycleimage';
-    
-    
-    protected $orderBy = ['sort_order' => 'asc', 'position_id' => 'desc'];
-    
-    
-    public function getAllGroups($store_id)
-    {
-        $where = [
-        	'type'     => $this->type,
-            'store_id'  => $store_id,
-        ];
-        $group = $this->findWhere($where, ['position_id', 'position_name', 'position_code']);
-
-        return $group->toArray();
-    }
-    
-  
-    /**
-     * Find data by multiple fields
      *
-     * @param array $where
-     * @param array $columns
-     *
-     * @return mixed
-     */
-    public function findWhereByFirst(array $where, $columns = ['*'])
-    {
-        $this->newQuery();
-    
-        foreach ($where as $field => $value) {
-            if (is_array($value)) {
-                list($field, $condition, $val) = $value;
-                $this->query->where($field, $condition, $val);
-            }
-            else {
-                $this->query->where($field, '=', $value);
-            }
-        }
-    
-        return $this->query->first($columns);
-    }
-    
-    
-    /**
-     * 添加轮播图
+     * @param code string 广告位置代号
      * 
-     * @param string $code  唯一标识符
-     * @param string $name  广告位名称
-     * @param string $desc  广告位描述
-     * @param integer $cityId   城市ID
-     * @param string $cityName  城市名称
-     * @param integer $maxNumber    最大可调用广告数量
-     * @param integer $width    建议广告大小宽度
-     * @param integer $height   建议广告大小高度
+     * @return array
      */
-    public function addGroup($code, $name, $desc, $cityId, $cityName, $maxNumber, $width, $height)
-    {
+    public function call(&$options) {
+        $code = array_get($options, 'code');
+        $client = array_get($options, 'client');
+        $store_id = array_get($options, 'store_id');
         
+        if (!$client) {
+            return array();
+        }
+        
+        $position = new Ecjia\App\Adsense\MerchantPositionManage('cycleimage');
+        $data = $position->findAdByCode($code, $client, $store_id);
+
+        if (empty($data)) {
+            return [];
+        }
+        
+        $data = collect($data)->map(function ($item, $key) {
+        	return [
+        		'image'   => RC_Upload::upload_url($item['ad_code']),
+        		'url'     => $item['ad_link'],
+        		'text'    => $item['ad_name'],
+        	];
+        })->toArray();
+        
+        return $data;
     }
-    
     
 }
+
+// end
