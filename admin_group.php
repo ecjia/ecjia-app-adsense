@@ -265,8 +265,8 @@ class admin_group extends ecjia_admin {
 	public function constitute() {
 		$this->admin_priv('ad_group_update');
 		 
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('广告位编排'));
-		$this->assign('ur_here', '广告位编排');
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('组合广告组'));
+		$this->assign('ur_here', '组合广告组');
 
 		$city_id = intval($_GET['city_id']);
 		$this->assign('city_id', $city_id);
@@ -343,8 +343,8 @@ class admin_group extends ecjia_admin {
 	
 		$this->admin_priv('ad_group_manage');
 			
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('编排列表'));
-		$this->assign('ur_here', '编排列表');
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('组合列表'));
+		$this->assign('ur_here', '组合列表');
 		
 		$city_id = intval($_GET['city_id']);
 		$this->assign('city_id', $city_id);
@@ -356,7 +356,7 @@ class admin_group extends ecjia_admin {
 		$this->assign('position_data', $position_data);
 				
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_group/init',array('city_id' => $city_id)), 'text' => '广告组'));
-		$this->assign('edit_action_link', array('href' => RC_Uri::url('adsense/admin_group/constitute',array('city_id' => $city_id, 'position_id' => $group_position_id)), 'text' => '编排广告位'));
+		$this->assign('edit_action_link', array('href' => RC_Uri::url('adsense/admin_group/constitute',array('city_id' => $city_id, 'position_id' => $group_position_id)), 'text' => '进行组合'));
 	
 		$filter['sort_by']    = empty($_GET['sort_by']) ? 'sort_order' : trim($_GET['sort_by']);
 		$filter['sort_order'] = empty($_GET['sort_order']) ? 'asc' : trim($_GET['sort_order']);
