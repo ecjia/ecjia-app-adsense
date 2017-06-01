@@ -52,7 +52,7 @@ ecjia.merchant.merchant_ad_position_edit.init();
 											{elseif $data.position_code eq ''}
 												 <input class="form-control" type="text" name="position_code" id="position_code"/>
 											{/if}
-											<span class="help-block">广告位调用标识，且在同门店下该标识不可重复。</span>
+											<span class="help-block">广告位调用标识，且在同门店下该标识不可重复。<br>可随意填写，例如：“home_ad_1”  代表首页的第一个广告位</span>
                                         </div>
                                         <span class="input-must">{lang key='system::system.require_field'}</span>
                                     </div>

@@ -40,7 +40,7 @@ ecjia.admin.ad_position_edit.init();
 								<input class="w350" type="text" name="position_code_ifnull" />
 							{/if}
 							<span class="input-must">{lang key='system::system.require_field'}</span>
-							<span class="help-block">广告位调用标识，且在同一地区下该标识不可重复。</span>
+							<span class="help-block">广告位调用标识，且在同一地区下该标识不可重复。<br>可随意填写，例如：“home_ad_1”  代表首页的第一个广告位</span>
 						</div>
 			        </div>
 			      
