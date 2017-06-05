@@ -146,6 +146,7 @@ class PositionManage
             $adsModel = $model->ads();
             $adsModel->where('show_client', '&', $client);
             $adsModel->where('enabled', 1);
+            $adsModel->orderBy('sort_order', 'asc');
         
             if ($model->max_number) {
                 $adsModel->take($model->max_number);
