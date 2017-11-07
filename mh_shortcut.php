@@ -268,7 +268,7 @@ class mh_shortcut extends ecjia_merchant {
     			}
     		}
     	}else{
-    		return $this->showmessage('请上传菜单片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('请上传菜单图片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	 
     	if (empty($_POST['show_client'])) {
