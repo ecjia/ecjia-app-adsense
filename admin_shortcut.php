@@ -419,7 +419,7 @@ class admin_shortcut extends ecjia_admin {
     			}
     		}
     	}else{
-    		return $this->showmessage('请上传快捷菜单片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+    		return $this->showmessage('请上传快捷菜单图片', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
     	}
     	
     	if (empty($_POST['show_client'])) {
