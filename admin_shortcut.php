@@ -388,7 +388,7 @@ class admin_shortcut extends ecjia_admin {
 
     	$info = RC_DB::TABLE('ad_position')->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
     	$data['ad_width'] = $info['ad_width'];
-    	$data['ad_height'] = $info['ad_height'];;
+    	$data['ad_height'] = $info['ad_height'];
     	$data['enabled'] = 1;
 		$this->assign('data', $data);
 	
