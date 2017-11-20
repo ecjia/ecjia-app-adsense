@@ -127,7 +127,7 @@ class admin_group extends ecjia_admin {
 		$position_desc = !empty($_POST['position_desc']) ? nl2br(htmlspecialchars($_POST['position_desc'])) : '';
 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
 		$city_id       = !empty($_POST['city_id']) ? trim($_POST['city_id']) : '';
-		$city_name     = RC_DB::TABLE('regions')->where('region_id', $city_id)->pluck('region_name');
+		$city_name     = ecjia_region::getRegionName($city_id);
 		if (!$city_name) {
 			$city_name = '默认';
 		}
@@ -183,7 +183,7 @@ class admin_group extends ecjia_admin {
 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
 		
 		$city_id       = trim($_POST['city_id']);
-		$city_name     = RC_DB::TABLE('regions')->where('region_id', $city_id)->pluck('region_name');
+		$city_name     = ecjia_region::getRegionName($city_id);
 		if (!$city_name) {
 			$city_name = '默认';
 		}
@@ -216,7 +216,7 @@ class admin_group extends ecjia_admin {
 		$sort_order    = intval($_GET['sort_order']);
 		
 		$city_id = trim($_GET['city_id']);
-		$city_name     = RC_DB::TABLE('regions')->where('region_id', $city_id)->pluck('region_name');
+		$city_name     = ecjia_region::getRegionName($city_id);
 		if (!$city_name) {
 			$city_name = '默认';
 		}
@@ -375,8 +375,7 @@ class admin_group extends ecjia_admin {
 	 * 获取热门城市
 	 */
 	private function get_select_city() {
-		$data = explode(',', ecjia::config('mobile_recommend_city'));
-		$data = RC_DB::table('regions')->whereIn('region_id', $data)->get();
+		$data = ecjia_region::getRegions(explode(',', ecjia::config('mobile_recommend_city')));
 		$regions = array ();
 		if (!empty($data)) {
 			foreach ($data as $row) {
