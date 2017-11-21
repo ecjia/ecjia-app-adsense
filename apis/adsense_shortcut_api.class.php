@@ -61,7 +61,7 @@ class adsense_shortcut_api extends Component_Event_Api {
      * @return array
      */
     public function call(&$options) {
-        $city = array_get($options, 'city', 0);
+        $city = array_get($options, 'city');
         $code = array_get($options, 'code');
         $client = array_get($options, 'client');
         
@@ -74,7 +74,7 @@ class adsense_shortcut_api extends Component_Event_Api {
         $data = $position->findAdByCode($code, $client);
    
         //如果指定的城市中找不到轮播图，就获取默认城市轮播图
-        if (empty($data) && $city > 0) {
+        if (empty($data) && !empty($city)) {
             //获取默认地区的轮播图
             $data = $this->getDefaultCityAds($code, $client);
         }
