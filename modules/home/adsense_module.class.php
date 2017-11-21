@@ -70,7 +70,7 @@ class adsense_module extends api_front implements api_interface {
 
 function adsense_data($response, $request) {
     
-    $city_id	= $request->input('city_id', 0);
+    $city_id	= $request->input('city_id', '');
     $device_client = $request->header('device-client', 'iphone');
     
     if ($device_client == 'android') {
