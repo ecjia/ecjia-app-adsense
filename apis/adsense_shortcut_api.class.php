@@ -61,7 +61,7 @@ class adsense_shortcut_api extends Component_Event_Api {
      * @return array
      */
     public function call(&$options) {
-        $city = array_get($options, 'city');
+        $city = array_get($options, 'city', 0);
         $code = array_get($options, 'code');
         $client = array_get($options, 'client');
         
@@ -101,7 +101,7 @@ class adsense_shortcut_api extends Component_Event_Api {
      */
     public function getDefaultCityAds($code, $client)
     {
-        $city = '';
+        $city = 0;
         $position = new Ecjia\App\Adsense\PositionManage('shortcut', $city);
         $data = $position->findAdByCode($code, $client);
         

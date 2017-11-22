@@ -109,7 +109,7 @@ class admin extends ecjia_admin {
 		
 		$show_client = array_get($_GET, 'show_client', 0);
 		$media_type = array_get($_GET, 'media_type', -1);
-		$city_id = array_get($_GET, 'city_id', '');
+		$city_id = array_get($_GET, 'city_id', 0);
 		
 		$this->assign('media_type', $media_type);
 
