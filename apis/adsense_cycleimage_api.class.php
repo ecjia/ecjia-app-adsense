@@ -69,6 +69,9 @@ class adsense_cycleimage_api extends Component_Event_Api {
             return array();
         }
         
+        if ($city === '') {
+            $city = 0;
+        }
         
         $position = new Ecjia\App\Adsense\PositionManage('cycleimage', $city);
         $data = $position->findAdByCode($code, $client);
