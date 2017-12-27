@@ -50,24 +50,23 @@ use ecjia_admin_log;
 
 class Helper
 {
-    
-    
     /**
      * 添加管理员记录日志操作对象
      */
-    public static function assign_adminlog_content() {
+    public static function assign_adminlog_content()
+    {
         ecjia_admin_log::instance()->add_action('copy', '复制');
-    	ecjia_admin_log::instance()->add_action('constitute', '编排');
-    	
-    	ecjia_admin_log::instance()->add_object('group_cycleimage', '轮播组');
-    	ecjia_admin_log::instance()->add_object('cycleimage', '轮播图');
-    	
-    	ecjia_admin_log::instance()->add_object('group_shortcut', '菜单组');
-    	ecjia_admin_log::instance()->add_object('shortcut', '快捷菜单');
-    	
-    	ecjia_admin_log::instance()->add_object('group_position', '广告组');
+        ecjia_admin_log::instance()->add_action('constitute', '编排');
+
+        ecjia_admin_log::instance()->add_object('group_cycleimage', '轮播组');
+        ecjia_admin_log::instance()->add_object('cycleimage', '轮播图');
+
+        ecjia_admin_log::instance()->add_object('group_shortcut', '菜单组');
+        ecjia_admin_log::instance()->add_object('shortcut', '快捷菜单');
+
+        ecjia_admin_log::instance()->add_object('group_position', '广告组');
     }
-    
+
 }
 
 // end
