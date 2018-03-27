@@ -94,7 +94,7 @@ class admin extends ecjia_admin {
 		if (empty($position_id)) {
 		    return $this->showmessage("丢失广告位参数【position_id】", ecjia::MSGTYPE_HTML | ecjia::MSGSTAT_ERROR, array('links' => [['text' => '返回广告位列表', 'href' => RC_Uri::url('adsense/admin_position/init')]]));
 		}
-		_dump(1,1);
+		
 		$this->assign('position_id', $position_id);
 		
 		ecjia_screen::get_current_screen()->remove_last_nav_here();
