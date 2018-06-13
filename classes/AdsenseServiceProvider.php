@@ -2,9 +2,9 @@
 
 namespace Ecjia\App\Adsense;
 
-use Royalcms\Component\App\AppServiceProvider;
+use Royalcms\Component\App\AppParentServiceProvider;
 
-class AdsenseServiceProvider extends  AppServiceProvider
+class AdsenseServiceProvider extends  AppParentServiceProvider
 {
     
     public function boot()
