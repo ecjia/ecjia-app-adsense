@@ -58,7 +58,7 @@ class mh_position extends ecjia_merchant {
 		RC_Script::enqueue_script('ecjia-mh-editable-js');
 		RC_Style::enqueue_style('ecjia-mh-editable-css');
 
-		RC_Script::enqueue_script('bootstrap-editable-script', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.js', array());
+		RC_Script::enqueue_script('bootstrap-fileupload-script', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.js', array());
 		RC_Style::enqueue_style('bootstrap-fileupload', dirname(RC_App::app_dir_url(__FILE__)) . '/merchant/statics/assets/bootstrap-fileupload/bootstrap-fileupload.css', array(), false, false);
 		
 		RC_Script::enqueue_script('mh_ad_position', RC_App::apps_url('statics/js/mh_ad_position.js', __FILE__));
