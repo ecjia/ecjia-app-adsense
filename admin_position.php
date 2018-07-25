@@ -431,6 +431,7 @@ class admin_position extends ecjia_admin {
 	 */
 	private function get_business_city() {
 		$data = RC_DB::table('store_business_city')->orderBy(RC_DB::raw('index_letter'), 'asc')->get();
+		$regions = [];
 		if (!empty($data)) {
 			foreach ($data as $row) {
 				$regions[$row['business_city']] = addslashes($row['business_city_name']);
