@@ -144,7 +144,8 @@ class admin_position extends ecjia_admin {
 		$this->assign('ur_here', RC_Lang::get('adsense::adsense.position_add'));
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位列表'));
 		
-		$city_list = $this->get_select_city();
+		//$city_list = $this->get_business_city();
+		$city_list	 = $this->get_business_city();
 		$this->assign('city_list', $city_list);
 		
 		$this->assign('action', 'insert');
@@ -218,7 +219,8 @@ class admin_position extends ecjia_admin {
 		
 		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init', array('city_id' => $data['city_id'])), 'text' => '广告位列表'));
 		 
-		$city_list = $this->get_select_city();
+		//$city_list = $this->get_select_city();
+		$city_list	 = $this->get_business_city();
 		$this->assign('city_list', $city_list);
 		
 		$this->assign('form_action', RC_Uri::url('adsense/admin_position/update'));
@@ -419,6 +421,19 @@ class admin_position extends ecjia_admin {
 		if (!empty($data)) {
 			foreach ($data as $row) {
 				$regions[$row['region_id']] = addslashes($row['region_name']);
+			}
+		}
+		return $regions;
+	}
+	
+	/**
+	 * 获取经营城市
+	 */
+	private function get_business_city() {
+		$data = RC_DB::table('store_business_city')->orderBy(RC_DB::raw('index_letter'), 'asc')->get();
+		if (!empty($data)) {
+			foreach ($data as $row) {
+				$regions[$row['business_city']] = addslashes($row['business_city_name']);
 			}
 		}
 		return $regions;
