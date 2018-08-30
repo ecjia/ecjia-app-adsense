@@ -9,7 +9,7 @@ class AdsenseServiceProvider extends  AppParentServiceProvider
     
     public function boot()
     {
-        $this->package('ecjia/app-adsense', null, dirname(__DIR__));
+        $this->package('ecjia/app-adsense');
     }
     
     public function register()
