@@ -55,6 +55,8 @@ class adsense_module extends api_front implements api_interface
 
     public function __construct()
     {
+        parent::__construct();
+
         RC_Hook::add_filter('api_home_adsense_runloop', [$this , 'adsense_data'], 10, 2);
     }
 
