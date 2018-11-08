@@ -16,9 +16,9 @@ class adsense_category_adsense_api extends Component_Event_Api
 
     /**
      *
-     * @param city 当前城市ID
-     * @param string client  客户端代号
-     * @param string cat_id  分类ID
+     * @param int $city 当前城市ID
+     * @param string $client  客户端代号
+     * @param string $cat_id  分类ID
      *
      * @return array
      */
