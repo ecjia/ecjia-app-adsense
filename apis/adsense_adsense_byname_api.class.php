@@ -39,16 +39,25 @@ class adsense_adsense_byname_api extends Component_Event_Api
             'type'  => 'adsense',
         ];
 
-        $model = $repository->findWhereByFirst($where, ['position_id', 'position_code']);
+        $model = $repository->findWhereByFirst($where, ['position_id', 'position_name', 'position_code', 'position_desc']);
 
         if (! empty($model)) {
             $code = $model->position_code;
 
-            return RC_Api::api('adsense', 'adsense', [
+            $adsense = RC_Api::api('adsense', 'adsense', [
                 'city' => $city,
                 'code' => $code,
                 'client' => $client,
             ]);
+
+            $data = [
+                'position_code' => $model->position_code,
+                'position_name' => $model->position_name,
+                'position_desc' => $model->position_desc,
+                'adsenses' => $adsense
+            ];
+
+            return $data;
         }
 
         return [];
