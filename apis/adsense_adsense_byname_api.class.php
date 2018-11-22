@@ -35,8 +35,8 @@ class adsense_adsense_byname_api extends Component_Event_Api
         $repository = new \Ecjia\App\Adsense\Repositories\AdPositionRepository();
         $where = [
             'position_name' => $name,
-            'city_id'   => $this->city,
-            'type'  => $this->type,
+            'city_id'   => $city,
+            'type'  => 'adsense',
         ];
 
         $model = $repository->findWhereByFirst($where, ['position_id', 'position_code']);
