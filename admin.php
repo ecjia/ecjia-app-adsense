@@ -395,8 +395,8 @@ class admin extends ecjia_admin {
 		/* 编辑图片类型的广告 */
 		if ($type == 0) {
 			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
-				$upload = RC_Upload::uploader('image', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
-				$image_info = $upload->upload($_FILES['ad_img']);
+				$upload = RC_Upload::uploader('newimage', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
+				$image_info = $upload->upload('ad_img');
 				/* 如果要修改链接图片, 删除原来的图片 */
 				if (!empty($image_info)) {
 					if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
@@ -497,19 +497,19 @@ class admin extends ecjia_admin {
 	 */
 	public function delfile() {
 		$this->admin_priv('adsense_delete', ecjia::MSGTYPE_JSON);
-		
+
 		$ad_id = intval($_GET['ad_id']);
 		$position_id = intval($_GET['position_id']);
 		$show_client = intval($_GET['show_client']);
 		
 		$old_url = RC_DB::table('ad')->where('ad_id', $ad_id)->pluck('ad_code');
-		$disk = RC_Filesystem::disk();
-		$disk->delete(RC_Upload::upload_path() . $old_url);
+
+		$disk = RC_Storage::disk();
+		$disk->delete(RC_Upload::upload_path($old_url));
 		$data = array(
 			'ad_code' => '' 
 		);
 		RC_DB::table('ad')->where('ad_id', $ad_id)->update($data);
-		
 		
 		return $this->showmessage(RC_Lang::get('adsense::adsense.drop_success'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $ad_id, 'position_id' => $position_id, 'show_client' => $show_client))));
 	}
