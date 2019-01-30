@@ -394,9 +394,9 @@ class admin extends ecjia_admin {
 		$ad_logo = $ad_info['ad_code'];
 		/* 编辑图片类型的广告 */
 		if ($type == 0) {
-			if (isset($_FILES['ad_img']['error']) && $_FILES['ad_img']['error'] == 0 || ! isset($_FILES['ad_img']['error']) && isset($_FILES['ad_img']['tmp_name']) && $_FILES['ad_img']['tmp_name'] != 'none') {
-				$upload = RC_Upload::uploader('newimage', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
-				$image_info = $upload->upload('ad_img');
+			if ($this->request->hasFile('ad_img')) {
+				$upload = RC_Upload::uploader('image', array('save_path' => 'data/adsense', 'auto_sub_dirs' => false));
+				$image_info = $upload->upload($_FILES['ad_img']);
 				/* 如果要修改链接图片, 删除原来的图片 */
 				if (!empty($image_info)) {
 					if (strpos($ad_logo, 'http://') === false && strpos($ad_logo, 'https://') === false) {
