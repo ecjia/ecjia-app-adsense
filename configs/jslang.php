@@ -44,30 +44,40 @@
 //
 //  ---------------------------------------------------------------------------------
 //
-defined('IN_ECJIA') or exit('No permission resources.');
 
 /**
- * 后台工具菜单API
- * @author songqian
+ * js语言包设置
  */
-class adsense_tool_menu_api extends Component_Event_Api {
-	
-	public function call(&$options) {	
-		
-		$cycleimage_menu = ecjia_admin::make_admin_menu('cycleimage_manage', '轮播图', RC_Uri::url('adsense/admin_cycleimage/init'), 4)->add_purview('cycleimage_manage');
-		
-		$shortcut_menu = ecjia_admin::make_admin_menu('shortcut_manage', '快捷菜单', RC_Uri::url('adsense/admin_shortcut/init'), 5)->add_purview('shortcut_manage');
-		
-		$adsense_menu = ecjia_admin::make_admin_menu('08_content', __('广告管理', 'adsense'), '', 8);
-		$submenus = array(
-		    ecjia_admin::make_admin_menu('01_adsense_position', '广告位管理', RC_Uri::url('adsense/admin_position/init'), 1)->add_purview('ad_position_manage'),
-		    ecjia_admin::make_admin_menu('02_adsense_group', '广告组编排', RC_Uri::url('adsense/admin_group/init'), 2)->add_purview('ad_group_manage'),
-		);
-		$adsense_menu->add_submenu($submenus);
-		
-		return array($cycleimage_menu, $shortcut_menu, $adsense_menu);
-		
-	}
-}
 
-// end
+defined('IN_ECJIA') or exit('No permission resources.');
+
+return array(
+    //adsense
+    'adsense_page' =>array(
+        'ad_name_required' => __('请填写广告名称', 'adsense'),
+        'gen_code_message' => __('建议您指定该广告所要投放的站点的名称，方便于该广告的来源统计', 'adsense'),
+
+        'enter_ad_slot_name' => __('请输入广告位名称', 'adsense'),
+        'enter_ad_slot_code' => __('请输入广告位代号', 'adsense'),
+        'enter_ad_group_name' => __('请输入广告组名称', 'adsense'),
+        'enter_ad_group_code' => __('请输入广告组代号', 'adsense'),
+
+        'enter_carousel_name' =>  __('请输入轮播组名称', 'adsense'),
+        'enter_carousel_code' =>  __('请输入轮播组代号', 'adsense'),
+        'enter_image_link' =>  __('请输入图片链接', 'adsense'),
+
+        'enter_menu_group_name' =>  __('请输入菜单组名称', 'adsense'),
+        'enter_menu_group_code' =>  __('请输入菜单组代号', 'adsense'),
+
+        'position_name_required' => __('请填写广告位置名称', 'adsense'),
+        'ad_width_required' => __('请填写广告位宽度', 'adsense'),
+        'ad_height_required' => __('请填写广告位高度', 'adsense'),
+
+        'ok' =>  __('确定', 'adsense'),
+        'cancel' =>  __('取消', 'adsense'),
+
+    ),
+
+
+);
+//end
