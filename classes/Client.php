@@ -121,7 +121,7 @@ class Client
             $client = self::ANDROID;
         } elseif ($device_client == 'h5') {
             $client = self::H5;
-        } elseif ($device_client == 'wepp') {
+        } elseif ($device_client == 'weapp') {
             $client = self::WEAPP;
         } else {
             $client = self::IPHONE;
