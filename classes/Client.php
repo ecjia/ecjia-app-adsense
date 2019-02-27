@@ -112,4 +112,22 @@ class Client
         return $client_list;
     }
 
+    /**
+     * 转变device_client为广告的投放平台
+     */
+    public static function transformDeviceClient($device_client)
+    {
+        if ($device_client == 'android') {
+            $client = self::ANDROID;
+        } elseif ($device_client == 'h5') {
+            $client = self::H5;
+        } elseif ($device_client == 'wepp') {
+            $client = self::WEAPP;
+        } else {
+            $client = self::IPHONE;
+        }
+
+        return $client;
+    }
+
 }
