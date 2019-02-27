@@ -184,7 +184,7 @@ class mh_shortcut extends ecjia_merchant {
     	$this->assign('ur_here', __('编辑菜单组', 'adsense'));
     	
     	$position_id = intval($_GET['position_id']);
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单设置'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => __('菜单设置', 'adsense')));
     	$this->assign('position_id', $position_id);
    
     	$data = RC_DB::table('merchants_ad_position')->where('store_id', $_SESSION['store_id'])->where('position_id', $position_id)->first();
@@ -234,7 +234,7 @@ class mh_shortcut extends ecjia_merchant {
     
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加菜单', 'adsense')));
     	$this->assign('ur_here', __('添加菜单', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => '菜单列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $position_id)), 'text' => __('菜单列表', 'adsense')));
     
     	$info = RC_DB::table('merchants_ad_position')->where('store_id', $_SESSION['store_id'])->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
     	$data['ad_width'] = $info['ad_width'];
@@ -309,7 +309,7 @@ class mh_shortcut extends ecjia_merchant {
     	$show_client = intval($_GET['show_client']);
     	$this->assign('show_client', $show_client);
     	 
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => '菜单列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => __('菜单列表', 'adsense')));
     	 
     	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);

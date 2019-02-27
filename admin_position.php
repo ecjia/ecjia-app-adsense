@@ -141,10 +141,10 @@ class admin_position extends ecjia_admin {
 			'title' => __('概述', 'adsense'),
 			'content' => '<p>' . __('欢迎访问ECJia智能后台添加广告位置页面，在此页面可以进行添加广告位置操作。', 'adsense') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告位置#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A.E4.BD.8D.E7.BD.AE" target="_blank">' . __('关于添加广告位置帮助文档', 'adsense') . '</a>') . '</p>');
+		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告位置#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A.E4.BD.8D.E7.BD.AE" target="_blank">关于添加广告位置帮助文档</a>', 'adsense') . '</p>');
 		
 		$this->assign('ur_here', __('添加广告位', 'adsense'));
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => '广告位列表'));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_position/init'), 'text' => __('广告位列表', 'adsense')));
 		
 		//$city_list = $this->get_business_city();
 		$city_list	 = $this->get_business_city();
@@ -209,7 +209,7 @@ class admin_position extends ecjia_admin {
 			'title' => __('概述', 'adsense'),
 			'content' => '<p>' . __('欢迎访问ECJia智能后台编辑广告位置页面，在此页面可以进行编辑广告位置操作。', 'adsense') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告位置#.E7.BC.96.E8.BE.91.E5.B9.BF.E5.91.8A.E4.BD.8D.E7.BD.AE" target="_blank">' . __('关于编辑广告位置帮助文档', 'adsense') . '</a>') . '</p>');
+		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告位置#.E7.BC.96.E8.BE.91.E5.B9.BF.E5.91.8A.E4.BD.8D.E7.BD.AE" target="_blank">关于编辑广告位置帮助文档</a>', 'adsense') . '</p>');
 		$this->assign('ur_here', __('编辑广告位', 'adsense'));
 		$this->assign('action_link', array(
 			'href' => RC_Uri::url('adsense/admin_position/init'),

@@ -103,7 +103,7 @@ class admin extends ecjia_admin {
 			'title' => __('概述', 'adsense'),
 			'content' => '<p>' . __('欢迎访问ECJia智能后台广告列表页面，系统中所有的广告都会显示在此列表中', 'adsense') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表" target="_blank">' . __('关于广告列表帮助文档', 'adsense') . '</a>') . '</p>');
+		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表" target="_blank">关于广告列表帮助文档</a>', 'adsense') . '</p>');
 		$this->assign('search_action', RC_Uri::url('adsense/admin/init'));
 		
 		$show_client = array_get($_GET, 'show_client', 0);
@@ -113,7 +113,7 @@ class admin extends ecjia_admin {
 		$this->assign('media_type', $media_type);
 
 		$this->assign('ur_here', __('广告列表', 'adsense'));
-		$this->assign('back_position_list', array('text' => '广告位列表','href' => RC_Uri::url('adsense/admin_position/init',array('city_id' => $city_id))));
+		$this->assign('back_position_list', array('text' => __('广告位列表', 'adsense'),'href' => RC_Uri::url('adsense/admin_position/init',array('city_id' => $city_id))));
 		$this->assign('action_link', array('text' => __('添加广告', 'adsense'),'href' => RC_Uri::url('adsense/admin/add',array('position_id' => $position_id, 'show_client' => $show_client))));
 		
 		//获取投放平台
@@ -174,7 +174,7 @@ class admin extends ecjia_admin {
 			'title' => __('概述', 'adsense'),
 			'content' => '<p>' . __('欢迎访问ECJia智能后台添加广告页面，在此页面可以进行添加广告操作。', 'adsense') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A" target="_blank">' . __('关于添加广告帮助文档', 'adsense') . '</a>') . '</p>');
+		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E6.B7.BB.E5.8A.A0.E5.B9.BF.E5.91.8A" target="_blank">关于添加广告帮助文档</a>', 'adsense') . '</p>');
 		
 		$show_client =intval($_GET['show_client']);
 		$this->assign('show_client', $show_client);
@@ -259,7 +259,7 @@ class admin extends ecjia_admin {
 		$ad_code = isset($ad_code) ? $ad_code : '';
 		$sort_order    = !empty($_POST['sort_order']) ? intval($_POST['sort_order']) : 0;
 		if (empty($_POST['show_client'])) {
-			return $this->showmessage('请选择投放平台', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
+			return $this->showmessage(__('请选择投放平台', 'adsense'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_ERROR);
 		} else {
 			$show_client = Ecjia\App\Adsense\Client::clientSelected($_POST['show_client']);
 		}
@@ -287,7 +287,7 @@ class admin extends ecjia_admin {
 		$ad_postion_db->delete_cache_item($cache_key);
 		ecjia_admin::admin_log($ad_name, 'add', 'ads');
 		
-		return $this->showmessage('添加广告成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $ad_id,'position_id' => $position))));
+		return $this->showmessage(__('添加广告成功', 'adsense'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS, array('pjaxurl' => RC_Uri::url('adsense/admin/edit', array('ad_id' => $ad_id,'position_id' => $position))));
 	}
 	
 	/**
@@ -302,7 +302,7 @@ class admin extends ecjia_admin {
 			'title' => __('概述', 'adsense'),
 			'content' => '<p>' . __('欢迎访问ECJia智能后台编辑广告页面，在此页面可以进行编辑广告操作。', 'adsense') . '</p>'
 		));
-		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E7.BC.96.E8.BE.91.E5.B9.BF.E5.91.8A" target="_blank">' . __('关于编辑广告帮助文档', 'adsense') . '</a>') . '</p>');
+		ecjia_screen::get_current_screen()->set_help_sidebar('<p><strong>' . __('更多信息：', 'adsense') . '</strong></p>' . '<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:广告列表#.E7.BC.96.E8.BE.91.E5.B9.BF.E5.91.8A" target="_blank">关于编辑广告帮助文档</a>', 'adsense') . '</p>');
 		
 		$ad_id =intval($_GET['ad_id']);
 		$position_id =intval($_GET['position_id']);

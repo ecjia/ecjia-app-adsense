@@ -165,7 +165,7 @@ class admin_shortcut extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加菜单组', 'adsense')));
     	$this->assign('ur_here', __('添加菜单组', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init'), 'text' => '快捷菜单设置'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init'), 'text' => __('快捷菜单设置', 'adsense')));
     	
     	//$city_list = $this->get_select_city();
         $city_list   = $this->get_business_city();
@@ -387,7 +387,7 @@ class admin_shortcut extends ecjia_admin {
 
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加快捷菜单', 'adsense')));
     	$this->assign('ur_here', __('添加快捷菜单', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init',array('position_id' => $position_id, 'city_id' => $city_id)), 'text' => '快捷菜单列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init',array('position_id' => $position_id, 'city_id' => $city_id)), 'text' => __('快捷菜单列表', 'adsense')));
 
     	$info = RC_DB::table('ad_position')->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
     	$data['ad_width'] = $info['ad_width'];
@@ -466,7 +466,7 @@ class admin_shortcut extends ecjia_admin {
     	$this->assign('city_id', $city_id);
     	$this->assign('show_client', $show_client);
     	
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => '快捷菜单列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_shortcut/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => __('快捷菜单列表', 'adsense')));
     	
     	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);

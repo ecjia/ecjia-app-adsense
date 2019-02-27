@@ -228,7 +228,7 @@ class mh_group extends ecjia_merchant {
 	
 		$store_id = intval($_SESSION['store_id']);
 	
-		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => '广告组'));
+		$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_group/init'), 'text' => __('广告组', 'adsense')));
 	
 		$position_id = intval($_GET['position_id']);
 		$this->assign('position_id', $position_id);

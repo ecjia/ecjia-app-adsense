@@ -238,7 +238,7 @@ class mh_cycleimage extends ecjia_merchant {
     
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加轮播图', 'adsense')));
     	$this->assign('ur_here', __('添加轮播图', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $position_id)), 'text' => '轮播图列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $position_id)), 'text' => __('轮播图列表', 'adsense')));
     
     	$info = RC_DB::table('merchants_ad_position')->where('store_id', $_SESSION['store_id'])->where('position_id', $position_id)->select('ad_width', 'ad_height')->first();
     	$data['ad_width'] = $info['ad_width'];
@@ -313,7 +313,7 @@ class mh_cycleimage extends ecjia_merchant {
     	$show_client = intval($_GET['show_client']);
     	$this->assign('show_client', $show_client);
     	 
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => '轮播图列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_cycleimage/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => __('轮播图列表', 'adsense')));
     	 
     	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);
@@ -393,7 +393,7 @@ class mh_cycleimage extends ecjia_merchant {
     	$show_client  = intval($_GET['show_client']);
     	 
     	RC_DB::table('merchants_ad')->where('store_id', $_SESSION['store_id'])->where('ad_id', $id)->update(array('enabled'=> $val));
-    	return $this->showmessage('切换成功', ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init', array('position_id' => $position_id, 'show_client' => $show_client))));
+    	return $this->showmessage(__('切换成功', 'adsense'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_cycleimage/init', array('position_id' => $position_id, 'show_client' => $show_client))));
     }
     
     /**

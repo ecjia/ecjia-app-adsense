@@ -68,7 +68,7 @@ class admin_cycleimage extends ecjia_admin {
 		RC_Script::enqueue_script('cycleimage', RC_App::apps_url('statics/js/cycleimage.js', __FILE__));
         RC_Script::localize_script('cycleimage', 'js_lang', config('app-adsense::jslang.adsense_page'));
 
-		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here('轮播图管理', RC_Uri::url('adsense/admin_cycleimage/init')));
+		ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('轮播图管理', 'adsense'), RC_Uri::url('adsense/admin_cycleimage/init')));
 	}
     
     /**
@@ -147,7 +147,7 @@ class admin_cycleimage extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加轮播组', 'adsense')));
     	$this->assign('ur_here', __('添加轮播组', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init'), 'text' => '轮播图设置'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init'), 'text' => __('轮播图设置', 'adsense')));
     	
     	ecjia_screen::get_current_screen()->add_help_tab(array(
     	'id'		=> 'overview',
@@ -157,7 +157,7 @@ class admin_cycleimage extends ecjia_admin {
     	
     	ecjia_screen::get_current_screen()->set_help_sidebar(
     	'<p><strong>更多信息</strong></p>' .
-    	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于添加轮播组帮助文档</a>') . '</p>'
+    	'<p>' . __('<a href="https://ecjia.com/wiki/帮助:ECJia智能后台:轮播图管理" target="_blank">关于添加轮播组帮助文档</a>', 'adsense') . '</p>'
     	);
     		
     	//$city_list = $this->get_select_city();
@@ -489,7 +489,7 @@ class admin_cycleimage extends ecjia_admin {
     	$this->assign('city_id', $city_id);
     	$this->assign('show_client', $show_client);
     	
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => '轮播图列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => __('轮播图列表', 'adsense')));
     	
     	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);

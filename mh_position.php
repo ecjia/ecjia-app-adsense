@@ -103,7 +103,7 @@ class mh_position extends ecjia_merchant {
     
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('添加广告位', 'adsense')));
     	$this->assign('ur_here', __('添加广告位置', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_position/init'), 'text' => '广告位列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_position/init'), 'text' => __('广告位列表', 'adsense')));
     	
     	$this->assign('form_action', RC_Uri::url('adsense/mh_position/insert'));
     	
@@ -147,7 +147,7 @@ class mh_position extends ecjia_merchant {
     
     	ecjia_screen::get_current_screen()->add_nav_here(new admin_nav_here(__('编辑广告位', 'adsense')));
     	$this->assign('ur_here', __('编辑广告位', 'adsense'));
-    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_position/init'), 'text' => '广告位列表'));
+    	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_position/init'), 'text' => __('广告位列表', 'adsense')));
     	
     	$position_id = intval($_GET['position_id']);
     	$data = RC_DB::table('merchants_ad_position')->where('store_id', $_SESSION['store_id'])->where('position_id', $position_id)->first();
