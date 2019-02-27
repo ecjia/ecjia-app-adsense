@@ -242,7 +242,7 @@ class mh_shortcut extends ecjia_merchant {
     	$data['enabled'] = 1;
     	$this->assign('data', $data);
     
-    	$client_list = $this->get_show_client();
+    	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);
     
     	$this->assign('form_action', RC_Uri::url('adsense/mh_shortcut/insert'));
@@ -311,7 +311,7 @@ class mh_shortcut extends ecjia_merchant {
     	 
     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/mh_shortcut/init',array('position_id' => $data['position_id'], 'show_client' => $show_client)), 'text' => '菜单列表'));
     	 
-    	$client_list = $this->get_show_client();
+    	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);
     	 
     	$data['show_client'] = Ecjia\App\Adsense\Client::clients($data['show_client']);
@@ -407,16 +407,4 @@ class mh_shortcut extends ecjia_merchant {
     	return $this->showmessage(__('编辑排序成功', 'adsense'), ecjia::MSGTYPE_JSON | ecjia::MSGSTAT_SUCCESS,array('pjaxurl' => RC_Uri::url('adsense/mh_shortcut/init', array('position_id' => $position_id, 'show_client' => $show_client))));
     }
     
-    /**
-     * 获取平台
-     */
-    private function get_show_client(){
-    	$client_list = array(
-    		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
-    		'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-    		'H5' 	 => Ecjia\App\Adsense\Client::H5,
-    		'PC'     => Ecjia\App\Adsense\Client::PC
-    	);
-    	return $client_list;
-    }
 }

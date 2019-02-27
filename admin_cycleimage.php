@@ -378,19 +378,6 @@ class admin_cycleimage extends ecjia_admin {
     }
     
     /**
-     * 获取平台
-     */
-    private function get_show_client(){
-    	$client_list = array(
-    		'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
-    		'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-    		'H5' 	 => Ecjia\App\Adsense\Client::H5, 
-    		'PC'     => Ecjia\App\Adsense\Client::PC
-    	);
-    	return $client_list;
-    }
-    
-    /**
      * 处理轮播图
      */
     public function add() {
@@ -422,7 +409,7 @@ class admin_cycleimage extends ecjia_admin {
     	$data['enabled'] = 1;
 		$this->assign('data', $data);
 	
-		$client_list = $this->get_show_client();
+		$client_list = \Ecjia\App\Adsense\Client::displayClients();
 		$this->assign('client_list', $client_list);
 		
     	$this->assign('form_action', RC_Uri::url('adsense/admin_cycleimage/insert'));
@@ -504,7 +491,7 @@ class admin_cycleimage extends ecjia_admin {
     	
     	$this->assign('action_link', array('href' => RC_Uri::url('adsense/admin_cycleimage/init',array('position_id' => $data['position_id'], 'city_id'=>$city_id, 'show_client' => $show_client)), 'text' => '轮播图列表'));
     	
-    	$client_list = $this->get_show_client();
+    	$client_list = \Ecjia\App\Adsense\Client::displayClients();
     	$this->assign('client_list', $client_list);
     	
     	$data['show_client'] = Ecjia\App\Adsense\Client::clients($data['show_client']);

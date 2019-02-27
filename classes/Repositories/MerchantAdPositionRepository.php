@@ -74,14 +74,6 @@ class MerchantAdPositionRepository extends AbstractRepository
     		'store_id'  => $store,
 		];
 		$group = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
-	
-// 		$where = [
-// 		    'type'     => $this->type,
-// 		    'city_id'  => null,
-// 		];
-// 		$group2 = $this->findWhere($where, ['position_id', 'position_name', 'position_code', 'position_desc', 'ad_width', 'ad_height', 'sort_order']);
-		
-// 		$group = $group1->merge($group2);
 		
 		return $group->toArray();
 	}

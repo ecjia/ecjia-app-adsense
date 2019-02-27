@@ -188,7 +188,7 @@ class admin extends ecjia_admin {
 		
 		$this->assign('action', 'insert');
 		
-		$client_list = $this->get_show_client();
+		$client_list = \Ecjia\App\Adsense\Client::displayClients();
 		$this->assign('client_list', $client_list);
 
 		$ads['start_time'] = date('Y-m-d');
@@ -345,7 +345,7 @@ class admin extends ecjia_admin {
 			$this->assign('media_type', __('文字', 'adsense'));
 		}
 		
-		$client_list = $this->get_show_client();
+		$client_list = \Ecjia\App\Adsense\Client::displayClients();
 		$this->assign('client_list', $client_list);
 		
 		$ads_arr['show_client'] = Ecjia\App\Adsense\Client::clients($ads_arr['show_client']);
@@ -588,18 +588,6 @@ class admin extends ecjia_admin {
 		return $position_list;
 	}
 	
-	/**
-	 * 获取投放平台
-	 */
-	private function get_show_client(){
-		$client_list = array(
-				'iPhone' => Ecjia\App\Adsense\Client::IPHONE,
-				'Android'=> Ecjia\App\Adsense\Client::ANDROID,
-				'H5' 	 => Ecjia\App\Adsense\Client::H5,
-				'PC'     => Ecjia\App\Adsense\Client::PC
-		);
-		return $client_list;
-	}
 }
 
 // end
