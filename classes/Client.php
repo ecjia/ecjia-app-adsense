@@ -106,7 +106,7 @@ class Client
             'Android' => self::ANDROID,
             'H5'      => self::H5,
             'PC'      => self::PC,
-            'Weapp'   => self::WEAPP
+            __('小程序', 'adsense')   => self::WEAPP
         );
 
         return $client_list;
