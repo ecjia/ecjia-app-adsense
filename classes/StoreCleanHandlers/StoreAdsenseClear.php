@@ -33,7 +33,7 @@ class StoreAdsenseClear extends StoreCleanAbstract
      * 排序
      * @var int
      */
-    protected $sort = 106;
+    protected $sort = 26;
 
     /**
      * 数据描述及输出显示内容
