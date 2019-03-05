@@ -42,9 +42,7 @@ class StoreAdsenseClear extends StoreCleanAbstract
     {
         $text = __('店铺内所有有关广告数据（含广告、快捷菜单、轮播图等）全部删除', 'adsense');
         return <<<HTML
-
-<span class="controls-info w400">$text</span>
-
+<span class="controls-info w400">{$text}</span>
 HTML;
 
     }

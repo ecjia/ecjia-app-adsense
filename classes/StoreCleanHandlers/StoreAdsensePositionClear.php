@@ -42,9 +42,7 @@ class StoreAdsensePositionClear extends StoreCleanAbstract
     {
         $text = __('店铺内所有广告位数据全部删除', 'adsense');
         return <<<HTML
-
-<span class="controls-info w400">$text</span>
-
+<span class="controls-info w400">{$text}</span>
 HTML;
 
     }
