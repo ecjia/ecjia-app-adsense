@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ecjia App adsense 1.27.4\n"
 "Report-Msgid-Bugs-To: https://make.ecjia.com/polyglots/\n"
-"POT-Creation-Date: 2019-03-06 17:12+0800\n"
-"PO-Revision-Date: 2019-03-06 17:20+0800\n"
+"POT-Creation-Date: 2019-03-13 13:41+0800\n"
+"PO-Revision-Date: 2019-03-13 13:41+0800\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <ecjia@ecjia.com>\n"
 "Language: zh_TW\n"
@@ -690,16 +690,16 @@ msgstr "請求接口%s參數無效"
 msgid "小程序"
 msgstr "小程序"
 
-#: classes/StoreCleanHandlers/StoreAdsenseClear.php:43
+#: classes/StoreCleanHandlers/StoreAdsenseClear.php:45
 msgid "店铺内所有有关广告数据（含广告、快捷菜单、轮播图等）全部删除"
 msgstr "店鋪內所有有關廣告數據（含廣告、快捷菜單、輪播圖等）全部刪除"
 
-#: classes/StoreCleanHandlers/StoreAdsenseClear.php:95
+#: classes/StoreCleanHandlers/StoreAdsenseClear.php:105
 #: classes/StoreCleanHandlers/StoreAdsensePositionClear.php:95
 msgid "店铺名是%s"
 msgstr "店铺名是%s"
 
-#: classes/StoreCleanHandlers/StoreAdsenseClear.php:95
+#: classes/StoreCleanHandlers/StoreAdsenseClear.php:105
 #: classes/StoreCleanHandlers/StoreAdsensePositionClear.php:95
 msgid "店铺ID是%s"
 msgstr "店鋪ID是%s"
