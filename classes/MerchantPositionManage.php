@@ -218,7 +218,7 @@ class MerchantPositionManage
                 $result = \RC_Hook::apply_filters('filter_merchant_adsense_group_data', $result->toArray());
                 
                 return ['title' => $item->position_desc, 'adsense' => $result];
-            })->filter();
+            });
 
             return $result->toArray();
         }

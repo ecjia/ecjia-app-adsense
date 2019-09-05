@@ -219,7 +219,7 @@ class PositionManage
                 $result = \RC_Hook::apply_filters('filter_adsense_group_data', $result->toArray());
                 
                 return ['title' => $item->position_desc, 'adsense' => $result];
-            })->filter();
+            });
             
             return $result->toArray();
         }
